@@ -1,7 +1,4 @@
 # FinderService
 Proyecto Grupal
-
-#Hola soy Noe
-
-#Hola soy Camilo
+# Hola, soy un prueba. 
 
