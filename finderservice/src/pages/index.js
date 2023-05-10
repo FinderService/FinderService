@@ -24,13 +24,13 @@ export default function Home() {
           </h3>
 
           <div
-            className="w-1/2 py-2 px-3 bg-slate-300/80 rounded-md flex flex-row gap-2"
+            className="w-1/2 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm boxShadow"
           >
             <Image src={ ubi } />
             <input 
               type="text" 
               placeholder="Dirección o punto de referencia" 
-              className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none backdrop-blur-md"
+              className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "
             />
           </div>        
         </div>

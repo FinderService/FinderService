@@ -13,7 +13,7 @@ export default function Navbar(){
                         src={ logo }
                         className='w-[9rem]'
                     />
-                    <div className='text-xl font-bold'>
+                    <div className='text-xl font-bold text-slate-700'>
                         Finder Service
                     </div>
                 </div>
