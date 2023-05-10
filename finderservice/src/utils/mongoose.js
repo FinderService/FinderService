@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 mongoose
   .connect(
-    "mongodb+srv://KawamaH:CZaROzJzJGF99Ifq@finderservicedb.kucjfkg.mongodb.net/findedservicedb?retryWrites=true&w=majority",
+    "mas rato les paso el .env xd",
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
