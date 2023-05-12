@@ -1,10 +1,11 @@
-import { Schema, model} from "mongoose";
+import { Schema, model,models} from "mongoose";
 
-const typeSchema = new Schema(
+var typeSchema = new Schema(
   {
     name: String,
   },
   { timestamps: false, versionKey: false }
 );
 
-export default model("Type", typeSchema);
+var Type = models.Type || model("Type", typeSchema);
+module.exports = Type;

@@ -1,6 +1,6 @@
-import { Schema, model} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-const employerSchema = new Schema(
+var employerSchema = new Schema(
   {
     name: {
       type: String,
@@ -20,14 +20,16 @@ const employerSchema = new Schema(
       require: [true, "Email is required"],
     },
     rating: {
-      type: Decimal128,
+      type: String,
     },
-    address:[{
+    address: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'Address'
-    }],
+        ref: "Address",
+      },
+    ],
   },
   { timestamps: false, versionKey: false }
 );
-
-export default model('Employer', employerSchema)
+var Employer = models.Employer || model("Employer", employerSchema);
+module.exports = Employer;
