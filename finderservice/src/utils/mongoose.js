@@ -6,11 +6,12 @@ export async function dbConnect() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
-    .then(() => {
-      console.log("Connected to MongoDB Atlas!");
+    
+    const db = mongoose.connection;
+    db.on('error',err=>{
+      console.error('Connection error', err)
     })
-    .catch((error) => {
-      console.log("Unable to connect to MongoDB Atlas!");
-      console.error(error);
-    });
+    db.once('open',()=> {
+      console.log('Connection established')
+    })
 }

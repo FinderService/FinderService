@@ -1,6 +1,6 @@
-import { Schema, model} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-const addressSchema = new Schema(
+var addressSchema = new Schema(
   {
     street: {
       type: String,
@@ -12,11 +12,12 @@ const addressSchema = new Schema(
       required: [true, "Number is required"],
     },
     city: {
-        type: String,
-        required: [true, "City is required"],
-    }
+      type: String,
+      required: [true, "City is required"],
+    },
   },
   { timestamps: false, versionKey: false }
 );
 
-export default model('Address', addressSchema)
+var Address = models.Address || model("Address", addressSchema);
+module.exports = Address;
