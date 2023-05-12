@@ -1,6 +1,6 @@
-import { Schema, model} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-const jobPostulationSchema = new Schema(
+var jobPostulationSchema = new Schema(
   {
     jobrequest: [
       {
@@ -20,4 +20,6 @@ const jobPostulationSchema = new Schema(
   { timestamps: false, versionKey: false }
 );
 
-export default model("JobPostulation", jobPostulationSchema);
+var JobPostulation =
+  models.JobPostulation || model("JobPostulation", jobPostulationSchema);
+module.exports = JobPostulation;

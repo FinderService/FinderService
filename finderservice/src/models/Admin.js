@@ -1,6 +1,6 @@
-import { Schema, model} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
-const adminSchema = new Schema(
+var adminSchema = new Schema(
   {
     name: {
       type: String,
@@ -19,4 +19,5 @@ const adminSchema = new Schema(
   { timestamps: false, versionKey: false }
 );
 
-export default model('Admin', adminSchema)
+var Admin = models.Admin || model("Admin", adminSchema);
+module.exports = Admin;

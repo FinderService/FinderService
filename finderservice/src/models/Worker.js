@@ -1,4 +1,4 @@
-import { Schema, model} from "mongoose";
+import { Schema, model, models} from "mongoose";
 
 const workerSchema = new Schema(
   {
@@ -27,4 +27,5 @@ const workerSchema = new Schema(
   { timestamps: false, versionKey: false }
 );
 
-export default model('Worker', workerSchema)
+var Worker = models.Worker || model("Worker", workerSchema);
+module.exports = Worker;
