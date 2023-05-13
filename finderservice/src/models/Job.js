@@ -16,6 +16,7 @@ var jobSchema = new Schema(
     ],
     statejob: String,
     review: String,
+    rating: String,
   },
   { timestamps: false, versionKey: false }
 );

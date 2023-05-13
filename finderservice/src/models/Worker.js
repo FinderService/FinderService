@@ -1,4 +1,4 @@
-import { Schema, model, models} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const workerSchema = new Schema(
   {
@@ -22,7 +22,10 @@ const workerSchema = new Schema(
     rating: {
       type: String,
     },
-   
+    reviews:{
+      type: Array,
+      description: String,
+    }
   },
   { timestamps: false, versionKey: false }
 );
