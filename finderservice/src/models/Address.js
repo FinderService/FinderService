@@ -2,14 +2,11 @@ import { Schema, model, models } from "mongoose";
 
 var addressSchema = new Schema(
   {
-    street: {
+    name: {
       type: String,
-      required: [true, "Street is required"],
+      required: [true, "Address is required"],
       trim: true,
-    },
-    number: {
-      type: Number,
-      required: [true, "Number is required"],
+      unique: true,
     },
     city: {
       type: String,

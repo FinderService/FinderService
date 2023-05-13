@@ -18,16 +18,22 @@ var employerSchema = new Schema(
     email: {
       type: String,
       require: [true, "Email is required"],
+      unique: true
     },
     rating: {
       type: String,
     },
+    profilepic: String,
     address: [
       {
         type: Schema.Types.ObjectId,
         ref: "Address",
       },
     ],
+    reviews: {
+      type: String,
+      description: String,
+    },
   },
   { timestamps: false, versionKey: false }
 );
