@@ -13,15 +13,21 @@ export default async function handler(req, res) {
         const response = name
           ? await Employer.find({
               name: { $regex: `${name}`, $options: "i" },
-            })
-          : await Employer.find({});
+            }).populate("address", "-_id name city")
+          : await Employer.find({}).populate("address", "-_id name city");
         if (response.length === 0) {
-          res.status(404).json({ error: "No employers found with that name" });
+          return res
+            .sendStatus(404)
+            .json({ error: "No employers found with that name" });
         } else {
-          res.status(200).json(response);
+          await mongoose.connection.close();
+          console.log("Connection shutdown");
+          return res.status(200).json(response);
         }
       } catch (error) {
-        res.status(400).json({ error: error.message });
+        await mongoose.connection.close();
+        console.log("Connection shutdown");
+        return res.status(400).json({ error: error.message });
       }
       break;
     case "POST":
@@ -39,13 +45,14 @@ export default async function handler(req, res) {
           name: req.body.address.name,
           city: req.body.address.city,
         });
+
         const validationError2 = newAddress.validateSync();
+
         if (validationError2) {
-          throw new Error(
-            validationError2.errors[
-              Object.keys(validationError2.errors)[0]
-            ].message
-          );
+          res.sendStatus(500).json(validationError2.errors[
+            Object.keys(validationError.errors)[0]
+          ].message);
+          return;
         }
 
         const saveAddress = await newAddress.save();
@@ -59,28 +66,31 @@ export default async function handler(req, res) {
           address: [saveAddress._id],
         });
         const validationError = newEmployer.validateSync();
+
         if (validationError) {
-          throw new Error(
-            validationError.errors[
-              Object.keys(validationError.errors)[0]
-            ].message
-          );
+          res.sendStatus(500).json(validationError.errors[
+            Object.keys(validationError.errors)[0]
+          ].message);
+          return;
         }
 
         const savedEmployer = await newEmployer.save();
         const employerWithAddress = await Employer.findById(
           savedEmployer._id
         ).populate("address", "-_id name city");
-        res.status(201).json(employerWithAddress);
+        await mongoose.connection.close();
+        console.log("Connection shutdown");
+        return res.status(201).json(employerWithAddress);
       } catch (error) {
-        res.status(400).json({ error: error.message });
+        await mongoose.connection.close();
+        console.log("Connection shutdown");
+        return res.status(400).json({ error: error.message });
       }
 
     default:
+      await mongoose.connection.close();
+      console.log("Connection shutdown");
       res.status(404).json({ error: "request do not exist" });
       break;
   }
-
-  await mongoose.connection.close();
-  console.log("Conecction shutdown");
 }
