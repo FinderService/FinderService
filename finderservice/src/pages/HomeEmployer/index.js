@@ -69,10 +69,12 @@ export default function Search() {
                     <div className="mt-5 flex flex-col flex-wrap">
                         {arr.map((info)=>{
                             return (
+                                <Link href="/WorkerDetail">
                                 <div key={info} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
                                     <h2>Nombre: {info}</h2>
                                     <p>Informacion de: {info}</p>
                                 </div>
+                                </Link>
                             )
                         })}
                     </div>
