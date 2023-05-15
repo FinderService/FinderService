@@ -3,6 +3,7 @@ import HomeSleider from "@components/HomeSlider";
 import Layout from "@components/Layout";
 import { ubi } from '@public/assets';
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -32,6 +33,7 @@ export default function Home() {
               placeholder="Dirección o punto de referencia" 
               className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "
             />
+            <Link href='HomeEmployer' className="bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all"> Buscar </Link>
           </div>        
         </div>
       </div>

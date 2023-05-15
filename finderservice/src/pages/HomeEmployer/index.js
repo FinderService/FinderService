@@ -69,16 +69,16 @@ export default function Search() {
                     <div className="mt-5 flex flex-col flex-wrap">
                         {arr.map((info)=>{
                             return (
+                                <Link href="/WorkerDetail">
                                 <div key={info} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
                                     <h2>Nombre: {info}</h2>
                                     <p>Informacion de: {info}</p>
                                 </div>
+                                </Link>
                             )
                         })}
                     </div>
                 </div>
-
-
                 <div className="bg-neutral-300 flex flex-col w-1/6 h-fit mt-14 mb-10 p-6 rounded-xl">
                     <div>
                         <label className="font-bold mb-2">Métodos de Pago</label>
@@ -98,6 +98,11 @@ export default function Search() {
                                 <option value="Ofertas">Limpieza</option>
                             </select>    
                         </div>
+                    </div>
+                    <div className="bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
+                        <Link href="/HomeEmployer/HEOffers">
+                        <button className="font-bold mb-2">Mis Ofertas</button>
+                        </Link>
                     </div>
                 </div>
             </div>

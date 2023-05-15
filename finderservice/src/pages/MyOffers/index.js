@@ -2,7 +2,7 @@ import Footer from "@components/Footer";
 import Layout from "@components/Layout";
 import Link from "next/link";
 
-export default function Offers() {
+export default function MyOffers() {
   return (
     <Layout>
     <div className="font-bold mb-2 flex justify-center items-center mt-10">Ofertas creadas por este Profesional</div>

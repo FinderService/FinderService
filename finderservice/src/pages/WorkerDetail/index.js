@@ -21,7 +21,7 @@ export default function WorkerDetail() {
                 <Link href="/Payment">
                 <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">CONTRATAR</button>
                 </Link>
-                <Link href="/Offers">
+                <Link href="/MyOffers">
                 <button class="bg-amber-400 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded">Ver Servicios</button>
                 </Link>
             </div>
