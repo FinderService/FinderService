@@ -37,7 +37,9 @@ module.exports = {
         activeColor: "#fffa64",
       },
       backgroundImage: {
-        'herohome2': "url('../public/assets/images/hero.jpg')",
+        'herohome2': "url('/assets/images/hero.jpg')",
+        'login': "url('/assets/images/login.jpg')",
+        'register': "url('/assets/images/register.jpg')",
         'herohome': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',

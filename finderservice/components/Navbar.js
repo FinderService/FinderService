@@ -1,8 +1,14 @@
 import Image from 'next/image';
 import { logo, equipo } from '@public/assets';
+import Link from 'next/link';
+import { useRouter } from "next/router";
 
 
 export default function Navbar(){
+
+    const router = useRouter();
+    const showBtns = router.pathname.indexOf('User') > -1 ? false : true ;
+
     return(
         <div
             className="w-full shadow-navbarShadow h-20 lg:h{12vh} sticky top-0 z-50 backdrop-blur-md bg-bodyColor/60 px-4"
@@ -13,18 +19,22 @@ export default function Navbar(){
                         src={ logo }
                         className='w-[9rem]'
                     />
-                    <div className='text-xl font-bold text-slate-700'>
+                    <Link href='/' className='text-xl font-bold text-slate-700'>
                         Finder Service
-                    </div>
+                    </Link>
                 </div>
+                {
+                    showBtns &&
                 <div className="hidden mdl:inline-flex items-center gap-7 ">
                     <button
-                        className="border-2 border-slate-400 rounded-md px-3 py-1 hover:border-blue-600 cursor-pointer duration-300 nav-link flex flex-row gap-2 items-center"
+                        className="btn-navbar"
                     > 
                         <Image src={equipo} />     
                         Registra tu rubro de trabajo 
                     </button>
+                    <Link href='User/login'> Iniciar sesión / Registrarse</Link>
                 </div>
+                }
             </div>
         </div>
     )
