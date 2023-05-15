@@ -40,7 +40,7 @@ export default function Navbar(){
 
   
 
-                    <Link href='User/login'> Iniciar sesión / Registrarse</Link>
+                    <Link href='/User/login'> Iniciar sesión / Registrarse</Link>
                 </div>
                 }
             </div>
