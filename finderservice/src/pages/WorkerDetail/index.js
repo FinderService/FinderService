@@ -4,6 +4,8 @@ import { workers1 } from "@public/assets";
 import Image from "next/image"
 import Link from "next/link";
 
+//Vista de Detalle del Trabajador
+
 export default function WorkerDetail() {
   return (
     <Layout>
