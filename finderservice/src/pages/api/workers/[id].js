@@ -1,4 +1,4 @@
-import { dbConnect } from "@/utils/mongoose";
+import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Worker from '@/models/Worker.js'
 import mongoose from "mongoose";
 
