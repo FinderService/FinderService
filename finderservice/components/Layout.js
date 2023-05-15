@@ -1,10 +1,11 @@
+import Footer from "./Footer";
 import Navbar from "./Navbar";
 
 import { Toaster } from "react-hot-toast";
 
 export default function Layout({ children }) {
   return (
-    <main>
+    <main className="w-full h-screen">
       <Navbar />
       <Toaster
         position="top-center"
@@ -32,7 +33,8 @@ export default function Layout({ children }) {
             },
           },
         }}
-      />
+        />
+        { /* <!-- Cambio de prueba --> */ }
       {children}
     </main>
   );

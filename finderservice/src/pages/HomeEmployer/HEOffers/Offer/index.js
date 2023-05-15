@@ -1,7 +1,6 @@
 import Footer from "@components/Footer";
 import Layout from "@components/Layout";
 import Image from "next/image";
-import { useRouter } from 'next/router';
 import Link from "next/link";
 import { workers1 } from "@public/assets";
 
