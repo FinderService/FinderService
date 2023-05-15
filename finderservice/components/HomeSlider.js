@@ -15,27 +15,27 @@ export default function HomeSleider() {
  
 
             <Link href="/" className='homeIconItem'>
-                    <Image src={gas} />
+                    <Image src={gas} alt='logo_gas' />
             </Link>
  
             <Link href="/" className='homeIconItem'>
-                    <Image src={obrero} />
+                    <Image src={obrero} alt='logo_obrero' />
             </Link>
   
             <Link href="/" className='homeIconItem'>
-                    <Image src={llave} />
+                    <Image src={llave} alt='logo_llave' />
             </Link>
    
             <Link href="/" className='homeIconItem'>
-                    <Image src={foco} />
+                    <Image src={foco} alt='logo_foco'/>
             </Link>
     
             <Link href="/" className='homeIconItem'>
-                    <Image src={manguera} />
+                    <Image src={manguera} alt='logo_manguera' />
             </Link>
      
             <Link href="/" className='homeIconItem'>
-                    <Image src={tubo} />
+                    <Image src={tubo} alt='logo_tubo' />
             </Link>
 
             <Link href="/" className='homeIconItemArrow'>

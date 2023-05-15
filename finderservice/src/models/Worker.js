@@ -44,7 +44,7 @@ const workerSchema = new Schema(
     active: {
       type: Boolean,
       default: false,
-    }
+    },
     reviews:{
       type: Array,
       description: String,
