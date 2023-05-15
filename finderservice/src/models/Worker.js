@@ -35,6 +35,16 @@ const workerSchema = new Schema(
     rating: {
       type: String,
     },
+    salt: {
+      type: String,
+    },
+    validator: {
+      type: String,
+    },
+    active: {
+      type: Boolean,
+      default: false,
+    }
     reviews:{
       type: Array,
       description: String,

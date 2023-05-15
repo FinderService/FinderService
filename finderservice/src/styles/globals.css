@@ -17,6 +17,14 @@
     height: 80vh;
 }
 
+.btn-navbar{
+    @apply border-2 border-slate-400 rounded-md px-3 py-1 hover:border-blue-600 cursor-pointer duration-300 flex flex-row gap-2 items-center
+}
+
+.link{
+    @apply text-gray-900  hover:text-blue-600 cursor-pointer duration-300
+}
+
 .titleShadow{
     text-shadow: 2px 3px 2px rgba(0,0,0,.8);
 }
@@ -32,4 +40,9 @@
 
 .homeIconItemArrow{
     @apply bg-slate-200 p-3 rounded-full hover:bg-blue-200 cursor-pointer duration-300 text-3xl border-2 border-slate-400
+}
+
+
+.form-input{
+    @apply bg-slate-300 p-2 rounded-sm border-2
 }
