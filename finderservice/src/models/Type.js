@@ -1,8 +1,8 @@
-import { Schema, model,models} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 var typeSchema = new Schema(
   {
-    name: String,
+    name: [String],
   },
   { timestamps: false, versionKey: false }
 );

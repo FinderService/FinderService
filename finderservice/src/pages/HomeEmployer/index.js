@@ -66,7 +66,6 @@ export default function Search() {
                         <input type="text" placeholder="Buscar por nombre" className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "/>
                     </div>
                     <div className="font-bold mb-2 mt-5">{arr.length} resultados encontrados</div>
-                    <Link href="/WorkerDetail">
                     <div className="mt-5 flex flex-col flex-wrap">
                         {arr.map((info)=>{
                             return (
@@ -77,7 +76,6 @@ export default function Search() {
                             )
                         })}
                     </div>
-                    </Link>
                 </div>
 
 

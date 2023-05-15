@@ -1,4 +1,4 @@
-import { Schema, model, models} from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const workerSchema = new Schema(
   {
@@ -19,6 +19,19 @@ const workerSchema = new Schema(
       type: String,
       require: [true, "Email is required"],
     },
+    profilepic: String,
+    type: [
+      {
+        type:Schema.Types.ObjectId,
+        ref:"Type",
+      },
+    ],
+    address: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Address",
+      },
+    ],
     rating: {
       type: String,
     },
@@ -32,7 +45,10 @@ const workerSchema = new Schema(
       type: Boolean,
       default: false,
     }
-   
+    reviews:{
+      type: Array,
+      description: String,
+    }
   },
   { timestamps: false, versionKey: false }
 );
