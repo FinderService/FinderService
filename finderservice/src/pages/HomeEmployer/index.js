@@ -101,6 +101,11 @@ export default function Search() {
                             </select>    
                         </div>
                     </div>
+                    <div className="bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
+                        <Link href="/HomeEmployer/HEOffers">
+                        <button className="font-bold mb-2">Mis Ofertas</button>
+                        </Link>
+                    </div>
                 </div>
             </div>
             <Footer />
