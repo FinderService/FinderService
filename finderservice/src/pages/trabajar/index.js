@@ -2,6 +2,7 @@ import Layout from "@components/Layout";
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import Footer from "@components/Footer";
 
 const FormWork = () => {
   const router = useRouter();
@@ -172,6 +173,7 @@ const FormWork = () => {
       </Link>
 
     </form>
+    <Footer/>
     </Layout>
   );
 };
