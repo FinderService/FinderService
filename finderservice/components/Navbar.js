@@ -29,17 +29,17 @@ export default function Navbar(){
 
                     <button className="btn-navbar"> 
                         <Image src={equipo} />     
-                        <Link href='trabajar'>Postulá tu empleo</Link> 
+                        <Link href='/trabajar'>Postulá tu empleo</Link> 
                     </button>
 
                     <button className="btn-navbar hover:border-green-500"> 
                         <Image src={equipo} />     
-                        <Link href='contratar'>Postulá tu contratación</Link> 
+                        <Link href='/contratar'>Postulá tu contratación</Link> 
                     </button>
 
   
 
-                    <Link href='User/login'> Iniciar sesión / Registrarse</Link>
+                    <Link href='/User/login'> Iniciar sesión / Registrarse</Link>
                 </div>
                 }
             </div>
