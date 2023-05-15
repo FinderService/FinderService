@@ -79,8 +79,6 @@ export default function Search() {
                         })}
                     </div>
                 </div>
-
-
                 <div className="bg-neutral-300 flex flex-col w-1/6 h-fit mt-14 mb-10 p-6 rounded-xl">
                     <div>
                         <label className="font-bold mb-2">Métodos de Pago</label>

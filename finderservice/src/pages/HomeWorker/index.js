@@ -2,7 +2,7 @@ import Footer from "@components/Footer";
 import Layout from "@components/Layout";
 import Link from "next/link";
 
-
+//vista de home empleado
 export default function HomeWorker() {
     
     const Offers = ["Offer1", "Offer2", "Offer3", "Offer4", "Offer5", "Offer6", "Offer7", "Offer8", "Offer9"]
