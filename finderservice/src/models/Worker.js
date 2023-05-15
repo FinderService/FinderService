@@ -19,6 +19,19 @@ const workerSchema = new Schema(
       type: String,
       require: [true, "Email is required"],
     },
+    profilepic: String,
+    type: [
+      {
+        type:Schema.Types.ObjectId,
+        ref:"Type",
+      },
+    ],
+    address: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Address",
+      },
+    ],
     rating: {
       type: String,
     },
