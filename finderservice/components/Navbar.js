@@ -26,12 +26,19 @@ export default function Navbar(){
                 {
                     showBtns &&
                 <div className="hidden mdl:inline-flex items-center gap-7 ">
-                    <button
-                        className="btn-navbar"
-                    > 
+
+                    <button className="btn-navbar"> 
                         <Image src={equipo} />     
-                        Registra tu rubro de trabajo 
+                        <Link href='trabajar'>Postulá tu empleo</Link> 
                     </button>
+
+                    <button className="btn-navbar hover:border-green-500"> 
+                        <Image src={equipo} />     
+                        <Link href='contratar'>Postulá tu contratación</Link> 
+                    </button>
+
+  
+
                     <Link href='User/login'> Iniciar sesión / Registrarse</Link>
                 </div>
                 }
