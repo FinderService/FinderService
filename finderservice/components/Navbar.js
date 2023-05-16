@@ -18,6 +18,7 @@ export default function Navbar(){
                     <Image 
                         src={ logo }
                         className='w-[9rem]'
+                        alt='logo_app'
                     />
                     <Link href='/' className='text-xl font-bold text-slate-700'>
                         Finder Service
@@ -28,18 +29,18 @@ export default function Navbar(){
                 <div className="hidden mdl:inline-flex items-center gap-7 ">
 
                     <button className="btn-navbar"> 
-                        <Image src={equipo} />     
+                        <Image src={equipo} alt="icon_equipo" />     
                         <Link href='trabajar'>Postulá tu empleo</Link> 
                     </button>
 
                     <button className="btn-navbar hover:border-green-500"> 
-                        <Image src={equipo} />     
+                        <Image src={equipo} alt="icon_equipo" />     
                         <Link href='contratar'>Postulá tu contratación</Link> 
                     </button>
 
   
 
-                    <Link href='User/login'> Iniciar sesión / Registrarse</Link>
+                    <Link href='/User/login'> Iniciar sesión / Registrarse</Link>
                 </div>
                 }
             </div>

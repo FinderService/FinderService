@@ -79,8 +79,6 @@ export default function Search() {
                         })}
                     </div>
                 </div>
-
-
                 <div className="bg-neutral-300 flex flex-col w-1/6 h-fit mt-14 mb-10 p-6 rounded-xl">
                     <div>
                         <label className="font-bold mb-2">Métodos de Pago</label>
@@ -100,6 +98,11 @@ export default function Search() {
                                 <option value="Ofertas">Limpieza</option>
                             </select>    
                         </div>
+                    </div>
+                    <div className="flex justify-center bg-blue-300 mt-5 mb-5 p-1 rounded-xl">
+                        <Link href="/HomeEmployer/HEOffers">
+                            <button className="font-bold mb-2">💼 Mis Ofertas</button>
+                        </Link>
                     </div>
                 </div>
             </div>

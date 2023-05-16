@@ -25,9 +25,7 @@ export default async function registerHandler(req, res){
                 let email = username;
 			    let user = await Worker.findOne({ email }).exec();
 		        if(user){
-			        return res.status(400).json({ success: false, msg: 'El usuario ya existe'}, mail)
-			        //return res.status(400).send('El usuario ya existe');
-                    //throw new Error('El usuario ya existe');
+			        return res.status(400).json({ success: false, msg: 'El usuario ya existe'});
 			    }
 
                 let appUrl = process.env.APP_URL;
