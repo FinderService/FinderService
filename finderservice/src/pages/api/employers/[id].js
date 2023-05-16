@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         if (!response) {
           return res
             .status(404)
-            .json({ error: "Employer not found in the database" });
+            .json({ error: "No se encontró el empleado con esa id" });
         } else {
           await dbDisconnect();
           return res.status(200).json(response);

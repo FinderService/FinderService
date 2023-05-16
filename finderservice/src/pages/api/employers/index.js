@@ -11,17 +11,15 @@ export default async function handler(req, res) {
     case "GET":
       try {
         let { name } = query;
-        const nameTrimmed = name.trim();
-        console.log(name)
+
         const response = name
           ? await Employer.find({
-              name: { $regex: `${nameTrimmed}`, $options: "i" },
+              name: { $regex: `${name}`, $options: "i" },
             }).populate("address", "-_id name city")
           : await Employer.find({}).populate("address", "-_id name city");
         if (response.length === 0) {
-          await dbDisconnect();
           return res.status(404).json({
-            error: `No se encontraron empleados con el nombre ${nameTrimmed}`,
+            error: `No se encontraron empleados con el nombre ${name}`,
           });
         } else {
           await dbDisconnect();
@@ -49,17 +47,15 @@ export default async function handler(req, res) {
           city: address[0].city,
         });
 
-        const validationError2 = await newAddress.validateSync();
-        if (validationError2) {
-          return res
-            .status(500)
-            .json(
-              validationError2.errors[Object.keys(validationError2.errors)[0]]
-                .message
-            );
+        const validationAddress = await newAddress.validateSync();
+        if (validationAddress) {
+          dbDisconnect();
+          return res.status(400).json({
+            error:
+              validationAddress.errors[Object.keys(validationAddress.errors)[0]]
+                .message,
+          });
         }
-
-        const saveAddress = await newAddress.save();
 
         const newEmployer = new Employer({
           name,
@@ -67,33 +63,38 @@ export default async function handler(req, res) {
           age,
           email,
           profilepic,
-          address: [saveAddress._id],
+          address: [newAddress._id],
         });
 
-        const validationError = await newEmployer.validateSync();
-        if (validationError) {
-          return res
-            .status(500)
-            .json(
-              validationError.errors[Object.keys(validationError.errors)[0]]
-                .message
-            );
+        const validationEmployer = await newEmployer.validateSync();
+        if (validationEmployer) {
+          await dbDisconnect();
+          return res.status(400).json({
+            error:
+              validationEmployer.errors[
+                Object.keys(validationEmployer.errors)[0]
+              ].message,
+          });
         }
 
-        const savedEmployer = await newEmployer.save();
+        if (!validationEmployer && !validationAddress) {
+          const savedAddress = await newAddress.save();
+          newEmployer.address = [savedAddress._id];
+          const savedEmployer = await newEmployer.save();
 
-        const employerWithAddress = await Employer.findById(
-          savedEmployer._id
-        ).populate("address", "-_id name city");
+          const employerWithAddress = await Employer.findById(
+            savedEmployer._id
+          ).populate("address", "-_id name city");
 
-        await dbDisconnect();
-        return res.status(201).json(employerWithAddress);
+          await dbDisconnect();
+          return res.status(201).json(employerWithAddress);
+        }
       } catch (error) {
         await dbDisconnect();
-        if (error.message.includes("E11000")) {
-          return res
-            .status(400)
-            .json({ error: "Ya existe una dirección igual" });
+        if (error.code === 11000 && error.keyValue && error.keyValue.name) {
+          return res.status(400).json({
+            error: "Ya existe una dirección igual en nuestra base de datos",
+          });
         }
         return res.status(400).json({ error: error.message });
       }

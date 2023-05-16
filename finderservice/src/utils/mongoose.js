@@ -20,7 +20,7 @@ export async function dbConnect() {
     });
 }
 
-export async function dbDisconnect(){
-  await mongoose.connection.close()
-  console.log('Connection shutdown')
+export async function dbDisconnect() {
+  await mongoose.connection.close();
+  console.log("Connection shutdown");
 }

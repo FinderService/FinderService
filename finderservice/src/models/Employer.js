@@ -4,20 +4,20 @@ var employerSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, "El nombre es requerido"],
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, "La contraseña es requerida"],
     },
     age: {
       type: Number,
-      require: [true, "Age is required"],
+      required: [true, "La edad es requerida"],
     },
     email: {
       type: String,
-      require: [true, "Email is required"],
+      require: [true, "El correo es requerido"],
       unique: true
     },
     rating: {
