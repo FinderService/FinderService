@@ -19,3 +19,8 @@ export async function dbConnect() {
       console.error("Error connecting to FinderService Database", error);
     });
 }
+
+export async function dbDisconnect() {
+  await mongoose.connection.close();
+  console.log("Connection shutdown");
+}
