@@ -12,5 +12,7 @@ import obrero from './images/icons/obrero.svg';
 import tubo from './images/icons/tubo.svg';
 import ubi from './images/icons/ubi.svg';
 
+import avt from './images/userAvt.png';
 
-export { logo, hero, equipo, foco, gas, llave, manguera, obrero, tubo, ubi, workers1 }
+
+export { logo, hero, equipo, foco, gas, llave, manguera, obrero, tubo, ubi, workers1, avt }

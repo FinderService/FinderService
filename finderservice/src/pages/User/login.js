@@ -1,16 +1,22 @@
 import { useState } from "react";
-import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Layout from "@components/Layout";
+import { FcGoogle } from "react-icons/fc";
+import { SiFacebook } from "react-icons/si";
 
 import { logo } from "@public/assets";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Login() {
+  const router = useRouter();
+
   const [state, setState] = useState({
     username: "",
     password: "",
+    loginError: "",
   });
 
   const handleChange = (e) => {
@@ -20,15 +26,36 @@ export default function Login() {
     });
   };
 
+  const handleGoogleSignIn = async () => {
+    await signIn("google", {
+      redirect: true,
+      callbackUrl: "/",
+    });
+  };
+
+  const handleFacebookSignIn = async () => {
+    await signIn("facebook", {
+      redirect: true,
+      callbackUrl: "/",
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const resp = await axios.post("/api/auth/login", state);
-      console.log(resp);
-      toast.success(resp.data.msg);
-    }catch(error){
-      console.log(error);
-      toast.error(error.response.data.msg);
+    const result = await signIn("credentials", {
+      username: state.username,
+      password: state.password,
+      redirect: false,
+      callbackUrl: "/",
+    });
+
+    if (result.error) {
+      setState({
+        ...state,
+        loginError: result.error,
+      });
+    } else {
+      router.push("/");
     }
   };
 
@@ -37,17 +64,22 @@ export default function Login() {
       <div className="h-full bg-black/40 overflow-y-hidden">
         <Layout>
           <div className="w-full h-screen flex flex-wrap items-center justify-center ">
-            <div className="flex flex-col bg-white/70 backdrop-blur-xl rounded-lg p-8 drop-shadow-xl">
+            <div className="flex flex-col bg-white/70 backdrop-blur-xl rounded-lg p-6 drop-shadow-xl">
               <div className="w-full text-right">
-                <Link href="/" className="link">
+                <Link href="/" className="link text-sm">
                   Omitir
                 </Link>
               </div>
 
-              <Image src={logo} alt="app_logo" className="w-[20rem]" />
-              <h1 className="w-full font-semibold text-2xl text-center py-4">
+              <Image src={logo} alt="app_logo" className="w-[15rem]" />
+              <h1 className="w-full font-semibold text-2xl text-center py-4 text-gray-600">
                 ¡Te damos la bienvenida!
               </h1>
+              {state.loginError && (
+                <div className="w-full p-2 mb-2 border-2 border-red-900 text-red-900 rounded-md text-center bg-red-500/30">
+                  {state.loginError}
+                </div>
+              )}
               <form
                 onSubmit={handleSubmit}
                 className="flex flex-col gap-2 items-center"
@@ -78,11 +110,25 @@ export default function Login() {
                   Entrar{" "}
                 </button>
               </form>
-              <div className="text-center mt-4 text-sm text-gray-600">
+              <div className="text-center my-4 text-sm text-gray-600">
                 ¿Aún no tienes cuenta?{" "}
                 <Link href="register" className="link">
                   Registrate
                 </Link>
+              </div>
+
+              <div className="w-full flex flex-col items-center border-gray-500/20 border-t-2">
+                <h3 className="pt-4 text-gray-600 font-semibold">
+                  O ingresar con:
+                </h3>
+                <div className="flex flex-row gap-4">
+                  <button onClick={handleGoogleSignIn} className="text-4xl">
+                    <FcGoogle />
+                  </button>
+                  <button onClick={handleFacebookSignIn} className="text-4xl text-blue-600">
+                    <SiFacebook />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
