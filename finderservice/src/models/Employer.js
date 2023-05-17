@@ -11,14 +11,15 @@ var employerSchema = new Schema(
       type: String,
       required: [true, "La contraseña es requerida"],
     },
-    age: {
+    bith: {
       type: Number,
-      required: [true, "La edad es requerida"],
+      required: [true, "La fecha de nacimiento es requerida"],
     },
+    age: Number,
     email: {
       type: String,
       require: [true, "El correo es requerido"],
-      unique: true
+      unique: true,
     },
     rating: {
       type: String,
@@ -30,10 +31,21 @@ var employerSchema = new Schema(
         ref: "Address",
       },
     ],
+    salt: {
+      type: String,
+    },
+    validator: {
+      type: String,
+    },
+    active: {
+      type: Boolean,
+      default: false,
+    },
     reviews: {
       type: String,
       description: String,
     },
+    phone: Number,
   },
   { timestamps: false, versionKey: false }
 );
