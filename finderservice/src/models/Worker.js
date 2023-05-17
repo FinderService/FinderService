@@ -20,7 +20,13 @@ const workerSchema = new Schema(
       type: String,
       require: [true, "El correo es requerido"],
     },
-    profilepic: String,
+    phonenumber: {
+      type: Number,
+    },
+    profilepic: {
+      type: String,
+      default: 'https://res.cloudinary.com/dacl2du1v/image/upload/v1684330929/userAvt_tkcm8u.png'
+    },
     type: [
       {
         type: Schema.Types.ObjectId,

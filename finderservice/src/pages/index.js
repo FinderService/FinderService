@@ -14,9 +14,9 @@ export default function Home() {
         <div className="max-w-container h-full mx-auto font-titleFont flex flex-col items-center justify-center">
           
           <h1
-            className="text-5xl font-titleFont font-semibold pb-2 text-yellow-300 drop-shadow-lg titleShadow"
+            className="text-5xl font-titleFont font-semibold pb-2 text-yellow-400 drop-shadow-lg titleShadow"
           >
-            Encuentra una solucion a tu necesidad
+            Encuentra una solución a tu necesidad
           </h1>
           <h3
             className="text-2xl font-titleFont font-semibold pb-12 text-white titleShadow"

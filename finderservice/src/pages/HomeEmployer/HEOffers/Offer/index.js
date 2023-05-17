@@ -11,13 +11,14 @@ const Offer = () =>{
                 <div className="bg-blue-300 w-1/5 h-60 mt-10 p-5 flex flex-col justify-around pl-5 rounded-2xl">
                     <p>Ir a:</p>
                     <p className="font-bold">🏠 <Link href="/HomeEmployer">Home</Link></p>
-                    <p className="font-bold">💼 Mis ofertas de Empleo</p>
-                    <p className="font-bold">📢 Crear oferta de Empleo</p>
+                    <p className="font-bold">💼 <Link href="/HomeEmployer/HEOffers">Mis ofertas de Empleo</Link></p>
+                    <p className="font-bold">📢 <Link href="/contratar">Crear oferta de Empleo</Link> </p>
                     <p className="font-bold">📝 Reviews</p>
                 </div>
                 <div className="w-1/2 mt-10 mb-10">
                     <h1 className="text-4xl font-bold mb-5">🛠️ Reparación de tubos de agua y grifo </h1>
                     <p className="font-bold mb-5">Total de empleados postulados: 2</p>
+                    <p>Empleados postulados:</p>
                     <div className="flex justify-around">
                         <Link href="/WorkerDetail">
                             <div className="w-60 m-5 p-5 bg-slate-300 rounded-2xl duration-200 hover:scale-105">

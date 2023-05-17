@@ -14,8 +14,10 @@ var jobPostulationSchema = new Schema(
         ref: "Worker",
       },
     ],
-    state: String,
+    duration: String,
+    salary: String,
     message: String,
+    state: String,
   },
   { timestamps: false, versionKey: false }
 );

@@ -39,10 +39,11 @@ export default async function loginHandler(req, res) {
             path: "/",
           });
 
-          res.setHeader("Set-Cookie", serialized);
-          return res
-            .status(200)
-            .json({ success: true, msg: "login successfully" });
+                    //res.setHeader('Set-Cookie', serialized);
+					return res.status(200).json({ success: true, msg: 'login successfully', user: user })
+				}
+				return res.status(404).json({success: false, msg: 'Usuario y/o contraseña incorrecta'});
+			})
         }
         return res
           .status(404)
