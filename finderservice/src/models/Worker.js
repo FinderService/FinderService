@@ -19,7 +19,10 @@ const workerSchema = new Schema(
       type: String,
       require: [true, "Email is required"],
     },
-    profilepic: String,
+    profilepic: {
+      type: String,
+      default: 'https://res.cloudinary.com/dacl2du1v/image/upload/v1684330929/userAvt_tkcm8u.png'
+    },
     type: [
       {
         type:Schema.Types.ObjectId,

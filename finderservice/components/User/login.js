@@ -6,6 +6,7 @@ import Image from "next/image";
 export default function Login() {
 
     const { data: session } = useSession();
+    console.log(session);
 
     const handleSignOut = async () => {
         await signOut({ callbackUrl: '/User/login' });
@@ -16,8 +17,13 @@ export default function Login() {
             session?.user ? (
                 <div className="flex flex-row items-center gap-4">
                     <div className="flex flex-row items-center gap-2">
-                        <div className="border-2 rounded-full overflow-hidden border-gray-700">
-                            <Image src={avt} alt="user_avatar" className="w-10" />             
+                        <div className="border-2 rounded-full overflow-hidden border-green-500">
+                            { session.user?.image &&
+                                <img src={ session.user.image} alt="user_avatar" className="w-10" width="100" />             
+                            }
+                            { session.user?.profilepic &&
+                                    <img src={ session.user.profilepic } alt="user_avatar" className="w-10" />             
+                            }
                         </div>
                         <div>
                             { session.user?.name }
