@@ -1,61 +1,61 @@
-import { dbConnect } from "@/utils/mongoose";
+import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Employer from "../../../models/Employer";
 import Address from "../../../models/Address";
 import mongoose from "mongoose";
 
 export default async function handler(req, res) {
   await dbConnect();
+  const { method, body, query } = req;
 
-  switch (req.method) {
+  switch (method) {
     case "GET":
       try {
-        const { name } = req.query;
+        let { name } = query;
+
         const response = name
           ? await Employer.find({
               name: { $regex: `${name}`, $options: "i" },
             }).populate("address", "-_id name city")
           : await Employer.find({}).populate("address", "-_id name city");
         if (response.length === 0) {
-          return res
-            .sendStatus(404)
-            .json({ error: "No employers found with that name" });
+          return res.status(404).json({
+            error: `No se encontraron empleados con el nombre ${name}`,
+          });
         } else {
-          await mongoose.connection.close();
-          console.log("Connection shutdown");
+          await dbDisconnect();
           return res.status(200).json(response);
         }
       } catch (error) {
-        await mongoose.connection.close();
-        console.log("Connection shutdown");
+        await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }
       break;
     case "POST":
       try {
-        const { name, password, age, email, profilepic } = req.body;
+        const { name, password, age, email, profilepic, address } = body;
 
         const existingEmployer = await Employer.findOne({ email });
         if (existingEmployer) {
-          return res
-            .status(400)
-            .json({ error: "Email already in use, please loggin" });
+          await dbDisconnect();
+          return res.status(400).json({
+            error: "El correo ya está en uso, por favor inicie sesión",
+          });
         }
 
         const newAddress = new Address({
-          name: req.body.address.name,
-          city: req.body.address.city,
+          name: address[0].name,
+          city: address[0].city,
         });
 
-        const validationError2 = newAddress.validateSync();
-
-        if (validationError2) {
-          res.sendStatus(500).json(validationError2.errors[
-            Object.keys(validationError.errors)[0]
-          ].message);
-          return;
+        const validationAddress = await newAddress.validateSync();
+        if (validationAddress) {
+          dbDisconnect();
+          return res.status(400).json({
+            error:
+              validationAddress.errors[Object.keys(validationAddress.errors)[0]]
+                .message,
+          });
         }
-
-        const saveAddress = await newAddress.save();
 
         const newEmployer = new Employer({
           name,
@@ -63,34 +63,47 @@ export default async function handler(req, res) {
           age,
           email,
           profilepic,
-          address: [saveAddress._id],
+          address: [newAddress._id],
         });
-        const validationError = newEmployer.validateSync();
 
-        if (validationError) {
-          res.sendStatus(500).json(validationError.errors[
-            Object.keys(validationError.errors)[0]
-          ].message);
-          return;
+        const validationEmployer = await newEmployer.validateSync();
+        if (validationEmployer) {
+          await dbDisconnect();
+          return res.status(400).json({
+            error:
+              validationEmployer.errors[
+                Object.keys(validationEmployer.errors)[0]
+              ].message,
+          });
         }
 
-        const savedEmployer = await newEmployer.save();
-        const employerWithAddress = await Employer.findById(
-          savedEmployer._id
-        ).populate("address", "-_id name city");
-        await mongoose.connection.close();
-        console.log("Connection shutdown");
-        return res.status(201).json(employerWithAddress);
+        if (!validationEmployer && !validationAddress) {
+          const savedAddress = await newAddress.save();
+          newEmployer.address = [savedAddress._id];
+          const savedEmployer = await newEmployer.save();
+
+          const employerWithAddress = await Employer.findById(
+            savedEmployer._id
+          ).populate("address", "-_id name city");
+
+          await dbDisconnect();
+          return res.status(201).json(employerWithAddress);
+        }
       } catch (error) {
-        await mongoose.connection.close();
-        console.log("Connection shutdown");
+        await dbDisconnect();
+        if (error.code === 11000 && error.keyValue && error.keyValue.name) {
+          return res.status(400).json({
+            error: "Ya existe una dirección igual en nuestra base de datos",
+          });
+        }
         return res.status(400).json({ error: error.message });
       }
 
     default:
-      await mongoose.connection.close();
-      console.log("Connection shutdown");
-      res.status(404).json({ error: "request do not exist" });
+      await dbDisconnect();
+      res
+        .status(404)
+        .json({ error: "La petición HTTP no existe en la base de datos" });
       break;
   }
 }

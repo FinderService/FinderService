@@ -2,14 +2,26 @@ import { Schema, model, models } from "mongoose";
 
 var jobRequestSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, "Se necesita un nombre para el trabajo"],
+      trim: true,
+    },
     employer: [
       {
         type: Schema.Types.ObjectId,
         ref: "Employer",
       },
     ],
-    date: Date,
-    description: String,
+    date: {
+      type: Date,
+      required: [true, "Se necesita una fecha para el trabajo"],
+    },
+    description: {
+      type: String,
+      required: [true, "Se necesita una breve descripción del trabajo"],
+    },
+    photo: String,
     type: [
       {
         type: Schema.Types.ObjectId,
@@ -22,8 +34,6 @@ var jobRequestSchema = new Schema(
         ref: "Address",
       },
     ],
-    duration: String,
-    salary: String,
   },
   { timestamps: false, versionKey: false }
 );
