@@ -1,4 +1,4 @@
-import { dbConnect } from "@/utils/mongoose";
+import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Worker from '@/models/Worker.js'
 import mongoose from "mongoose";
 
@@ -20,13 +20,11 @@ export default async function handlerId(req, res){
 
 
         }catch(error){
-            res.status(400).json({error:error.message});
-
-        }finally {
             await mongoose.connection.close();
             console.log('Connection shutdown');
-        }
+            return res.status(400).json({error:error.message});
 
+        }
 
         case "PUT":
 
@@ -40,11 +38,10 @@ export default async function handlerId(req, res){
                 return res.status(200).json();
         
             }catch(error){
-                res.status(400).json({error:error.message});
-        
-            }finally {
                 await mongoose.connection.close();
-                console.log('Connection shutdown'); 
+                console.log('Connection shutdown');
+                return res.status(400).json({error:error.message});
+        
             }
 
         case "DELETE":
@@ -56,12 +53,17 @@ export default async function handlerId(req, res){
                 return res.status(204).json();
 
             }catch(error){
-                res.status(400).json({error:error.message});
-
-            }finally {
                 await mongoose.connection.close();
                 console.log('Connection shutdown'); 
+                return res.status(400).json({error:error.message});
+
             }
+
+        default:
+            await mongoose.connection.close();
+            console.log("Connection shutdown");
+            res.status(404).json({ error: "request do not exist" });
+            break;
 
     }
    

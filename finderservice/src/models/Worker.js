@@ -19,6 +19,9 @@ const workerSchema = new Schema(
       type: String,
       require: [true, "Email is required"],
     },
+    phonenumber: {
+      type: Number,
+    },
     profilepic: {
       type: String,
       default: 'https://res.cloudinary.com/dacl2du1v/image/upload/v1684330929/userAvt_tkcm8u.png'
