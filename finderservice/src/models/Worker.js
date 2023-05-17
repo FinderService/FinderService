@@ -19,7 +19,12 @@ const workerSchema = new Schema(
       type: String,
       require: [true, "Email is required"],
     },
-    profilepic: String,
+    phonenumber: {
+      type: Number,
+    },
+    profilepic: {
+      type: String,
+    },
     type: [
       {
         type:Schema.Types.ObjectId,
