@@ -96,6 +96,6 @@ export default async function handler(req, res) {
       break;
     default:
       await dbDisconnect();
-      return res.status(404).json({ error: "La petición HTTP no existe en la base de datos" });
+      return res.status(404).json({ error: "La petición HTTP no es correcta" });
   }
 }
