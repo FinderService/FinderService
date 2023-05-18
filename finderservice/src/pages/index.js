@@ -1,5 +1,5 @@
 import Footer from "@components/Footer";
-import HomeSleider from "@components/HomeSlider";
+import HomeSlider from "@components/HomeSlider";
 import Layout from "@components/Layout";
 import { ubi } from '@public/assets';
 import Image from "next/image";
@@ -37,7 +37,7 @@ export default function Home() {
           </div>        
         </div>
       </div>
-      <HomeSleider /> 
+      <HomeSlider /> 
       <Footer />
     </Layout>
   )

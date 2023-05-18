@@ -1,3 +1,4 @@
+import Footer from "@components/Footer"
 import Layout from "@components/Layout"
 
 export default function Profile() {
@@ -6,6 +7,7 @@ export default function Profile() {
             <div className="contentCentered">
                 profile works!       
             </div>
+            <Footer />
         </Layout>
     )
 }

@@ -35,8 +35,12 @@
     box-shadow: 0px 10px 14px rgba(0,0,0,.8);
 }
 
+.homeIconItemWrap{
+    @apply flex flex-col items-center
+}
+
 .homeIconItem{
-    @apply bg-slate-200 p-5 rounded-full hover:bg-blue-200 cursor-pointer duration-300 transition-all
+    @apply bg-slate-200 w-20 h-20 p-5 rounded-full group-hover:bg-blue-200 cursor-pointer duration-300 transition-all
 }
 
 .homeIconItemArrow{
