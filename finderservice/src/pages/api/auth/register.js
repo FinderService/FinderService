@@ -1,5 +1,6 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Worker from "@/models/Worker";
+import Employer from "@/models/Employer"
 import { mailGun } from "@/utils/mailgun";
 import crypto from "crypto";
 
@@ -9,7 +10,7 @@ export default async function registerHandler(req, res) {
   await dbConnect();
 
   try {
-    const { name, last, phone, birth, password, username } = req.body;
+    const { name, last, phone, birth, password, username, type } = req.body;
     var birthdate = new Date(birth);
     var currentDate = new Date();
     var age = currentDate.getFullYear() - birthdate.getFullYear();
@@ -29,8 +30,10 @@ export default async function registerHandler(req, res) {
       crypto.pbkdf2(password, newSalt, 10000, 64, "sha1", async (err, key) => {
         const encryptedPassword = key.toString("base64");
         let email = username;
+
         let user = await Worker.findOne({ email }).exec();
-        if (user) {
+        if (!user) {
+          user = await Employer.findOne({ email }).exec();
           return res
             .status(400)
             .json({ success: false, msg: "El usuario ya existe" }, email);
