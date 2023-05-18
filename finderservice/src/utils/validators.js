@@ -38,7 +38,7 @@ export function validatePassword(password){
     }
 
     if(!/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,10}$/.test(password)){
-        return 'Password must contain at least one uppercase letter, one lowercase letter and one number';
+        return '* La contraseña debe tener almenos una letra mayuscula, una letra minuscula y un numero';
     }
     return '';
 }
