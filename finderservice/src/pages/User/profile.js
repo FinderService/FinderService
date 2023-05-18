@@ -1,7 +1,11 @@
+import Layout from "@components/Layout"
+
 export default function Profile() {
     return(
-        <>
-            profile works!       
-        </>
+        <Layout>
+            <div className="contentCentered">
+                profile works!       
+            </div>
+        </Layout>
     )
 }
