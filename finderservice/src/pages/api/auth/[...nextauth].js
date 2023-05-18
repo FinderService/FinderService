@@ -63,7 +63,7 @@ export const authOptions = {
             throw new Error("Usuario y/o password incorrectos.");
           }
 
-          let logedUser = { name: user.name, last_name: user.last, email: user.email, image: user.profilepic }
+          let logedUser = { id: user._id, name: user.name+' '+user.last, email: user.email, image: user.profilepic }
 
           return logedUser;
 
