@@ -37,6 +37,7 @@ module.exports = {
         activeColor: "#fffa64",
       },
       backgroundImage: {
+        'herohome': "url('https://res.cloudinary.com/dacl2du1v/image/upload/v1684329549/pexels-bidvine-1249611_f3mjpw.jpg)",
         'herohome2': "url('/assets/images/hero.jpg')",
         'login': "url('/assets/images/login.jpg')",
         'register': "url('/assets/images/register.jpg')",

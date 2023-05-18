@@ -24,6 +24,7 @@ const workerSchema = new Schema(
     },
     profilepic: {
       type: String,
+      default: 'https://res.cloudinary.com/dacl2du1v/image/upload/v1684330929/userAvt_tkcm8u.png'
     },
     type: [
       {

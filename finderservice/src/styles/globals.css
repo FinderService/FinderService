@@ -11,7 +11,8 @@
 
 .hero-home{
     margin-top: -5rem;
-    background-image: url('../../public/assets/images/hero.jpg');
+    /* background-image: url('../../public/assets/images/hero.jpg'); */
+    background-image: url('https://res.cloudinary.com/dacl2du1v/image/upload/v1684329549/pexels-bidvine-1249611_f3mjpw.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     height: 80vh;
@@ -45,4 +46,12 @@
 
 .form-input{
     @apply bg-slate-300 p-2 rounded-sm border-2
+}
+
+.formErrorLbl{
+    @apply text-xs text-red-700
+}
+
+.form-input-error{
+    @apply bg-red-300
 }
