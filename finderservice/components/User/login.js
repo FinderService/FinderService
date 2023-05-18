@@ -1,13 +1,13 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 export default function Login() {
 
     const [ showMenu, setShowMenu] = useState(false);
     const { data: session } = useSession();
-    console.log(session);
+    //console.log(session);
 
     const handleSignOut = async () => {
         await signOut({ callbackUrl: '/User/login' });
@@ -30,21 +30,31 @@ export default function Login() {
                                     <img src={ session.user.profilepic } alt="user_avatar" className="w-10" />             
                             }
                         </div>
-                        <Link href="" onClick={ handleShowMenu } className="flex flex-row gap-2 items-center">
+                        <Link href="" onClick={ handleShowMenu } className="flex flex-row gap-2 items-center hover:text-gray-600 duration-300 group">
                             { session.user?.name }  { session.user?.last_name } 
-                            <span><IoIosArrowDown /></span>
+                            <span className="group-hover:text-blue-600">
+                                { showMenu ? (
+                                    <IoIosArrowUp />
+                                    ):(
+                                    <IoIosArrowDown />
+                                )}
+                            </span>
                         </Link>
                     </div>
                     {
                         showMenu &&    
-                    <div className="fixed bg-white w-[10rem] mt-[4rem] shadow-md rounded-md">
+                    <div className="fixed bg-white w-[10rem] mt-[4rem] shadow-md rounded-md overflow-hidden">
                         <ul>
-                            <li>
-                                <Link href="" className="navDropLink">Perfil</Link>
-                            </li>
-                            <li>
-                                <Link href="" className="navDropLink" onClick={ handleSignOut }> Salir </Link>
-                            </li>
+                            <Link href="" >
+                                <li className="navDropLink">
+                                    Perfil
+                                </li>
+                            </Link>
+                            <Link href=""  onClick={ handleSignOut }> 
+                                <li className="navDropLink">
+                                    Salir 
+                                </li>
+                            </Link>
                         </ul>
                     </div>
                     }
