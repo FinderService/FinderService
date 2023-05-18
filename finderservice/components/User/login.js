@@ -1,7 +1,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp, IoIosLogOut, IoIosContact } from "react-icons/io";
 
 export default function Login() {
 
@@ -45,14 +45,14 @@ export default function Login() {
                         showMenu &&    
                     <div className="fixed bg-white w-[10rem] mt-[4rem] shadow-md rounded-md overflow-hidden">
                         <ul>
-                            <Link href="" >
+                            <Link href="/User/profile" >
                                 <li className="navDropLink">
-                                    Perfil
+                                    <span className="text-blue-800 text-xl"><IoIosContact /></span>Perfil
                                 </li>
                             </Link>
                             <Link href=""  onClick={ handleSignOut }> 
                                 <li className="navDropLink">
-                                    Salir 
+                                    <span className="text-red-800 text-xl"><IoIosLogOut /></span> Salir 
                                 </li>
                             </Link>
                         </ul>

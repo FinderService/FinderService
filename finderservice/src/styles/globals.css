@@ -57,5 +57,5 @@
 }
 
 .navDropLink{
-    @apply px-4 py-2 hover:bg-blue-200
+    @apply px-4 py-2 flex flex-row items-center gap-2 hover:bg-blue-100/50 border-l-4 border-blue-100
 }
