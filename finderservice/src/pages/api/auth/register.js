@@ -9,15 +9,16 @@ export default async function registerHandler(req, res){
 
     try{
 
-        const { name, username, password } = req.body;
-        if( !name || !username || !password ) {
+        const { name, last, phone, username, password } = req.body;
+        // console.log(req.body);
+
+        if( !name || !last || !phone || !username || !password ) {
             throw new Error('Datos incompletos');
         }
 
         await dbConnect();
+        console.log('sigue...');
        
-        
-
         crypto.randomBytes(16, (err, salt) => {
 		    const newSalt = salt.toString('base64')
 		    crypto.pbkdf2(password, newSalt, 10000, 64, 'sha1', async (err, key) => {
@@ -34,27 +35,28 @@ export default async function registerHandler(req, res){
 
 			    let newUser = await Worker.create({
 					name,
+                    last,
+                    phonenumber: phone,
                     password: encryptedPassword,
                     age: 22,
+                    types,
                     email: username,
                     rating: 0,
                     salt: newSalt,
-                    validator: validator
+                    validator: validator,
+                    profile,
 				});
-               
+
+
                 let mail = await mailGun(username, 'Bienvenido a Finder Service', content );
 
 
                 if(newUser){
-                    return res.status(201).json({ success: true, user: newUser, msg: 'Usuario registrado con éxito.', mail });
+                    return res.status(201).json({ success: true, user: newUser, msg: 'Usuario registrado con éxito.' });
                 }
 			
 		    })  
 	    })
-
-        //const user = await Worker.create(workerexample);
-        //return res.status(201).json({ success: true, user: user });
-        //mongoose.connection.close();
 
     }catch(error){
         res.status(400).json({ success: false, error: error });

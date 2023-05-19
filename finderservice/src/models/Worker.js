@@ -20,7 +20,7 @@ const workerSchema = new Schema(
       require: [true, "Email is required"],
     },
     phonenumber: {
-      type: Number,
+      type: String,
     },
     profilepic: {
       type: String,
