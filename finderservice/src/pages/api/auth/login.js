@@ -4,10 +4,12 @@ import Worker from "@/models/Worker";
 import { dbConnect } from "@/utils/mongoose";
 import { serialize } from "cookie";
 
+
 export default async function loginHandler(req, res) {
   try {
     console.log(req.body);
     const { username, password } = req.body;
+
 
     const signToken = (_id) => {
       return jwt.sign({ _id }, "mi-secreto", {

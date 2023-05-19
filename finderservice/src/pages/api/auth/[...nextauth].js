@@ -36,9 +36,12 @@ export const authOptions = {
       },
       async authorize(credentials, req) {
         const { username, password } = credentials;
+        if (!username || !password) {
+          throw new Error("Todos los campos son obligatorios");
+        }
         await dbConnect();
         const user = await Worker.findOne({ email: username }).exec();
-        console.log(user);
+        //console.log(user);
 
         if (!user) {
           await Employer.findOne({ email: username }).exec();
@@ -63,7 +66,7 @@ export const authOptions = {
           throw new Error("Usuario y/o password incorrectos.");
         }
 
-          let logedUser = { name: user.name, last_name: user.last, email: user.email, image: user.profilepic }
+          let logedUser = { id: user._id, name: user.name, email: user.email, image: user.profilepic }
 
           return logedUser;
 

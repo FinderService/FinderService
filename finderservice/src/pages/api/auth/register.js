@@ -26,9 +26,9 @@ export default async function registerHandler(req, res) {
     if (!hasBirthdayPassed) age--;
     var namecomplete = name.trim() + " " + last.trim();
 
-    if (!name || !username || !password) {
-      throw new Error("Datos incompletos");
-    }
+        if( !name || !last || !phone || !username || !password ) {
+            throw new Error('Datos incompletos');
+        }
 
     crypto.randomBytes(16, async (err, salt) => {
       if (err) {

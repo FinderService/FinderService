@@ -1,5 +1,5 @@
 import Footer from "@components/Footer";
-import HomeSleider from "@components/HomeSlider";
+import HomeSlider from "@components/HomeSlider";
 import Layout from "@components/Layout";
 import { ubi } from '@public/assets';
 import Image from "next/image";
@@ -27,7 +27,7 @@ export default function Home() {
           <div
             className="w-1/2 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm boxShadow"
           >
-            <Image src={ ubi } />
+            <Image src={ ubi } alt="ubication_icon" height="auto" width="auto" />
             <input 
               type="text" 
               placeholder="Dirección o punto de referencia" 
@@ -37,7 +37,7 @@ export default function Home() {
           </div>        
         </div>
       </div>
-      <HomeSleider /> 
+      <HomeSlider /> 
       <Footer />
     </Layout>
   )

@@ -21,7 +21,7 @@ const workerSchema = new Schema(
       require: [true, "El correo es requerido"],
     },
     phonenumber: {
-      type: Number,
+      type: String,
     },
     profilepic: {
       type: String,

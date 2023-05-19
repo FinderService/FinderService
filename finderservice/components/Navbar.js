@@ -20,8 +20,9 @@ export default function Navbar() {
             Finder Service
           </Link>
         </div>
-        {showBtns && (
           <div className="hidden mdl:inline-flex items-center gap-7 ">
+        {showBtns && (
+          <>
             <button className="btn-navbar">
               <Image src={equipo} alt="icon_equipo" />
               <Link href="trabajar">Postulá tu empleo</Link>
@@ -31,9 +32,10 @@ export default function Navbar() {
               <Image src={equipo} alt="icon_equipo" />
               <Link href="contratar">Postulá tu contratación</Link>
             </button>
+          </>
+            )}
             <Login />
           </div>
-        )}
       </div>
     </div>
   );
