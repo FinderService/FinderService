@@ -4,7 +4,7 @@
       "@/*": ["./src/*"],
       "@public/*": ["./public/*"],
       "@components/*": ["./components/*"],
-      "@redux/*": ["./src/redux/*"],
+      "@context/*": ["./Context/*"],
     }
   }
 }

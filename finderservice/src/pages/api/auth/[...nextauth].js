@@ -4,20 +4,20 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import Worker from "@/models/Worker";
-import { dbConnect } from "@/utils/mongoose";
+import Employer from "@/models/Employer";
+import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import { verifyPassword } from "@/utils/lib";
-
 
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
-     GoogleProvider({
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-     FacebookProvider({
+    FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     }),
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
@@ -35,35 +35,38 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-          
-          const { username, password } = credentials;
-          await dbConnect();
-          const user = await Worker.findOne({ email: username }).exec();
+        const { username, password } = credentials;
+        if (!username || !password) {
+          throw new Error("Todos los campos son obligatorios");
+        }
+        await dbConnect();
+        const user = await Worker.findOne({ email: username }).exec();
+        //console.log(user);
 
-           if (!user) {
-            console.log("usuario no encontrado...");
-            //throw new Error("Usuario no encontrado.");
-            throw new Error("Usuario y/o password incorrectos.");
-          }
+        if (!user) {
+          await Employer.findOne({ email: username }).exec();
+        } else if (!user) {
+          dbDisconnect();
+          console.log("usuario no encontrado...");
+          //throw new Error("Usuario no encontrado.");
+          throw new Error("Usuario y/o password incorrectos.");
+        }
 
-          let isValid;
-          await verifyPassword(
-            password,
-            user.password,
-            user.salt
-          ).then( (response) => {
+        let isValid;
+        await verifyPassword(password, user.password, user.salt)
+          .then((response) => {
             isValid = response;
-          } )
-          .catch( error => {
+          })
+          .catch((error) => {
             console.log(error);
-          } );
-          
-          if (!isValid) {
-            console.log("El pass no es valido...");
-            throw new Error("Usuario y/o password incorrectos.");
-          }
+          });
 
-          let logedUser = { id: user._id, name: user.name+' '+user.last, email: user.email, image: user.profilepic }
+        if (!isValid) {
+          console.log("El pass no es valido...");
+          throw new Error("Usuario y/o password incorrectos.");
+        }
+
+          let logedUser = { id: user._id, name: user.name, email: user.email, image: user.profilepic }
 
           return logedUser;
 
@@ -74,9 +77,9 @@ export const authOptions = {
   session: {
     strategy: "jwt",
   },
-  
-  pages:{
-    signIn: "/User/login"
+
+  pages: {
+    signIn: "/User/login",
   },
 
   /*
@@ -89,7 +92,6 @@ export const authOptions = {
     },
   }
   */
-  
 };
 
 export default NextAuth(authOptions);

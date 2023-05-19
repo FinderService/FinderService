@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
-export default function FormPassword() {
+import { useUser } from "@context/UserContext";
 
+export default function FormPassword() {
   const { data: session } = useSession();
-  console.log(session);
+  //console.log(session);
+  const { userData } = useUser();
 
   const [state, setState] = useState({
     current: "",
@@ -25,23 +27,23 @@ export default function FormPassword() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let res = await axios.post('/api/auth/password', state);
-
-  }
+    let res = await axios.post("/api/auth/password", state);
+  };
 
   useEffect(() => {
-    if(session){
-        setState({
-            ...state,
-            mail: session.user?.email
-        })
+    if (session) {
+      setState({
+        ...state,
+        mail: session.user?.email,
+      });
     }
-},[session]);
+  }, [session]);
 
   return (
-    <>
-      <form className="flex flex-col gap-2" onSubmit={ handleSubmit}>
-        <input type="text" name="email" vlaue={ state.email } />
+    <div className="p-4 bg-slate-100 rounded-md">
+      <h3 className="text-xl">Actualizar Contraseña:</h3>
+      <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
+        <input type="hidden" name="id" vlaue="" />
         <input
           type="password"
           name="current"
@@ -68,6 +70,6 @@ export default function FormPassword() {
         />
         <button type="submit">Enviar</button>
       </form>
-    </>
+    </div>
   );
 }

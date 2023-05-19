@@ -1,14 +1,25 @@
-import Footer from "@components/Footer"
-import Layout from "@components/Layout"
-import FormPassword from "@components/User/formpassword"
+import Footer from "@components/Footer";
+import Layout from "@components/Layout";
+import FormPassword from "@components/User/formpassword";
+import FormData from "@components/User/formData";
+import { useUser } from "@context/UserContext";
+import { useState } from "react";
 
 export default function Profile() {
+
+    const { userData } = useUser();
+
     return(
         <Layout>
             <div className="contentCentered">
                  <div className="w-2/3 flex flex-row border-2 border-gray-100 shadow-lg rounded-md p-4">
                     <div className="w-1/2">
-                        form data
+                        <FormData 
+                            name={userData.name}
+                            email={userData.email}
+                            birthdate={userData.birthdate}
+                            phone={userData.phone}
+                        />
                     </div>
                     <div className="w-1/2">
                         <div>

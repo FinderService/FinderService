@@ -1,13 +1,18 @@
+"use client"
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowDown, IoIosArrowUp, IoIosLogOut, IoIosContact } from "react-icons/io";
+
+// para cargar la data del usuario al estado global
+import { useUser } from "@context/UserContext";
 
 export default function Login() {
 
+    const { userData, updateUserData } = useUser();
+
     const [ showMenu, setShowMenu] = useState(false);
     const { data: session } = useSession();
-    //console.log(session);
 
     const handleSignOut = async () => {
         await signOut({ callbackUrl: '/User/login' });
@@ -16,6 +21,12 @@ export default function Login() {
     const handleShowMenu = () => {
         setShowMenu( !showMenu );
     }
+
+    useEffect(() => {
+        if(session && userData){
+            updateUserData(session.user.email);
+        }
+    }, [session]);
 
     return <div>
         {
@@ -30,8 +41,9 @@ export default function Login() {
                                     <img src={ session.user.profilepic } alt="user_avatar" className="w-10" />             
                             }
                         </div>
+
                         <Link href="" onClick={ handleShowMenu } className="flex flex-row gap-2 items-center hover:text-gray-600 duration-300 group">
-                            { session.user?.name }  { session.user?.last_name } 
+                            { session.user?.name } 
                             <span className="group-hover:text-blue-600">
                                 { showMenu ? (
                                     <IoIosArrowUp />

@@ -10,16 +10,15 @@ export default async function registerHandler(req, res){
     try{
 
         console.log(req.body);
-        return;
 
         const { current, newpass, id } = req.body;
-        if( !current || !newpass ) {
+        if( !current || !newpass || !email ) {
             throw new Error('Datos incompletos');
         }
 
         await dbConnect();
 
-        const user = await Worker.findOne({ _id: id }).exec();
+        const user = await Worker.findOne({ email }).exec();
 
         let isValid;
           await verifyPassword(
