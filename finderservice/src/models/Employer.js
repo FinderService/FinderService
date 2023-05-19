@@ -45,6 +45,14 @@ var employerSchema = new Schema(
       description: String,
     },
     phone: Number,
+    profile: {
+      type: String,
+      default: 'employer',
+    },
+    state:{
+      type: String,
+      default: 'available'
+    }
   },
   { timestamps: false, versionKey: false }
 );

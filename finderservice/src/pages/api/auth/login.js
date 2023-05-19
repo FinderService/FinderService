@@ -1,6 +1,9 @@
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import Worker from "@/models/Worker";
+import Employer from "@/models/Employer";
+import Admin from "@/models/Employer";
+
 import { dbConnect } from "@/utils/mongoose";
 import { serialize } from "cookie";
 
@@ -22,13 +25,16 @@ export default async function loginHandler(req, res) {
     let email = username;
     await dbConnect();
 
-    let user = await Worker.findOne({ email }).exec();
+    let user = await Promise.any([
+      Worker.findOne({ email }),
+      Employer.findOne({ email }),
+      Admin.findOne({ email }),
+    ]);
 
     if (user) {
       crypto.pbkdf2(password, user.salt, 10000, 64, "sha1", (err, key) => {
         const encryptedPassword = key.toString("base64");
         if (user.password === encryptedPassword) {
-          console.log(user._id);
           const token = signToken(user._id);
 
           const serialized = serialize("fsToken", token, {
