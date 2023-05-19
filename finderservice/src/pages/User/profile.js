@@ -19,6 +19,7 @@ export default function Profile() {
                             email={userData.email}
                             birthdate={userData.birthdate}
                             phone={userData.phone}
+                            id={userData._id}
                         />
                     </div>
                     <div className="w-1/2">
@@ -27,7 +28,7 @@ export default function Profile() {
                         </div>
                         <div>
                             <h3>Actualizar Contraseña</h3>
-                            <FormPassword />
+                            <FormPassword id={ userData._id } />
                         </div>
                     </div>
                  </div>
