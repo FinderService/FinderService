@@ -10,12 +10,23 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        let { name } = query;
+        let { name, address } = query;
+        const queryOptions = {};
+        if (name) {
+          queryOptions.name = { $regex: `${name}`, $options: "i" };
+        }
+        if (address) {
+          queryOptions["address.city"] = {
+            $regex: "${address}",
+            $options: "id",
+          };
+        }
 
-        const response = name
-          ? await Employer.find({
-              name: { $regex: `${name}`, $options: "i" },
-            }).populate("address", "-_id name city")
+        const response = queryOptions
+          ? await Employer.find(queryOptions).populate(
+              "address",
+              "-_id name city"
+            )
           : await Employer.find({}).populate("address", "-_id name city");
         if (response.length === 0) {
           return res.status(404).json({
