@@ -11,9 +11,9 @@ const workerSchema = new Schema(
       type: String,
       required: [true, "La contraseña es requerida"],
     },
-    birth: {
+    birthdate: {
       type: Date,
-      require: [true, "La fecha de nacimiento"],
+      require: [true, "La fecha de nacimiento es requerida"],
     },
     age: Number,
     email: {

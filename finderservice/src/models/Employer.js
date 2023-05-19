@@ -11,7 +11,7 @@ var employerSchema = new Schema(
       type: String,
       required: [true, "La contraseña es requerida"],
     },
-    bith: {
+    birthdate: {
       type: Number,
       required: [true, "La fecha de nacimiento es requerida"],
     },
@@ -19,7 +19,6 @@ var employerSchema = new Schema(
     email: {
       type: String,
       require: [true, "El correo es requerido"],
-      unique: true,
     },
     rating: {
       type: String,
