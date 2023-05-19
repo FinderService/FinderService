@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 export default function Layout({ children, session }) {
   return (
     <SessionProvider session={session}>
-      <main className="w-full h-screen">
+      <main className="w-full h-screen flex flex-col justify-between">
         <Navbar />
         <Toaster
           position="top-center"
