@@ -140,6 +140,7 @@ export default function Register() {
         toast.error("Todos los campos son obligatorios");
         return;
       }
+      console.log(state.types)
       const resp = await axios.post("/api/auth/register", state);
       console.log(resp);
       toast.success(resp.data.msg);

@@ -4,20 +4,21 @@ const workerSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, "El nombre es requerido"],
       trim: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, "La contraseña es requerida"],
     },
-    age: {
-      type: Number,
-      require: [true, "Age is required"],
+    birthdate: {
+      type: Date,
+      require: [true, "La fecha de nacimiento es requerida"],
     },
+    age: Number,
     email: {
       type: String,
-      require: [true, "Email is required"],
+      require: [true, "El correo es requerido"],
     },
     phonenumber: {
       type: Number,
@@ -28,8 +29,8 @@ const workerSchema = new Schema(
     },
     type: [
       {
-        type:Schema.Types.ObjectId,
-        ref:"Type",
+        type: Schema.Types.ObjectId,
+        ref: "Type",
       },
     ],
     address: [
@@ -51,10 +52,11 @@ const workerSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    reviews:{
+    reviews: {
       type: Array,
       description: String,
-    }
+    },
+    phone: Number,
   },
   { timestamps: false, versionKey: false }
 );
