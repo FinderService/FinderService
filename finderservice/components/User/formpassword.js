@@ -47,7 +47,7 @@ export default function FormPassword({ id }) {
   }, [session]);
 
   return (
-    <div className="p-4 bg-slate-100 rounded-md">
+    <div className="p-4 rounded-md">
       <h3 className="text-xl">Actualizar Contraseña:</h3>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <input type="hidden" name="id" vlaue="" />
