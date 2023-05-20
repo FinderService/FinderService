@@ -20,12 +20,10 @@ export default async function validateHandler(req, res) {
       let updated = await user.save();
       console.log(updated);
       if (updated) {
-        await dbDisconnect();
         return res
           .status(200)
           .json({ success: true, msg: "Se actualizo con éxito.", user: user });
       }
-      await dbDisconnect();
       return res
         .status(404)
         .json({ success: false, msg: "Error al actualizar." });

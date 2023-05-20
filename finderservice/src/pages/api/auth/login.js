@@ -36,6 +36,8 @@ export default async function loginHandler(req, res) {
     ]);
     console.log(user);
 
+   
+
     if (user) {
       let isValid;
       try {
@@ -43,6 +45,9 @@ export default async function loginHandler(req, res) {
       } catch (error) {
         console.log(error);
       }
+      console.log(user.active)
+
+      
 
       if (isValid) {
         const token = signToken(user._id);

@@ -28,24 +28,15 @@ export default function FormPassword({ id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(state);
-    if (userData.profile === "worker") {
       try {
-        let res = await axios.put("/api/workers", state);
-        console.log(res);
-      } catch (error) {
-        //console.log(error.response.data);
-        console.log(error);
-      }
-    } else {
-      try {
-        let res = await axios.put("/api/employers", state);
+        let res = await axios.put("/api/updateUser/password", state);
         console.log(res);
       } catch (error) {
         //console.log(error.response.data);
         console.log(error);
       }
     }
-  };
+  
 
   useEffect(() => {
     if (session) {

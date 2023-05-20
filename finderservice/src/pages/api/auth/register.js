@@ -1,5 +1,5 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
-import { verifyPassword, encrypthPass, generateSalt } from "@/utils/lib";
+import { verifyPassword, encryptPass} from "@/utils/lib";
 import Worker from "@/models/Worker";
 import Employer from "@/models/Employer";
 import Type from "@/models/Type";
@@ -31,7 +31,7 @@ export default async function registerHandler(req, res) {
       throw new Error("Datos incompletos");
     }
 
-    const { encryptedPassword, newSalt } = await encrypthPass(password);
+    const { encryptedPassword, newSalt } = await encryptPass(password);
 
     let user = await Promise.any([
       Worker.findOne({ email }),

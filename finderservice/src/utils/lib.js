@@ -21,7 +21,7 @@ export function verifyPassword(password, userPassword, salt) {
 
 
 
-export function encrypthPass(password){
+export function encryptPass(password){
   return new Promise((resolve, reject) => {
     crypto.randomBytes(16, (err, salt) => {
       if(err) reject(err);
