@@ -15,6 +15,7 @@ export default async function registerHandler(req, res){
 
         // buscar en worker
         const user = await Worker.findOne({ email }).exec();
+        //console.log(user);
         // buscar en employer....
 
         res.status(200).json({ user })

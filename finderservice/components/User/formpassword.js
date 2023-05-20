@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { useUser } from "@context/UserContext";
 
-export default function FormPassword() {
+export default function FormPassword({ id }) {
   const { data: session } = useSession();
   //console.log(session);
   const { userData } = useUser();
@@ -15,6 +15,7 @@ export default function FormPassword() {
     newpass: "",
     renew: "",
     email: "",
+    userid: id,
   });
 
   const handleChange = (e) => {
@@ -26,21 +27,27 @@ export default function FormPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try{
+      let res = await axios.post("/api/auth/password", state);
+      console.log(res);
+    }catch(error){
+      //console.log(error.response.data);
+      console.log(error);
+    }
 
-    let res = await axios.post("/api/auth/password", state);
   };
 
   useEffect(() => {
     if (session) {
       setState({
         ...state,
-        mail: session.user?.email,
+        email: session.user?.email,
       });
     }
   }, [session]);
 
   return (
-    <div className="p-4 bg-slate-100 rounded-md">
+    <div className="p-4 rounded-md">
       <h3 className="text-xl">Actualizar Contraseña:</h3>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <input type="hidden" name="id" vlaue="" />
@@ -55,7 +62,7 @@ export default function FormPassword() {
         <input
           type="password"
           name="newpass"
-          placeholder="Contraseña actual"
+          placeholder="Nueva contraseña"
           className="form-input"
           value={state.newpass}
           onChange={handleChange}
@@ -63,7 +70,7 @@ export default function FormPassword() {
         <input
           type="password"
           name="renew"
-          placeholder="Contraseña actual"
+          placeholder="Repetir nueva contraseña"
           className="form-input"
           value={state.renew}
           onChange={handleChange}
