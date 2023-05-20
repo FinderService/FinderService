@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import Worker from "@/models/Worker";
 import Employer from "@/models/Employer";
+import Admin from "@/models/Admin";
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import { verifyPassword } from "@/utils/lib";
 
@@ -35,41 +36,49 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+
         const { username, password } = credentials;
         if (!username || !password) {
           throw new Error("Todos los campos son obligatorios");
         }
         await dbConnect();
-        const user = await Worker.findOne({ email: username }).exec();
-        //console.log(user);
+
+        let email = username;
+        let user = await Employer.findOne({ email });
 
         if (!user) {
-          await Employer.findOne({ email: username }).exec();
-        } else if (!user) {
-          dbDisconnect();
-          console.log("usuario no encontrado...");
-          //throw new Error("Usuario no encontrado.");
+          user = await Worker.findOne({ email });
+
+          if (!user) {
+            user = await Admin.findOne({ email });
+          }
+        }
+
+        if (!user) {
+          await dbDisconnect();
           throw new Error("Usuario y/o password incorrectos.");
         }
 
         let isValid;
-        await verifyPassword(password, user.password, user.salt)
-          .then((response) => {
-            isValid = response;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        try {
+          isValid = await verifyPassword(password, user.password, user.salt);
+        } catch (error) {
+          console.log(error);
+        }
 
         if (!isValid) {
           console.log("El pass no es valido...");
+          await dbDisconnect();
           throw new Error("Usuario y/o password incorrectos.");
         }
 
-          let logedUser = { id: user._id, name: user.name, email: user.email, image: user.profilepic }
-
-          return logedUser;
-
+        let logedUser = {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          image: user.profilepic,
+        };
+        return logedUser;
       },
     }),
   ],

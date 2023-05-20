@@ -27,14 +27,24 @@ export default function FormPassword({ id }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      let res = await axios.post("/api/auth/password", state);
-      console.log(res);
-    }catch(error){
-      //console.log(error.response.data);
-      console.log(error);
+    console.log(state);
+    if (userData.profile === "worker") {
+      try {
+        let res = await axios.put("/api/workers", state);
+        console.log(res);
+      } catch (error) {
+        //console.log(error.response.data);
+        console.log(error);
+      }
+    } else {
+      try {
+        let res = await axios.put("/api/employers", state);
+        console.log(res);
+      } catch (error) {
+        //console.log(error.response.data);
+        console.log(error);
+      }
     }
-
   };
 
   useEffect(() => {
