@@ -16,3 +16,33 @@ export function verifyPassword(password, userPassword, salt) {
     });
   });
 }
+
+
+export function encrypthPass(password){
+  return new Promise((resolve, reject) => {
+    crypto.randomBytes(16, (err, salt) => {
+      if(err) reject(err);
+		  const newSalt = salt.toString('base64');
+		  crypto.pbkdf2(password, newSalt, 10000, 64, 'sha1', (err, key) => {
+        if(err){ 
+          reject(err);
+        }else{
+          const encryptedPassword = key.toString('base64')
+		      resolve({encryptedPassword, newSalt})
+        }
+			});
+		});
+	});
+}
+
+export function getBase64(file){
+    return new Promise(resolve => {
+      let baseURL = "";
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        baseURL = reader.result;
+        resolve(baseURL);
+      };
+    });
+  };
