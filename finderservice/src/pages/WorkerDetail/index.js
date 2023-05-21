@@ -4,8 +4,10 @@ import { useUser } from "@context/UserContext";
 import { workers1 } from "@public/assets";
 import Image from "next/image"
 import Link from "next/link";
+import axios from "axios";
 
 export default function WorkerDetail({ handleAction }) {
+  const { userData } = useUser();
 
   const handlePayClick = async () => {
     try {
@@ -36,7 +38,7 @@ export default function WorkerDetail({ handleAction }) {
   };
 
 
-  const { userData } = useUser();
+  
   return (
     <Layout>
         <div className="font-bold flex justify-center items-center mt-10">Detalle del profesional seleccionado</div>
@@ -51,9 +53,10 @@ export default function WorkerDetail({ handleAction }) {
             <p>Detalle de trabajador: Servicios de fontanería profesional con mas de cinco años de experiencia en el rubro.</p>
             <div class= "flex justify-center items-center space-x-8 mt-5 flex-row">
                 {userData.name? 
-                  <Link href="/Payment">
-                    <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">CONTRATAR</button>
-                  </Link>
+                  // <Link href="/Payment">
+                    <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                    onClick={handlePayClick}>CONTRATAR</button>
+                  // </Link>
                 : <button onClick={handleAction} class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">CONTRATAR</button>
                 }
                 {userData.name? 
@@ -62,13 +65,6 @@ export default function WorkerDetail({ handleAction }) {
                   </Link>
                 : <button onClick={handleAction} class="bg-amber-400 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded">Ver Servicios</button>
                 }
-                {/* <Link href="/Payment"> */}
-                <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                        onClick={handlePayClick}>CONTRATAR</button>
-                {/* </Link> */}
-                <Link href="/MyOffers">
-                <button class="bg-amber-400 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded">Ver Servicios</button>
-                </Link>
             </div>
            
            </div>
