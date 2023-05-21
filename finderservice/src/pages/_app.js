@@ -2,13 +2,21 @@ import '@/styles/globals.css'
 import { AppProps } from 'next/app'
 import { SessionProvider } from "next-auth/react"
 import { UserProvider } from '@context/UserContext'
+import { useRouter } from 'next/router'
 
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
+  const router = useRouter();
+  const handleAction = () =>{
+    localStorage.setItem('redirectUrl', router.asPath);
+    alert("Usuario: Debe iniciar sesión o registrarse para realizar esta acción.")
+    router.push('/User/login');
+  }
+
   return (
   <SessionProvider session={ session }>
     <UserProvider>
-      <Component {...pageProps} />
+      <Component handleAction={handleAction} {...pageProps} />
     </UserProvider>
   </SessionProvider>
   )
