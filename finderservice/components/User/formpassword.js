@@ -27,15 +27,16 @@ export default function FormPassword({ id }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      let res = await axios.post("/api/auth/password", state);
-      console.log(res);
-    }catch(error){
-      //console.log(error.response.data);
-      console.log(error);
+    console.log(state);
+      try {
+        let res = await axios.put("/api/updateUser/password", state);
+        console.log(res);
+      } catch (error) {
+        //console.log(error.response.data);
+        console.log(error);
+      }
     }
-
-  };
+  
 
   useEffect(() => {
     if (session) {
