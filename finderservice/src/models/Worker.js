@@ -66,6 +66,7 @@ const workerSchema = new Schema(
       type: String,
       default: "available",
     },
+    deleted: { type: Boolean, default: false },
   },
   { timestamps: false, versionKey: false }
 );

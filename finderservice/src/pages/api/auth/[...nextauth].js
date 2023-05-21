@@ -36,7 +36,6 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-
         const { username, password } = credentials;
         if (!username || !password) {
           throw new Error("Todos los campos son obligatorios");
@@ -58,8 +57,13 @@ export const authOptions = {
           await dbDisconnect();
           throw new Error("Usuario y/o password incorrectos.");
         }
-        if(!user.active){
-          throw new Error('El usuario no ha sido activado')
+        if (!user.active) {
+          throw new Error("El usuario no ha sido activado");
+        }
+        if (user.deleted) {
+          throw new Error(
+            "El usuario ha sido borrado por incumplimiento de las normas"
+          );
         }
 
         let isValid;

@@ -12,21 +12,20 @@ export default async function handler(req, res) {
     case "GET":
       try {
         let { name, address } = query;
-        const queryOptions = {};
+        const queryOptions = {
+          deleted: {$ne: true},
+        };
         if (name) {
           queryOptions.name = { $regex: `${name}`, $options: "i" };
         }
         if (address) {
           queryOptions["address.city"] = {
-            $regex: "${address}",
-            $options: "id",
+            $regex: `${address}`,
+            $options: "i",
           };
         }
         const response = queryOptions
-          ? await Employer.find(queryOptions).populate(
-              "address",
-              "-_id name city"
-            )
+          ? await Employer.find(queryOptions)
           : await Employer.find({}).populate("address", "-_id name city");
         if (response.length === 0) {
           return res.status(404).json({
@@ -36,63 +35,6 @@ export default async function handler(req, res) {
           await dbDisconnect();
           return res.status(200).json(response);
         }
-      } catch (error) {
-        await dbDisconnect();
-        return res.status(400).json({ error: error.message });
-      }
-      break;
-    case "PUT":
-      console.log("estoy en el put");
-      try {
-        const { current, newpass, userid: id, email } = req.body;
-        if (!current || !newpass || !email || !id) {
-          throw new Error("Datos incompletos");
-        }
-        console.log(req.body);
-        const user = await Employer.findOne({ email }).exec();
-        console.log(user);
-
-        if (!user) {
-          await dbDisconnect();
-          return res
-            .status(404)
-            .json({ error: "No se encontró al empleado con ese id" });
-        }
-
-        let isValid;
-        try {
-          isValid = await verifyPassword(current, user.password, user.salt);
-        } catch (error) {
-          await dbDisconnect();
-          return res
-            .status(404)
-            .json({ success: false, msg: "Contraseña incorrecta" });
-        }
-
-        console.log("por aca");
-
-        const { encryptedPassword, newSalt } = await encrypthPass(newpass);
-
-        console.log(encryptedPassword);
-
-        let result = await Employer.updateOne(
-          { _id: id },
-          { $set: { password: encryptedPassword, salt: newSalt } }
-        ).exec();
-
-        console.log(result);
-        if (result) {
-          await dbDisconnect();
-          return res.status(200).json({
-            success: true,
-            msg: "La contraseña se actualizó con éxito!",
-          });
-        }
-        await dbDisconnect();
-        return res.status(400).json({
-          success: false,
-          error: "No se pudo completar la petición, intentelo más tarde.",
-        });
       } catch (error) {
         await dbDisconnect();
         return res.status(400).json({ error: error.message });
