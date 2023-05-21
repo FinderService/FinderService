@@ -3,12 +3,20 @@ import { logo, equipo } from "@public/assets";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Login from "./User/login";
+import { useUser } from "@context/UserContext";
 
 
 export default function Navbar() {
 
   const router = useRouter();
   const showBtns = router.pathname.indexOf("User") > -1 ? false : true;
+  const { userData } = useUser();
+
+  const handleAction = () =>{
+    localStorage.setItem('redirectUrl', router.asPath);
+    alert("Usuario: Debe iniciar sesión o registrarse para realizar esta acción.")
+    router.push('/User/login');
+  }
 
   return (
     
@@ -21,19 +29,27 @@ export default function Navbar() {
           </Link>
         </div>
           <div className="hidden mdl:inline-flex items-center gap-7 ">
-        {showBtns && (
+        {showBtns && (!userData.profile ?
           <>
-            <button className="btn-navbar">
+            <button onClick={handleAction} className="btn-navbar">
               <Image src={equipo} alt="icon_equipo" />
-              <Link href="trabajar">Postulá tu empleo</Link>
+              <p>Postulate a un empleo</p>
             </button>
-
+            <button onClick={handleAction} className="btn-navbar hover:border-green-500">
+              <Image src={equipo} alt="icon_equipo" />
+              <p>Publica tu empleo</p>
+            </button>
+          </> : (userData.profile === 'employer')?            
             <button className="btn-navbar hover:border-green-500">
               <Image src={equipo} alt="icon_equipo" />
-              <Link href="contratar">Postulá tu contratación</Link>
+              <Link href="contratar">Publica tu empleo</Link>
             </button>
-          </>
-            )}
+            :
+            <button className="btn-navbar">
+              <Image src={equipo} alt="icon_equipo" />
+              <Link href="trabajar">Postulate a un empleo</Link>
+            </button>
+        )}
             <Login />
           </div>
       </div>

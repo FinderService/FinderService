@@ -55,7 +55,13 @@ export default function Login() {
         loginError: result.error,
       });
     } else {
-      router.push("/");
+      const redirectUrl = localStorage.getItem('redirectUrl');
+      if (redirectUrl) {
+        localStorage.removeItem('redirectUrl');
+        router.push(redirectUrl);
+      }else{
+        router.push("/")
+      }
     }
   };
 
