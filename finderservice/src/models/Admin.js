@@ -15,6 +15,10 @@ var adminSchema = new Schema(
       type: String,
       require: [true, "Email is required"],
     },
+    profile: {
+      type: String,
+      default: 'admin',
+    }
   },
   { timestamps: false, versionKey: false }
 );
