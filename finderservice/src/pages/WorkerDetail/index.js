@@ -6,6 +6,36 @@ import Image from "next/image"
 import Link from "next/link";
 
 export default function WorkerDetail({ handleAction }) {
+
+  const handlePayClick = async () => {
+    try {
+      
+      const response = await axios.post("/api/payment", {
+        items: [
+          {
+            title: 'Worker',
+            quantity:1,
+            currency_id:'ARS',
+            unit_price:1000
+          }
+        ],
+        back_urls:{
+          success:'http://localhost:3000',
+          failure:'http://localhost:3000',
+          pending:'http://localhost:3000',
+        },
+        auto_return:'approved',
+        binary_mode:false,
+      });
+      const { init_point } = response.data;
+      // Redirige al usuario a la URL de pago proporcionada por `init_point`
+      window.location.href = init_point;
+    } catch (error) {
+      console.error("Error al crear la preferencia de pago:", error);
+    }
+  };
+
+
   const { userData } = useUser();
   return (
     <Layout>
@@ -32,6 +62,13 @@ export default function WorkerDetail({ handleAction }) {
                   </Link>
                 : <button onClick={handleAction} class="bg-amber-400 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded">Ver Servicios</button>
                 }
+                {/* <Link href="/Payment"> */}
+                <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                        onClick={handlePayClick}>CONTRATAR</button>
+                {/* </Link> */}
+                <Link href="/MyOffers">
+                <button class="bg-amber-400 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded">Ver Servicios</button>
+                </Link>
             </div>
            
            </div>
