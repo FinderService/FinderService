@@ -2,9 +2,11 @@ import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Employer from "../../../models/Employer";
 import Address from "../../../models/Address";
 import mongoose from "mongoose";
+import { verifyPassword, encrypthPass } from "@/utils/lib";
 
 export default async function handler(req, res) {
   await dbConnect();
+
   const {
     method,
     body,
@@ -33,39 +35,61 @@ export default async function handler(req, res) {
       break;
     case "PUT":
       try {
-        const employerToUpdate = await Employer.findById(id);
-        if (!employerToUpdate) {
+        const { current, newpass, userid: id, email } = req.body;
+        if (!current || !newpass || !email || !id) {
+          throw new Error("Datos incompletos");
+        }
+
+        const user = await Employer.findById(id);
+        if (!user) {
           await dbDisconnect();
           return res
             .status(404)
             .json({ error: "No se encontró al empleado con ese id" });
         }
 
-        const { name, city } = body.address;
+        let isValid;
+        await verifyPassword(current, user.password, user.salt)
+          .then((response) => {
+            isValid = response;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 
-        const updateAddress = await Address.findOneAndUpdate(
-          {
-            _id: employerToUpdate.address,
-          },
-          {
-            $set: { name, city },
-          },
-          { new: true }
-        );
+        if (!isValid) {
+          return res.status(400).json({
+            sucess: false,
+            msg: "La contraseña actual no es correcta",
+          });
+        }
 
-        const updatedEmployer = await Employer.findOneAndUpdate(
+        let newEncryptPass;
+        let newSalt;
+        await encrypthPass(newpass, user.salt)
+          .then((response) => {
+            newEncryptPass = response.encrypthPassword;
+            newSalt = response.newSalt;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+        let res = await Employer.updateOne(
           { _id: id },
-          {
-            $set: {
-              ...body,
-              address: updateAddress._id,
-            },
-          },
-          { new: true }
-        ).populate("address", "-_id name city");
-
+          { password: newEncryptPass, salt: newSalt }
+        );
+        if (res.acknowledged) {
+          return res.status(200).json({
+            sucess: true,
+            msg: "La contraseña se actualizó con éxito!",
+          });
+        }
         await dbDisconnect();
-        return res.status(200).json(updatedEmployer);
+        return res.status(400).json({
+          success: false,
+          error: "No se pudo completar la petición, intentelo más tarde.",
+        });
       } catch (error) {
         await dbDisconnect();
         return res.status(400).json({ error: error.message });
@@ -75,7 +99,7 @@ export default async function handler(req, res) {
       try {
         const employerToDelete = await Employer.findById(id);
         await Employer.findByIdAndDelete(id);
-        await Address.findByIdAndDelete(employerToDelete.address)
+        await Address.findByIdAndDelete(employerToDelete.address);
 
         if (!employerToDelete) {
           await dbDisconnect();
@@ -84,9 +108,7 @@ export default async function handler(req, res) {
             .json({ error: "No se encontró el empleado con ese id" });
         } else {
           await dbDisconnect();
-          return res
-            .status(200)
-            .json("Se ha borrado al empleado con ese id");
+          return res.status(200).json("Se ha borrado al empleado con ese id");
         }
       } catch (error) {
         await dbDisconnect();
