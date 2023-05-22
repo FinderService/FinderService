@@ -33,7 +33,15 @@ export default function Navbar() {
           <>
             <button onClick={handleAction} className="btn-navbar">
               <Image src={equipo} alt="icon_equipo" />
+
+
+              <Link href="jobpostulations">Postulá tu empleo</Link>
+
+              <p>Postulate a un empleo</p>
+
+
               <p>Postulate a un Empleo</p>
+
             </button>
             <button onClick={handleAction} className="btn-navbar hover:border-green-500">
               <Image src={equipo} alt="icon_equipo" />
@@ -42,12 +50,24 @@ export default function Navbar() {
           </> : (userData.profile === 'employer')?            
             <button className="btn-navbar hover:border-green-500">
               <Image src={equipo} alt="icon_equipo" />
+
+
+              <Link href="jobrequests">Postulá tu contratación</Link>
+
+              <Link href="contratar">Publica tu empleo</Link>
+
               <Link href="contratar">Publica tu Servicio</Link>
+
             </button>
             :
             <button className="btn-navbar">
               <Image src={equipo} alt="icon_equipo" />
+
+              <Link href="trabajar">Postulate a un empleo</Link>
+
+
               <Link href="trabajar">Postulate a un Empleo</Link>
+
             </button>
         )}
             <Login />
