@@ -14,7 +14,7 @@ export default async function handler(req, res) {
         } else {
           await mongoose.connection.close();
           console.log("Connection shutdown");
-          return res.status(404).json({ error: "Not exist that workers type" });
+          return res.status(404).json({ error: "No se encuentran los tipos" });
         }
       } catch (error) {
         await mongoose.connection.close();

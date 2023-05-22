@@ -1,6 +1,7 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Employer from "../../../models/Employer";
 import Address from "../../../models/Address";
+import { verifyPassword, encrypthPass } from "@/utils/lib";
 import mongoose from "mongoose";
 
 export default async function handler(req, res) {
@@ -10,12 +11,21 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        let { name } = query;
-
-        const response = name
-          ? await Employer.find({
-              name: { $regex: `${name}`, $options: "i" },
-            }).populate("address", "-_id name city")
+        let { name, address } = query;
+        const queryOptions = {
+          deleted: {$ne: true},
+        };
+        if (name) {
+          queryOptions.name = { $regex: `${name}`, $options: "i" };
+        }
+        if (address) {
+          queryOptions["address.city"] = {
+            $regex: `${address}`,
+            $options: "i",
+          };
+        }
+        const response = queryOptions
+          ? await Employer.find(queryOptions)
           : await Employer.find({}).populate("address", "-_id name city");
         if (response.length === 0) {
           return res.status(404).json({

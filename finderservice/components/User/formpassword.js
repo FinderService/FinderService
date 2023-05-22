@@ -27,15 +27,16 @@ export default function FormPassword({ id }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      let res = await axios.post("/api/auth/password", state);
-      console.log(res);
-    }catch(error){
-      //console.log(error.response.data);
-      console.log(error);
+    console.log(state);
+      try {
+        let res = await axios.put("/api/updateUser/password", state);
+        console.log(res);
+      } catch (error) {
+        //console.log(error.response.data);
+        console.log(error);
+      }
     }
-
-  };
+  
 
   useEffect(() => {
     if (session) {
@@ -47,7 +48,7 @@ export default function FormPassword({ id }) {
   }, [session]);
 
   return (
-    <div className="p-4 bg-slate-100 rounded-md">
+    <div className="p-4 rounded-md">
       <h3 className="text-xl">Actualizar Contraseña:</h3>
       <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
         <input type="hidden" name="id" vlaue="" />
