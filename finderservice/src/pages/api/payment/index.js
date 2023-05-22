@@ -10,16 +10,15 @@ export default async function handler(req, res) {
 
         case "POST":
 
-        const items = req.body;
+        const items = req.body.items;
         const preference = {
             items: items,
             back_urls:{
-                success:'http://localhost:3000/Payment',
-                failure:'http://localhost:3000/Payment',
-                pending:'http://localhost:3000/Payment',
+                success:'http://localhost:3000',
+                failure:'http://localhost:3000',
+                pending:'http://localhost:3000',
             },
-            auto_return:'approved',
-            binary_mode:true,
+            auto_return:'approved'
         };
 
         try{
