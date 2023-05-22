@@ -50,10 +50,11 @@ export default function FormAvatar({ id, image }) {
 
   const saveAvatar = async (e) => {
     console.log("guardar el avatar");
-    const url = "/api/auth/avatar";
+
+    const url = "/api/updateUser/avatar";
     const datos = { avatar: state.preview, id_usuario: id };
 
-    let res = await axios.post(url, datos);
+    let res = await axios.put(url, datos);
     console.log(res);
   };
 

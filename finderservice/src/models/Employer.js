@@ -12,7 +12,7 @@ var employerSchema = new Schema(
       required: [true, "La contraseña es requerida"],
     },
     birthdate: {
-      type: Number,
+      type: Date,
       required: [true, "La fecha de nacimiento es requerida"],
     },
     age: Number,
@@ -23,7 +23,11 @@ var employerSchema = new Schema(
     rating: {
       type: String,
     },
-    profilepic: String,
+    profilepic: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dacl2du1v/image/upload/v1684330929/userAvt_tkcm8u.png",
+    },
     address: [
       {
         type: Schema.Types.ObjectId,
@@ -45,6 +49,15 @@ var employerSchema = new Schema(
       description: String,
     },
     phone: Number,
+    profile: {
+      type: String,
+      default: "employer",
+    },
+    state: {
+      type: String,
+      default: "available",
+    },
+    deleted: { type: Boolean, default: false },
   },
   { timestamps: false, versionKey: false }
 );

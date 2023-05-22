@@ -13,11 +13,27 @@ export const useWorker = () => {
 
 export const HomeEmployerProvider = ({ children }) => {
     const [workersData, setWorkersData] = useState([]);
-
+    const [sortedWorkers, setSortedWorkers] = useState([]);
+    
     const getAllWorkers = async () => {
+        return;
         let res = await axios.get('/api/workers')
         setWorkersData([...res.data])
-    }
+    };
+    
+    const sortWorkers = (sort) => {
 
-    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers }}>{children}</HomeEmployerContext.Provider>;
+        
+            console.log(sort);
+            return;
+            workers.sort((a, b) =>
+          a.name.localeCompare(b.name))
+        
+      
+        
+    };
+
+
+    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortWorkers }}>{children}</HomeEmployerContext.Provider>;
 }
+

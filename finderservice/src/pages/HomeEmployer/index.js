@@ -6,10 +6,15 @@ import Image from "next/image"
 import { gas, obrero, llave, foco, manguera, tubo , ubi , equipo } from '@public/assets';
 import { useWorker } from "@context/HomeEmployerContext";
 import { useEffect } from "react";
+import { useUser } from "@context/UserContext";
 
-export default function Search() {
+export default function Search({ handleAction }) {
     const arr = ["1","2","3","4","5","6","7","8","9"];
-    const { workersData, getAllWorkers } = useWorker();
+    const { workersData, getAllWorkers, sortWorkers } = useWorker();
+
+    const handlerSort = (e) => {
+        sortWorkers(e.target.value)
+    }
 
     useEffect(() => {
         if(workersData.length === 0){
@@ -17,42 +22,31 @@ export default function Search() {
             console.log(workersData);
         }
     },[])
+    const imgsWorks = [ gas, obrero, llave, foco, manguera, tubo , ubi , equipo ];
+    const { userData } = useUser();
 
     return (
         <Layout>
             <div className="bg-white  flex justify-around">
                 <div className="mt-14 flex flex-col w-1/5 h-fit">
                     <div className="flex flex-wrap justify-around rounded-2xl h-1/4">
-                        <Link href="/">
-                            <Image src={manguera} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>        
-                        </Link>   
-                        <Link href="/">
-                            <Image src={gas} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>        
-                        </Link>  
-                        <Link href="/">
-                            <Image src={obrero} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>        
-                        </Link>  
-                        <Link href="/">
-                            <Image src={llave} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>        
-                        </Link>  
-                        <Link href="/">
-                            <Image src={foco} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>        
-                        </Link>  
-                        <Link href="/">
-                            <Image src={tubo} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>        
-                        </Link>    
-                        <Link href="/">
-                            <Image src={ubi} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>        
-                        </Link>  
-                        <Link href="/">
-                            <Image src={equipo} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>        
-                        </Link>     
+                        {userData.name? imgsWorks.map((work)=>{
+                            return ( 
+                                <Link href="/">
+                                    <Image src={work} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>
+                                </Link>
+                            )
+                        }) : imgsWorks.map((work)=>{
+                            return (    
+                                <Image src={work} onClick={handleAction} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110"></Image>
+                            )
+                        })}  
                     </div>
 
                     <div className="bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
                         <label className="font-bold mb-2">Ordenar por:</label>
                         <div>
-                            <select name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
+                            <select onChange={handlerSort} name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
                                 <option value="Ordenar">-Ordenar-</option>
                                 <option value="Cercano">Más cercanos</option>
                                 <option value="Ascendente">Nombres (Ascendente)</option>
@@ -79,9 +73,9 @@ export default function Search() {
                         {workersData.map((info)=>{
                             return (
                                 <Link href="/WorkerDetail">
-                                <div key={info} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
-                                    <h2>Nombre: {info}</h2>
-                                    <p>Informacion de: {info}</p>
+                                    <div key={info} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
+                                        <h2>Nombre: {info}</h2>
+                                        <p>Informacion de: {info}</p>
                                 </div>
                                 </Link>
                             )
@@ -109,9 +103,12 @@ export default function Search() {
                         </div>
                     </div>
                     <div className="flex justify-center bg-blue-300 mt-5 mb-5 p-1 rounded-xl">
-                        <Link href="/HomeEmployer/HEOffers">
-                            <button className="font-bold mb-2">💼 Mis Ofertas</button>
-                        </Link>
+                        {userData.name?
+                            <Link href="/HomeEmployer/HEOffers">
+                                <button className="font-bold mb-2">💼 Mis Ofertas</button>
+                            </Link>
+                        : <button onClick={handleAction} className="font-bold mb-2">💼 Mis Ofertas</button>
+                        }                       
                     </div>
                 </div>
             </div>

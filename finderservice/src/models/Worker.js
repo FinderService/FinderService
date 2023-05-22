@@ -25,7 +25,8 @@ const workerSchema = new Schema(
     },
     profilepic: {
       type: String,
-      default: 'https://res.cloudinary.com/dacl2du1v/image/upload/v1684330929/userAvt_tkcm8u.png'
+      default:
+        "https://res.cloudinary.com/dacl2du1v/image/upload/v1684330929/userAvt_tkcm8u.png",
     },
     type: [
       {
@@ -57,6 +58,15 @@ const workerSchema = new Schema(
       description: String,
     },
     phone: Number,
+    profile: {
+      type: String,
+      default: "worker",
+    },
+    state: {
+      type: String,
+      default: "available",
+    },
+    deleted: { type: Boolean, default: false },
   },
   { timestamps: false, versionKey: false }
 );
