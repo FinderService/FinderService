@@ -12,7 +12,7 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "GET":
       try {
-        let { name, address } = query;
+        let { name, address } = req.query;
         const queryOptions = {
           deleted: {$ne: true},
         };
