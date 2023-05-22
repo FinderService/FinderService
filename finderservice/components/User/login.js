@@ -46,6 +46,7 @@ export default function Login() {
                   alt="user_avatar"
                   className="w-10"
                   width="100"
+                  height="100"
                 />
               )}
               {session.user?.profilepic && (
