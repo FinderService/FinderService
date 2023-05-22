@@ -23,7 +23,7 @@ export default function Search({ handleAction }) {
             console.log(workersData);
         }
         //eslint-disable-next-line
-    },[])
+    },[workersData])
     const imgsWorks = [ gas, obrero, llave, foco, manguera, tubo , ubi , equipo ];
     const { userData } = useUser();
 
@@ -34,7 +34,7 @@ export default function Search({ handleAction }) {
                     <div className="flex flex-wrap justify-around rounded-2xl h-1/4">
                         {userData.name? imgsWorks.map((work)=>{
                             return ( 
-                                <Link href="/" key={xd}>
+                                <Link href="/" key={work}>
                                     <Image src={work} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110" alt="equisde"></Image>
                                 </Link>
                             )
@@ -74,7 +74,7 @@ export default function Search({ handleAction }) {
                     <div className="mt-5 flex flex-col flex-wrap">
                         {sortedWorkers.map((info)=>{
                             return (
-                                <Link href="/WorkerDetail" key="keyxd">
+                                <Link href="/WorkerDetail" key={info._id}>
                                     <div key={info._id} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
                                         <h2>Nombre: {info.name}</h2>
                                         <p>Informacion de: {info.address}</p>

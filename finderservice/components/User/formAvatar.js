@@ -3,7 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 //import Avatar from 'react-avatar-edit';
 import dynamic from "next/dynamic";
-import Image from 'next/image'
+import Image from "next/image";
 
 const Avatar = dynamic(() => import("react-avatar-edit"), { ssr: false });
 
@@ -63,7 +63,13 @@ export default function FormAvatar({ id, image }) {
     <div className="static p-4">
       <div className="">
         <div className="w-[10rem]">
-          <Image className="avatar-preview" src={image} alt="avatar" />
+          <Image
+            className="avatar-preview"
+            src={image}
+            alt="avatar"
+            width="100"
+            height="100"
+          />
           <button className="btn-navbar" onClick={handleClick}>
             Editar
           </button>
@@ -94,6 +100,8 @@ export default function FormAvatar({ id, image }) {
                   className="avatar-modal"
                   src={state.preview}
                   alt="avatar"
+                  height='100'
+                  width='100'
                 />
               )}
 
@@ -102,8 +110,14 @@ export default function FormAvatar({ id, image }) {
               )}
             </div>
             <div className="p-4 flex flex-row gap-3 items-center justify-end bg-slate-100">
-              <button className="btn-navbar" onClick={handleClick}>Cerrar</button>
-              <button className="btn-navbar" variant="primary" onClick={saveAvatar}>
+              <button className="btn-navbar" onClick={handleClick}>
+                Cerrar
+              </button>
+              <button
+                className="btn-navbar"
+                variant="primary"
+                onClick={saveAvatar}
+              >
                 Guradar
               </button>
             </div>
