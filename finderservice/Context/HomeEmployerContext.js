@@ -16,24 +16,53 @@ export const HomeEmployerProvider = ({ children }) => {
     const [sortedWorkers, setSortedWorkers] = useState([]);
     
     const getAllWorkers = async () => {
-        return;
+        
         let res = await axios.get('/api/workers')
+        console.log(res.data);
         setWorkersData([...res.data])
-    };
-    
-    const sortWorkers = (sort) => {
+        setSortedWorkers([...res.data])
 
-        
-            console.log(sort);
-            return;
-            workers.sort((a, b) =>
-          a.name.localeCompare(b.name))
-        
+    };
+
+    // const sortWorkers = (ascending = true) => {
+    //     let sortedArr;
       
-        
+    //     if (ascending) {
+    //       sortedArr = [...workersData].sort((a, b) => a.name.localeCompare(b.name));
+    //     } else {
+    //       sortedArr = [...workersData].sort((a, b) => b.name.localeCompare(a.name));
+    //     }
+      
+    //     setSortedWorkers(sortedArr);
+    //   };
+      
+
+    // const handleSortChange = (e) => {
+    //     const value = e.target.value;
+    //     let sortedArr = [...workersData];
+
+    //     if(value === 'az') {
+    //         sortedArr = [...workersData].sort((a, b) => a.name.localeCompare(b.name));
+    //     }else if (value === 'za') {
+    //         sortedArr = [...workersData].sort((a, b) => b.name.localeCompare(a.name))
+    //     }
+    //     setSortedWorkers(sortedArr)
+    // }
+    
+    const sortWorkers = (value) => {
+        let sortedArr;
+        console.log(value);
+            if(value === 'Ascendente'){
+            sortedArr = [...workersData].sort((a, b) =>
+            a.name.localeCompare(b.name))
+        }else if(value === 'Descendente'){
+            sortedArr = [...workersData].sort((a, b) =>
+            b.name.localeCompare(a.name))
+        }
+            setSortedWorkers(sortedArr)
     };
 
 
-    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortWorkers }}>{children}</HomeEmployerContext.Provider>;
+    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers }}>{children}</HomeEmployerContext.Provider>;
 }
 

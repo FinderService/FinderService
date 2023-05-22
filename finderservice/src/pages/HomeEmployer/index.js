@@ -8,9 +8,10 @@ import { useWorker } from "@context/HomeEmployerContext";
 import { useEffect } from "react";
 import { useUser } from "@context/UserContext";
 
+
 export default function Search({ handleAction }) {
-    const arr = ["1","2","3","4","5","6","7","8","9"];
-    const { workersData, getAllWorkers, sortWorkers } = useWorker();
+    //const arr = ["1","2","3","4","5","6","7","8","9"];
+    const { workersData, getAllWorkers, sortWorkers, sortedWorkers } = useWorker();
 
     const handlerSort = (e) => {
         sortWorkers(e.target.value)
@@ -46,7 +47,7 @@ export default function Search({ handleAction }) {
                     <div className="bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
                         <label className="font-bold mb-2">Ordenar por:</label>
                         <div>
-                            <select onChange={handlerSort} name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
+                            <select onChange={(e) => handlerSort(e)} name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
                                 <option value="Ordenar">-Ordenar-</option>
                                 <option value="Cercano">Más cercanos</option>
                                 <option value="Ascendente">Nombres (Ascendente)</option>
@@ -70,12 +71,12 @@ export default function Search({ handleAction }) {
                     </div>
                     <div className="font-bold mb-2 mt-5">{workersData.length} resultados encontrados</div>
                     <div className="mt-5 flex flex-col flex-wrap">
-                        {workersData.map((info)=>{
+                        {sortedWorkers.map((info)=>{
                             return (
                                 <Link href="/WorkerDetail">
-                                    <div key={info} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
-                                        <h2>Nombre: {info}</h2>
-                                        <p>Informacion de: {info}</p>
+                                    <div key={info._id} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
+                                        <h2>Nombre: {info.name}</h2>
+                                        <p>Informacion de: {info.address}</p>
                                 </div>
                                 </Link>
                             )
