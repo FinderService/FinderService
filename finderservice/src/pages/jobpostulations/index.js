@@ -9,7 +9,7 @@ import {
   validateSalary,
   validateState,
   validatePhone,
-} from"./validation";
+} from"../../utils/validationPost";
 
 export default function Postulation() {
   const [state, setState] = useState({
