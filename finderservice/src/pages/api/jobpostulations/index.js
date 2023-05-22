@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
         try{
 
-            const {duration, salary, message, state} = req.body
+            const {name, phone, salary, message, state} = req.body
 
             const jobPostWorker = await Worker.findOne({
                 name:req.body.worker.name,
@@ -61,7 +61,8 @@ export default async function handler(req, res) {
             const newJobPostulation = new JobPostulation({
                 jobrequest:[jobPostRequest._id],
                 worker:[jobPostWorker._id],
-                duration,
+                name,
+                phone,
                 salary,
                 message,
                 state,
