@@ -67,7 +67,7 @@ export default function WorkerDetail({ handleAction }) {
                 }
             </div>
            
-           </div>
+           </div>  
         </div>
         <Footer/>
     </Layout>
