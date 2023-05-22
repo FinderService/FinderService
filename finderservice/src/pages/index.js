@@ -4,10 +4,51 @@ import Layout from "@components/Layout";
 import { ubi } from '@public/assets';
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
+//import { Loader } from "@googlemaps/js-api-loader"
+import React, { useRef, useEffect } from "react";
+
 
 export default function Home() {
+
+//   const inputRef = useRef(null);
+
+// const initAutocomplete = () => {
+
+//   const input = inputRef.current
+//   const autocomplete = new google.maps.places.Autocomplete(input);
+
+//   autocomplete.addListener("place_changed", () => {
+//     const place = autocomplete.getPlace();
+//   })
+// };
+
+// useEffect(()=>{
+//   const loader = new Loader({
+//     apiKey: process.env.NEXT_PUBLIC_API_KEY,
+//     version: "weekly",
+//     libraries: ["places"],
+//   });
+
+//   loader.load().then(() => {
+//     initAutocomplete();
+//   });
+
+// }, [])
+
+  // const inputRef = useRef(null);
+  // const autocompleteRef = useRef(null);
+
+  // useEffect(() => {
+  //   if(typeof google !== "undefined"){
+  //     autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current)
+  //   }
+  // }, []);
+
+
   return (
     <Layout>
+ 
       <div
         className="w-full h-screen hero-home"
       >
@@ -29,9 +70,11 @@ export default function Home() {
           >
             <Image src={ ubi } alt="ubication_icon" height="auto" width="auto" />
             <input 
+              //id='autocomplete-input'
               type="text" 
               placeholder="Dirección o punto de referencia" 
               className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "
+              //ref={inputRef} 
             />
             <Link href='HomeEmployer' className="bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all"> Buscar </Link>
           </div>        

@@ -12,29 +12,32 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "GET":
       try {
-        const { name } = req.query;
-        const workername = name
-          ? await Worker.find({
-              name: { $regex: `${name}`, $options: "i" },
-            })
-              .populate("type", "-_id name")
-              .populate("address", "-_id name city")
-          : await Worker.find({})
-              .populate("type", "-_id name")
-              .populate("address", "-_id name city");
-
-        if (workername.length !== 0) {
-          return res.status(200).json(workername);
+        let { name, address } = req.query;
+        const queryOptions = {
+          deleted: {$ne: true},
+        };
+        if (address) {
+          queryOptions["address.city"] = {
+            $regex: `${address}`,
+            $options: "i",
+          };
+        }
+        if (name) {
+          queryOptions.name = { $regex: `${name}`, $options: "i" };
+        }
+        const response = queryOptions
+          ? await Worker.find(queryOptions)
+          : await Worker.find({}).populate("address", "-_id name city");
+        if (response.length === 0) {
+          return res.status(404).json({
+            error: `No se encontraron empleados con el nombre ${name}`,
+          });
         } else {
-          await mongoose.connection.close();
-          console.log("Connection shutdown");
-          return res
-            .status(404)
-            .json({ error: "No workers found with that name" });
+          await dbDisconnect();
+          return res.status(200).json(response);
         }
       } catch (error) {
-        await mongoose.connection.close();
-        console.log("Connection shutdown");
+        await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }
 
@@ -47,7 +50,7 @@ export default async function handler(req, res) {
         }
         console.log(req.body);
         const user = await Worker.findOne({ email }).exec();
-        console.log(user);
+       
 
         if (!user) {
           await dbDisconnect();
@@ -66,7 +69,7 @@ export default async function handler(req, res) {
             .json({ success: false, msg: "Contraseña incorrecta" });
         }
 
-        console.log("por aca");
+        
 
         const { encryptedPassword, newSalt } = await encrypthPass(newpass);
 
@@ -77,7 +80,7 @@ export default async function handler(req, res) {
           { $set: { password: encryptedPassword, salt: newSalt } }
         ).exec();
 
-        console.log(result);
+       
         if (result) {
           await dbDisconnect();
           return res.status(200).json({
