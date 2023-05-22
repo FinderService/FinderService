@@ -85,6 +85,7 @@ export const authOptions = {
           email: user.email,
           image: user.profilepic,
         };
+        await dbDisconnect();
         return logedUser;
       },
     }),
