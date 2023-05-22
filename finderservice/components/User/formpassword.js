@@ -44,7 +44,8 @@ export default function FormPassword({ id }) {
         email: session.user?.email,
       });
     }
-  }, [session,state]);
+    //eslint-disable-next-line
+  }, [session]);
 
   return (
     <div className="p-4 rounded-md">

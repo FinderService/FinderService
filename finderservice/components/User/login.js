@@ -31,7 +31,8 @@ export default function Login() {
     if (session && userData) {
       updateUserData(session.user.email);
     }
-  }, [session, userData, updateUserData]);
+    //eslint-disable-next-line
+  }, [session]);
 
   return (
     <div>
