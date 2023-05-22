@@ -15,7 +15,8 @@ export default function HomeWorker() {
             getJobReqs();
             console.log(JobReqs);
         }
-    },[JobReqs,getJobReqs])
+        //eslint-disable-next-line
+    },[])
 
   return (
     <Layout>

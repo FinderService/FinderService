@@ -12,7 +12,8 @@ export default function WorkDetail() {
 
     useEffect(()=>{
         return (setWorkDetail([]))
-    },[workDetail,setWorkDetail])
+        //eslint-disable-next-line
+    },[])
 
     return (
         <Layout>

@@ -6,9 +6,11 @@ import { AiOutlineCheckCircle } from "react-icons/ai";
 import axios from "axios";
 
 export default function Validation() {
+
   const router = useRouter();
   const validator = router.query.c;
   const email = router.query.m;
+  
 
   const [state, setState] = useState({
     validator: "",
@@ -20,39 +22,28 @@ export default function Validation() {
     try {
       const resp = await axios.post("/api/auth/validate", obj);
       console.log(resp);
-      if (resp.data.success) {
+      if(resp.data.success){
         setState({
           ...state,
-          validate: true,
-        });
+          validate: true
+        })
       }
     } catch (error) {
       console.log(error);
     }
   };
+
   
   useEffect(() => {
-    const handlevalidate = (validatorValue, emailValue) => {
-      // Your handlevalidate code here
-    };
-
-    if (validator !== "") {
+    if(validator !== ''){
       console.log(validator);
-      handlevalidate(validator, email);
+      handlevalidate({ validator: validator, email: email })
     }
+    return () => {}
+    //eslint-disable-next-line
+  }, [validator])
 
-    return () => {
-      // Clean-up code here (if applicable)
-    };
-  }, [validator, email]);
 
-  // useEffect(() => {
-  //   if (validator !== "") {
-  //     console.log(validator);
-  //     handlevalidate({ validator: validator, email: email });
-  //   }
-  //   return () => {};
-  // }, [validator, email,handlevalidate]);
 
   return (
     <div className="bg-gray-300 w-screen h-screen overflow-x-hidden overflow-y-hidden">

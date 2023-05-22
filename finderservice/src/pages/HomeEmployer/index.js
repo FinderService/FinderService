@@ -4,10 +4,26 @@ import Link from "next/link";
 import Image from "next/image"
 
 import { gas, obrero, llave, foco, manguera, tubo , ubi , equipo } from '@public/assets';
+import { useWorker } from "@context/HomeEmployerContext";
+import { useEffect } from "react";
 import { useUser } from "@context/UserContext";
 
+
 export default function Search({ handleAction }) {
-    const arr = ["1","2","3","4","5","6","7","8","9"];
+    //const arr = ["1","2","3","4","5","6","7","8","9"];
+    const { workersData, getAllWorkers, sortWorkers, sortedWorkers } = useWorker();
+
+    const handlerSort = (e) => {
+        sortWorkers(e.target.value)
+    }
+
+    useEffect(() => {
+        if(workersData.length === 0){
+            getAllWorkers();
+            console.log(workersData);
+        }
+        //eslint-disable-next-line
+    },[])
     const imgsWorks = [ gas, obrero, llave, foco, manguera, tubo , ubi , equipo ];
     const { userData } = useUser();
 
@@ -32,14 +48,13 @@ export default function Search({ handleAction }) {
                     <div className="bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
                         <label className="font-bold mb-2">Ordenar por:</label>
                         <div>
-                            <select name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
+                            <select onChange={(e) => handlerSort(e)} name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
                                 <option value="Ordenar">-Ordenar-</option>
                                 <option value="Cercano">Más cercanos</option>
                                 <option value="Ascendente">Nombres (Ascendente)</option>
                                 <option value="Descendente">Nombres (Descendente)</option>               
                             </select>
                         </div>
-
                         <div className="mt-5">
                             <label className="font-bold mb-2">Filtrar por:</label>                
                             <select name="Filters" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
@@ -55,14 +70,14 @@ export default function Search({ handleAction }) {
                     <div className="w-5/6 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm ">
                         <input type="text" placeholder="Buscar por nombre" className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "/>
                     </div>
-                    <div className="font-bold mb-2 mt-5">{arr.length} resultados encontrados</div>
+                    <div className="font-bold mb-2 mt-5">{workersData.length} resultados encontrados</div>
                     <div className="mt-5 flex flex-col flex-wrap">
-                        {arr.map((info)=>{
+                        {sortedWorkers.map((info)=>{
                             return (
                                 <Link href="/WorkerDetail" key="keyxd">
-                                    <div key={info} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
-                                        <h2>Nombre: {info}</h2>
-                                        <p>Informacion de: {info}</p>
+                                    <div key={info._id} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
+                                        <h2>Nombre: {info.name}</h2>
+                                        <p>Informacion de: {info.address}</p>
                                 </div>
                                 </Link>
                             )
