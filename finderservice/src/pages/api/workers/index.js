@@ -3,7 +3,7 @@ import Worker from "@/models/Worker.js";
 import Type from "@/models/Type.js";
 import Address from "@/models/Address.js";
 import mongoose from "mongoose";
-import { encrypthPass, verifyPassword } from "@/utils/lib";
+import { encryptPass, verifyPassword } from "@/utils/lib";
 
 export default async function handler(req, res) {
   console.log("hola");
@@ -71,7 +71,7 @@ export default async function handler(req, res) {
 
         
 
-        const { encryptedPassword, newSalt } = await encrypthPass(newpass);
+        const { encryptedPassword, newSalt } = await encryptPass(newpass);
 
         console.log(encryptedPassword);
 

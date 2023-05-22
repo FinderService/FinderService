@@ -5,7 +5,7 @@ import { ubi } from '@public/assets';
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
-import { Loader } from "@googlemaps/js-api-loader"
+// import { Loader } from "@googlemaps/js-api-loader"
 import React, { useRef, useEffect } from "react";
 
 

@@ -12,7 +12,7 @@ export default function WorkDetail() {
 
     useEffect(()=>{
         return (setWorkDetail([]))
-    },[])
+    },[workDetail,setWorkDetail])
 
     return (
         <Layout>
@@ -20,7 +20,7 @@ export default function WorkDetail() {
             <div className="font-bold text-3xl flex justify-center items-center mt-10">Detalle de oferta seleccionada</div>
             <div class="flex justify-center items-center mt-10 ">
                 <div class="flex justify-around bg-white shadow-2xl rounded px-8 pt-6 pb-8 mb-10">
-                    <img className="mr-10 ml-5" src={workDetail.photo} width={300} height={300} alt="workDetail"/>
+                    <Image className="mr-10 ml-5" src={workDetail.photo} width={300} height={300} alt="workDetail"/>
                     <div className="flex flex-col justify-around">
                         <h2 className="font-bold text-2xl">{workDetail.name}</h2>
                         <h3>Información del trabajo: {workDetail.description}</h3>

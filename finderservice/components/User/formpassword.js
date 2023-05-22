@@ -28,15 +28,14 @@ export default function FormPassword({ id }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(state);
-      try {
-        let res = await axios.put("/api/updateUser/password", state);
-        console.log(res);
-      } catch (error) {
-        //console.log(error.response.data);
-        console.log(error);
-      }
+    try {
+      let res = await axios.put("/api/updateUser/password", state);
+      console.log(res);
+    } catch (error) {
+      //console.log(error.response.data);
+      console.log(error);
     }
-  
+  };
 
   useEffect(() => {
     if (session) {
@@ -45,7 +44,7 @@ export default function FormPassword({ id }) {
         email: session.user?.email,
       });
     }
-  }, [session]);
+  }, [session,state]);
 
   return (
     <div className="p-4 rounded-md">

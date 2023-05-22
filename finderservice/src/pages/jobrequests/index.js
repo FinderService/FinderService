@@ -9,7 +9,7 @@ import {
   validateDescription,
   validatePhoto,
   validateAddress,
-} from"./validation";
+} from"../../utils/validationReq";
 
 export default function Postulation() {
   const [state, setState] = useState({

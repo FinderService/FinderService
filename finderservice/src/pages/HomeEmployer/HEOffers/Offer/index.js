@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { workers1 } from "@public/assets";
 
+
 const Offer = () =>{
     return(
         <Layout >
@@ -23,9 +24,10 @@ const Offer = () =>{
                         <Link href="/WorkerDetail">
                             <div className="w-60 m-5 p-5 bg-slate-300 rounded-2xl duration-200 hover:scale-105">
                                 <p>Nombre del empleado</p>
-                                <img
+                                <Image
                                     className="w-20"
                                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                    alt="waos"
                                 />
                                 <p>*Rating*</p>
                                 <p>Oficio/s: Jardinería</p>
@@ -36,7 +38,7 @@ const Offer = () =>{
                         <Link href="/WorkerDetail">
                             <div className="w-60 m-5 p-5 bg-slate-300 rounded-2xl duration-200 hover:scale-105">
                                 <p>Pedro Gomez</p>
-                                <Image src={workers1} className="w-20"/>
+                                <Image src={workers1} className="w-20" alt="xd"/>
                                 <p>*Rating*</p>
                                 <p>Oficio/s: Fontanería</p>
                                 <p>Precio estimado: $$$$</p>
