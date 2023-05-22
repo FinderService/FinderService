@@ -4,9 +4,19 @@ import Link from "next/link";
 import Image from "next/image"
 
 import { gas, obrero, llave, foco, manguera, tubo , ubi , equipo } from '@public/assets';
+import { useWorker } from "@context/HomeEmployerContext";
+import { useEffect } from "react";
 
 export default function Search() {
     const arr = ["1","2","3","4","5","6","7","8","9"];
+    const { workersData, getAllWorkers } = useWorker();
+
+    useEffect(() => {
+        if(workersData.length === 0){
+            getAllWorkers();
+            console.log(workersData);
+        }
+    },[])
 
     return (
         <Layout>
@@ -49,7 +59,6 @@ export default function Search() {
                                 <option value="Descendente">Nombres (Descendente)</option>               
                             </select>
                         </div>
-
                         <div className="mt-5">
                             <label className="font-bold mb-2">Filtrar por:</label>                
                             <select name="Filters" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
@@ -65,9 +74,9 @@ export default function Search() {
                     <div className="w-5/6 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm ">
                         <input type="text" placeholder="Buscar por nombre" className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "/>
                     </div>
-                    <div className="font-bold mb-2 mt-5">{arr.length} resultados encontrados</div>
+                    <div className="font-bold mb-2 mt-5">{workersData.length} resultados encontrados</div>
                     <div className="mt-5 flex flex-col flex-wrap">
-                        {arr.map((info)=>{
+                        {workersData.map((info)=>{
                             return (
                                 <Link href="/WorkerDetail">
                                 <div key={info} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
