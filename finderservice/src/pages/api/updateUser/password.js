@@ -1,12 +1,11 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
-import Worker from '@/models/Worker'
-import Employer from '@/models/Employer'
+import Worker from "@/models/Worker";
+import Employer from "@/models/Employer";
 import { verifyPassword, encryptPass } from "@/utils/lib";
 
 export default async function passwordHandler(req, res) {
+  await dbConnect();
 
-    await dbConnect();
-  
   try {
     const { current, newpass, userid: id, email } = req.body;
     if (!current || !newpass || !email || !id) {
@@ -27,16 +26,17 @@ export default async function passwordHandler(req, res) {
     }
 
     let isValid;
-    try {
-      isValid = await verifyPassword(current, user.password, user.salt);
-    } catch (error) {
+
+    isValid = await verifyPassword(current, user.password, user.salt);
+
+    if (!isValid) {
       await dbDisconnect();
       return res
         .status(404)
         .json({ success: false, msg: "Contraseña incorrecta" });
     }
 
-    console.log("por aca");
+    
 
     const { encryptedPassword, newSalt } = await encryptPass(newpass);
 
@@ -53,7 +53,6 @@ export default async function passwordHandler(req, res) {
             { $set: { password: encryptedPassword, salt: newSalt } }
           ).exec();
 
-    console.log(result);
     if (result) {
       await dbDisconnect();
       return res.status(200).json({

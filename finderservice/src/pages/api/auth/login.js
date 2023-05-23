@@ -9,12 +9,11 @@ import { serialize } from "cookie";
 import { verifyPassword } from "@/utils/lib";
 
 export default async function loginHandler(req, res) {
-  console.log('gononea')
+  console.log("gononea");
   await dbConnect();
   try {
     console.log(req.body);
     const { username, password } = req.body;
-    
 
     const signToken = (_id) => {
       return jwt.sign({ _id }, "mi-secreto", {
@@ -36,18 +35,9 @@ export default async function loginHandler(req, res) {
     ]);
     console.log(user);
 
-   
-
     if (user) {
       let isValid;
-      try {
-        isValid = await verifyPassword(password, user.password, user.salt);
-      } catch (error) {
-        console.log(error);
-      }
-      console.log(user.active)
-
-      
+      isValid = await verifyPassword(password, user.password, user.salt);
 
       if (isValid) {
         const token = signToken(user._id);
