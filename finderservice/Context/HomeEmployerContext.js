@@ -23,31 +23,6 @@ export const HomeEmployerProvider = ({ children }) => {
         setSortedWorkers([...res.data])
 
     };
-
-    // const sortWorkers = (ascending = true) => {
-    //     let sortedArr;
-      
-    //     if (ascending) {
-    //       sortedArr = [...workersData].sort((a, b) => a.name.localeCompare(b.name));
-    //     } else {
-    //       sortedArr = [...workersData].sort((a, b) => b.name.localeCompare(a.name));
-    //     }
-      
-    //     setSortedWorkers(sortedArr);
-    //   };
-      
-
-    // const handleSortChange = (e) => {
-    //     const value = e.target.value;
-    //     let sortedArr = [...workersData];
-
-    //     if(value === 'az') {
-    //         sortedArr = [...workersData].sort((a, b) => a.name.localeCompare(b.name));
-    //     }else if (value === 'za') {
-    //         sortedArr = [...workersData].sort((a, b) => b.name.localeCompare(a.name))
-    //     }
-    //     setSortedWorkers(sortedArr)
-    // }
     
     const sortWorkers = (value) => {
         let sortedArr;
