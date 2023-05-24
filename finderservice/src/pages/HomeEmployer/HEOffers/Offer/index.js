@@ -27,6 +27,8 @@ const Offer = () =>{
                                 <Image
                                     className="w-20"
                                     src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                    width={100}
+                                    height={100}
                                     alt="waos"
                                 />
                                 <p>*Rating*</p>
