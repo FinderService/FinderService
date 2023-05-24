@@ -20,6 +20,7 @@ export const authOptions = {
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     }),
+    
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
       name: "Credentials",
@@ -94,17 +95,22 @@ export const authOptions = {
   pages: {
     signIn: "/User/login",
   },
-
-  /*
   callbacks: {
     async signIn({ account, profile }) {
       if (account.provider === "google") {
-        return profile.email_verified && profile.email.endsWith("@example.com")
+        //console.log('google profile: ', profile);
+        let logedUser = {
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          provider: 'google',
+        };
+
+        return logedUser;
       }
       return true // Do different verification for other providers that don't have `email_verified`
     },
   }
-  */
 };
 
 export default NextAuth(authOptions);
