@@ -14,6 +14,7 @@ export default async function handler(req, res) {
         let { name, address } = query;
         const queryOptions = {
           deleted: {$ne: true},
+          active: {$ne: false}
         };
         if (name) {
           queryOptions.name = { $regex: `${name}`, $options: "i" };
