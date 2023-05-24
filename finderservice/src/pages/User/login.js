@@ -122,6 +122,12 @@ export default function Login() {
                   Registrate
                 </Link>
               </div>
+              <div className="text-center my-4 text-sm text-gray-600">
+                ¿Olvidaste tu contraseña?{" "}
+                <Link href="recovery" className="link">
+                  Recuperar
+                </Link>
+              </div>
 
               <div className="w-full flex flex-col items-center border-gray-500/20 border-t-2">
                 <h3 className="pt-4 text-gray-600 font-semibold">
