@@ -11,7 +11,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   const router = useRouter();
   
   const handleAction = () =>{
-    localStorage.setItem('redirectUrl', router.asPath);
+    localStorage.setItem('redirectUrl', JSON.stringify(router.asPath));
     alert("Usuario: Debe iniciar sesión o registrarse para realizar esta acción.")
     router.push('/User/login');
   }
@@ -20,9 +20,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   <SessionProvider session={ session }>
     <UserProvider>
       <HomeEmployerProvider>
-      <WorkersProvider>
-      <Component {...pageProps} />
-      </WorkersProvider>
+        <WorkersProvider>
+          <Component handleAction={handleAction} {...pageProps} />
+        </WorkersProvider>
       </HomeEmployerProvider>
     </UserProvider>
   </SessionProvider>
