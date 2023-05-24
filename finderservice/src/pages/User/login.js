@@ -28,7 +28,7 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     await signIn("google", {
       redirect: true,
-      callbackUrl: "/",
+      callbackUrl: "/User/registerSocial",
     });
   };
 
