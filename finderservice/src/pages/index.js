@@ -13,7 +13,7 @@ export default function Home() {
 
   const inputRef = useRef(null);
 
-const initAutocomplete = () => {
+  const initAutocomplete = () => {
 
   const input = inputRef.current
   const autocomplete = new google.maps.places.Autocomplete(input);
