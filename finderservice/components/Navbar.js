@@ -28,31 +28,38 @@ export default function Navbar() {
             Finder Service
           </Link>
         </div>
+        
           <div className="hidden mdl:inline-flex items-center gap-7 ">
-        {showBtns && (!userData.profile ?
+            {showBtns && (!userData.profile ?
           <>
             <button onClick={handleAction} className="btn-navbar">
               <Image src={equipo} alt="icon_equipo" />
-              <p>Postulate a un Empleo</p>
+
+              <Link href="jobpostulations">Postulá tu empleo</Link>
             </button>
-            <button onClick={handleAction} className="btn-navbar hover:border-green-500">
+           
+              <button className="btn-navbar hover:border-green-500">
               <Image src={equipo} alt="icon_equipo" />
-              <p>Publica tu Servicio</p>
+              <Link href="jobrequests">Postulá tu contratación</Link>
             </button>
-          </> : (userData.profile === 'employer')?            
+
+          </> : (userData.profile === 'employer')?        
+
+             <button className="btn-navbar">
+              <Image src={equipo} alt="icon_equipo" />
+              <Link href="jobpostulations">Postula tu empleo</Link>
+            </button>
+
+             :
             <button className="btn-navbar hover:border-green-500">
               <Image src={equipo} alt="icon_equipo" />
-              <Link href="contratar">Publica tu Servicio</Link>
+              <Link href="jobrequests">Postulá tu contratación</Link>
             </button>
-            :
-            <button className="btn-navbar">
-              <Image src={equipo} alt="icon_equipo" />
-              <Link href="trabajar">Postulate a un Empleo</Link>
-            </button>
+            
         )}
             <Login />
           </div>
       </div>
-    </div>
-  );
+    </div>
+  );
 }

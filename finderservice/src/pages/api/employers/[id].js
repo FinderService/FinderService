@@ -2,7 +2,7 @@ import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Employer from "../../../models/Employer";
 import Address from "../../../models/Address";
 import mongoose from "mongoose";
-import { verifyPassword, encrypthPass } from "@/utils/lib";
+import { verifyPassword, encryptPass } from "@/utils/lib";
 
 export default async function handler(req, res) {
   await dbConnect();
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
 
         let newEncryptPass;
         let newSalt;
-        await encrypthPass(newpass, user.salt)
+        await encryptPass(newpass, user.salt)
           .then((response) => {
             newEncryptPass = response.encrypthPassword;
             newSalt = response.newSalt;

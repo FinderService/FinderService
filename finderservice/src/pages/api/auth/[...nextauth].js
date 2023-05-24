@@ -67,14 +67,10 @@ export const authOptions = {
         }
 
         let isValid;
-        try {
-          isValid = await verifyPassword(password, user.password, user.salt);
-        } catch (error) {
-          console.log(error);
-        }
+
+        isValid = await verifyPassword(password, user.password, user.salt);
 
         if (!isValid) {
-          console.log("El pass no es valido...");
           await dbDisconnect();
           throw new Error("Usuario y/o password incorrectos.");
         }
@@ -85,6 +81,7 @@ export const authOptions = {
           email: user.email,
           image: user.profilepic,
         };
+        await dbDisconnect();
         return logedUser;
       },
     }),

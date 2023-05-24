@@ -44,7 +44,7 @@ export default function WorkerDetail({ handleAction }) {
         <div className="font-bold flex justify-center items-center mt-10">Detalle del profesional seleccionado</div>
         <div class="flex justify-center items-center mt-10 ">
         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-             <Image src={workers1} className="w-36 h-fit"/>
+             <Image src={workers1} className="w-36 h-fit" alt="xd3"/>
              <br></br>
             <h2>Nombre: Pedro Gomez</h2>
             <br></br>

@@ -15,6 +15,7 @@ export default function HomeWorker() {
             getJobReqs();
             console.log(JobReqs);
         }
+        //eslint-disable-next-line
     },[])
 
   return (
@@ -40,9 +41,9 @@ export default function HomeWorker() {
                         <div className="mt-5 flex flex-col flex-wrap">
                             {JobReqs.map((job)=>{
                                 return (
-                                <Link href={`/HomeWorker/${job._id}`}>
+                                <Link href={`/HomeWorker/${job._id}`} key={waos2}>
                                     <div key={job._id} onClick={() => getJobReqs(job._id)} className="flex bg-neutral-300 p-5 mb-10 mr-5 duration-200 hover:scale-105 hover:shadow-xl">
-                                        <img className="mr-7 w-30 h-20 rounded-2xl" src={job.photo} width={75} height={75} alt="imgjob" />
+                                        <Image className="mr-7 w-30 h-20 rounded-2xl" src={job.photo} width={75} height={75} alt="imgjob" />
                                         <div className="flex justify-between w-4/5">
                                             <div className="flex flex-col justify-around">
                                                 <h2 className="font-bold">{job.name}</h2>
