@@ -2,7 +2,6 @@
 
 import { useContext, createContext, useState } from "react";
 import axios from "axios";
-import { RiInformationFill } from "react-icons/ri";
 
 const WorkersContext = createContext();
 
@@ -13,7 +12,7 @@ export const useWorkers = () => {
 }
 
 export const WorkersProvider = ({ children }) => {
-    const [workersData, setWorkersData] = useState([]);
+    const [employersData, setEmployersData] = useState([]);
 
     const [infoFilters, setInfoFilters] = useState([]);
     const [types, setTypes] = useState([]);
@@ -24,7 +23,7 @@ export const WorkersProvider = ({ children }) => {
 
     const getAllEmployers =  async () => {  
         let res = await axios.get('/api/employers')
-        setWorkersData([...res.data])
+        setEmployersData([...res.data])
     }
 
     const getJobReqs = async (id) => {
@@ -73,7 +72,7 @@ export const WorkersProvider = ({ children }) => {
     }
     
   return <WorkersContext.Provider 
-    value={{ workersData, getAllEmployers, JobReqs, getJobReqs, workDetail , setWorkDetail,
+    value={{ employersData, getAllEmployers, JobReqs, getJobReqs, workDetail , setWorkDetail,
         filterData, infoFilters, jobFilters, delFilter,
         types, getTypes}}>
         {children}
