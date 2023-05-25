@@ -4,6 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { logo } from "@public/assets";
 import { useState } from "react";
+import { validateUsername } from "@/utils/validators";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 export default function recovery() {
 
@@ -11,12 +14,35 @@ export default function recovery() {
         username: "",
     })
 
+    const [ error, setError] = useState({
+      username: "",
+    })
+
     const handleChange = (e) => {
+      if (e.target.username === "username"){
+        setError({
+          ...error,
+          [e.target.username]: validateUsername(e.target.value)
+        }) 
+      }
         setState({
           ...state,
-          [e.target.name]: e.target.value,
+          [e.target.username]: e.target.value,
         });
       };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          if (error.username) {
+            toast.error("Por favor ingrese su correo");
+            return;
+          }
+          const res = await axios
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
     //   const handleSubmit = async (e) => {
     //     e.preventDefault();
@@ -52,8 +78,8 @@ export default function recovery() {
                   Omitir
                 </Link>
               </div>
-
-              <Image src={logo} alt="app_logo" className="w-[15rem]" />
+            <div className="flex flex-wrap items-center justify-center">
+              <Image src={logo} alt="app_logo" className="w-[15rem]" /></div>
               <h1 className="w-full font-semibold text-2xl text-center py-4 text-gray-600">
                 Ingresa tu email para recuperar tu contraseña
               </h1>
