@@ -20,7 +20,7 @@ export default function Validation() {
 
   const handlevalidate = async (obj) => {
     try {
-      const resp = await axios.post("/api/auth/validate", obj);
+      const resp = await axios.put("/api/auth/validate", obj);
       console.log(resp);
       if(resp.data.success){
         setState({

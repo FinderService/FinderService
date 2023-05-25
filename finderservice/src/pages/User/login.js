@@ -12,7 +12,6 @@ import { useRouter } from "next/router";
 
 export default function Login() {
   const router = useRouter();
-
   const [state, setState] = useState({
     username: "",
     password: "",
@@ -29,7 +28,7 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     await signIn("google", {
       redirect: true,
-      callbackUrl: "/",
+      callbackUrl: "/User/registerSocial",
     });
   };
 
@@ -55,13 +54,7 @@ export default function Login() {
         loginError: result.error,
       });
     } else {
-      const redirectUrl = localStorage.getItem('redirectUrl');
-      if (redirectUrl) {
-        localStorage.removeItem('redirectUrl');
-        router.push(redirectUrl);
-      }else{
-        router.push("/")
-      }
+      router.push("/");
     }
   };
 
