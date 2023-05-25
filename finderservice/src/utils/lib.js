@@ -38,6 +38,19 @@ export function encryptPass(password){
 	});
 }
 
+export function generateSalt() {
+  return new Promise((resolve, reject) => {
+    crypto.randomBytes(16, (err, salt) => {
+      if (err) {
+        reject(err);
+      } else {
+        const newSalt = salt.toString('base64');
+        resolve(newSalt);
+      }
+    });
+  });
+}
+
 export function getBase64(file){
     return new Promise(resolve => {
       let baseURL = "";
