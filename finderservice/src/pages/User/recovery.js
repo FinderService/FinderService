@@ -18,16 +18,16 @@ export default function recovery() {
       username: "",
     })
 
-    const handleChange = (e) => {
+    const handlerChange = (e) => {
       if (e.target.username === "username"){
         setError({
           ...error,
-          [e.target.username]: validateUsername(e.target.value)
+          [e.target.name]: validateUsername(e.target.value)
         }) 
       }
         setState({
           ...state,
-          [e.target.username]: e.target.value,
+          [e.target.name]: e.target.value,
         });
       };
 
@@ -38,36 +38,17 @@ export default function recovery() {
             toast.error("Por favor ingrese su correo");
             return;
           }
-          const res = await axios
+          const res = await axios.post("/api/updateuser/mailRecoverPassword", state)
+          toast.success(res.data.msg);
+          setState({
+            ...state,
+            username: "",
+          })
         } catch (error) {
           console.log(error);
+          toast.error(error.response.data.msg);
         }
       }
-
-    //   const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     const result = await signIn("credentials", {
-    //       username: state.username,
-    //       redirect: false,
-    //       callbackUrl: "/",
-    //     });
-    
-    //     if (result.error) {
-    //       setState({
-    //         ...state,
-    //         loginError: result.error,
-    //       });
-    //     } else {
-    //       const redirectUrl = localStorage.getItem('redirectUrl');
-    //       if (redirectUrl) {
-    //         localStorage.removeItem('redirectUrl');
-    //         router.push(redirectUrl);
-    //       }else{
-    //         router.push("/")
-    //       }
-    //     }
-    //   };
-
 
   return (
     <Layout>
@@ -84,18 +65,31 @@ export default function recovery() {
                 Ingresa tu email para recuperar tu contraseña
               </h1>
               <form
-                //onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
                 className="flex flex-col gap-2 items-center"
               >
-                <input
+                {/* <input
                   className="form-input w-full text-center"
                   type="text"
                   name="username"
-                  onChange={handleChange}
+                  onChange={handlerChange}
                   value={state.username}
                   autoComplete="off"
                   placeholder="Email"
+                /> */}
+                <input
+                  className={`form-input ${
+                    error.username ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="username"
+                  placeholder="Email"
+                  onChange={handlerChange}
+                  value={state.username}
                 />
+                {error.username && (
+                  <span className="formErrorLbl">{error.username}</span>
+                )}
                 <button
                   type="submit"
                   className="btn-navbar w-[4.5rem] text-center"
