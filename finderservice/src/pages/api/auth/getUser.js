@@ -10,7 +10,7 @@ export default async function registerHandler(req, res) {
     if (!email) {
       throw new Error("Falta el correo...");
     }
-    console.log('ola')
+    
     let user = await Employer.findOne({ email });
     console.log(user);
 
