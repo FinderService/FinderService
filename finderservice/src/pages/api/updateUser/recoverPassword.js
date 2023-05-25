@@ -7,10 +7,12 @@ export default async function recoverPassword(req, res) {
   await dbConnect();
   try {
     const { validator, email, password } = req.body;
-    let user = await Promise.any([
-      Worker.findOne({ email }),
-      Employer.findOne({ email }),
-    ]);
+    let user = await Employer.findOne({ email }).exec();
+    if (!user) {
+      user = await Worker.findOne({ email }).exec();
+    }
+      
+
 
     if (!user) {
       await dbDisconnect();

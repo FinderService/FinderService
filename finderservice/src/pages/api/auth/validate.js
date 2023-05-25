@@ -8,7 +8,6 @@ export default async function validateHandler(req, res) {
   try {
     const { validator, email } = req.body;
     console.log(validator, email);
-    
 
     let user = await Employer.findOne({ email }).exec();
 
@@ -19,7 +18,6 @@ export default async function validateHandler(req, res) {
     }
 
     if (user) {
-      console.log(user);
       if (user.validator == validator) {
         let result =
           user.profile === "worker"
