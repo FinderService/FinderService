@@ -8,9 +8,12 @@ import { loader } from '@public/assets';
 import Link from "next/link";
 
 export default function WorkDetail() {
-    const { workDetail, setWorkDetail} = useWorkers();
+    const { workDetail, setWorkDetail, getJobReqs} = useWorkers();
+    const router = useRouter();
+    const { id } = router.query;
 
     useEffect(()=>{
+        getJobReqs(id);
         return (setWorkDetail([]))
         //eslint-disable-next-line
     },[])
@@ -23,14 +26,14 @@ export default function WorkDetail() {
                 <div class="flex justify-around bg-white shadow-2xl rounded px-8 pt-6 pb-8 mb-10">
                     <Image className="mr-10 ml-5" src={workDetail.photo} width={300} height={300} alt="workDetail"/>
                     <div className="flex flex-col justify-around">
-                        <h2 className="font-bold text-2xl">{workDetail.name}</h2>
-                        <h3>Información del trabajo: {workDetail.description}</h3>
-                        <p>Ubicación: {workDetail.address}</p>
-                        <p>Fecha: {workDetail.date}</p>
-                        <p>Destinado para: {" - "}</p>
-                        <p>Publicado por {workDetail.employer}</p>
+                        <h2 className="mb-3 font-bold text-2xl">{workDetail.name}</h2>
+                        <h3 className="mb-2">Información del trabajo: {workDetail.description}</h3>
+                        <p className="mb-2">Ubicación: {workDetail.address}</p>
+                        <p className="mb-2">Fecha: {workDetail.date.slice(0,10)}</p>
+                        <p className="mb-2">Destinado para: {workDetail.type.map((tipo)=> tipo.name).toString()}</p>
+                        <p className="mb-2">Publicado por {workDetail.employer}</p>
                         <div class= "flex justify-center items-center space-x-8 mt-5">
-                            <Link href="/trabajar"><button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Postularme</button></Link>
+                            <Link href="/jobpostulations"><button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Postularme</button></Link>
                             <Link href="/HomeWorker"><button class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">Volver</button></Link>
                         </div>
                     </div>

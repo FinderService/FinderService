@@ -18,6 +18,7 @@ export default function Login() {
 
   const [showMenu, setShowMenu] = useState(false);
   const { data: session } = useSession();
+  console.log(session);
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: "/User/login" });

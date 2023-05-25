@@ -3,6 +3,7 @@ import { logo, equipo } from "@public/assets";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Login from "./User/login";
+import { useSession } from "next-auth/react";
 import { useUser } from "@context/UserContext";
 
 
@@ -10,10 +11,11 @@ export default function Navbar() {
 
   const router = useRouter();
   const showBtns = router.pathname.indexOf("User") > -1 ? false : true;
+  const { data: session } = useSession();
   const { userData } = useUser();
 
   const handleAction = () =>{
-    localStorage.setItem('redirectUrl', router.asPath);
+    localStorage.setItem('redirectUrl', JSON.stringify(router.asPath));
     alert("Usuario: Debe iniciar sesión o registrarse para realizar esta acción.")
     router.push('/User/login');
   }
@@ -29,37 +31,29 @@ export default function Navbar() {
           </Link>
         </div>
         
-          <div className="hidden mdl:inline-flex items-center gap-7 ">
-            {showBtns && (!userData.profile ?
+        <div className="hidden mdl:inline-flex items-center gap-7 ">
+          {showBtns && (!session?.user ?
           <>
             <button onClick={handleAction} className="btn-navbar">
               <Image src={equipo} alt="icon_equipo" />
-
-              <Link href="jobpostulations">Postulá tu empleo</Link>
+              <p>Postulá tu empleo</p>
             </button>
-           
-              <button className="btn-navbar hover:border-green-500">
+
+            <button onClick={handleAction}  className="btn-navbar hover:border-green-500">
               <Image src={equipo} alt="icon_equipo" />
-              <Link href="jobrequests">Postulá tu contratación</Link>
+              <p>Postulá tu contratación</p>
             </button>
-
-          </> : (userData.profile === 'employer')?        
-
-             <button className="btn-navbar">
-              <Image src={equipo} alt="icon_equipo" />
-              <Link href="jobpostulations">Postula tu empleo</Link>
-            </button>
-
-             :
+            
+          </> : (userData.profile === 'employer')? <>       
             <button className="btn-navbar hover:border-green-500">
               <Image src={equipo} alt="icon_equipo" />
               <Link href="jobrequests">Postulá tu contratación</Link>
-            </button>
-            
-        )}
-            <Login />
-          </div>
+            </button> 
+          </> : <></>)
+          }
+          <Login />
+        </div>
       </div>
     </div>
-  );
+  );
 }

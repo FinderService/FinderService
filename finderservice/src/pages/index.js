@@ -1,15 +1,15 @@
 import Footer from "@components/Footer";
 import HomeSlider from "@components/HomeSlider";
 import Layout from "@components/Layout";
+import { useUser } from "@context/UserContext";
 import { ubi } from '@public/assets';
 import Image from "next/image";
 import Link from "next/link";
 import { Loader } from "@googlemaps/js-api-loader"
 import React, { useRef, useEffect } from "react";
 
-
 export default function Home() {
-
+  const { userData } = useUser();
   const inputRef = useRef(null);
 
 const initAutocomplete = () => {
@@ -75,7 +75,10 @@ useEffect(()=>{
               className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "
               ref={inputRef} 
             />
-            <Link href='HomeEmployer' className="bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all"> Buscar </Link>
+            {userData.profile === 'worker'
+            ? <Link href='/HomeWorker' className="bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all"> Buscar </Link>
+            : <Link href='/HomeEmployer' className="bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all"> Buscar </Link>
+            }
           </div>        
         </div>
       </div>
