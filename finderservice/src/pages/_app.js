@@ -6,11 +6,14 @@ import { HomeEmployerProvider } from '@context/HomeEmployerContext'
 import { useRouter } from 'next/router'
 import { WorkersProvider } from '@context/WorkersContext'
 import { AdminProvider } from '@context/AdminContext'
-
+import { usePostulations } from '@context/JobpostulationsContext';
+import { useJobRequests } from '@context/JobrequestsContext';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter();
-  
+  const { jobPostulations, addJobPostulations } = usePostulations();
+  const { jobRequests, addJobRequests } = useRequests();
+
   const handleAction = () =>{
     localStorage.setItem('redirectUrl', JSON.stringify(router.asPath));
     alert("Usuario: Debe iniciar sesión o registrarse para realizar esta acción.")
@@ -20,6 +23,12 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   return (
   <SessionProvider session={ session }>
     <UserProvider>
+        <JobpostulationsContext.Provider value={{ jobPostulations, addJobPostulations }}>
+          <Component handleAction={handleAction} {...pageProps} />
+        </JobpostulationsContext.Provider>
+        <JobRequestsContext.Provider value={{ jobRequests, addJobRequests }}>
+          <Component handleAction={handleAction} {...pageProps} />
+        </JobRequestsContext.Provider>
       <AdminProvider>
         <HomeEmployerProvider>
           <WorkersProvider>
@@ -35,23 +44,6 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
 
 
  
-/*
-import { Provider } from "react-redux";
-import { createStore } from "redux";
-import rootReducer from "../redux/reducer";
-
-const store = createStore(rootReducer);
-
-function MyApp({ Component, pageProps }) {
-  return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
-  );
-}
-
-export default MyApp;
-*/
 
 
 
