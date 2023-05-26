@@ -4,7 +4,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 import {
-  validateName,
   validateMessage,
   validateSalary,
   validateState,
@@ -23,7 +22,6 @@ export default function Postulation() {
   });
   
   const [error, setErrror] = useState({
-    name: "",
     phone: "",
     salary: "",
     message: "",
@@ -204,19 +202,7 @@ export default function Postulation() {
               >
                 <h3 className="text-black font-bold">Generar postulación de empleo</h3>
                 
-                <input
-                  className={`form-input ${
-                    error.name ? "form-input-error" : ""
-                  }`}
-                  type="text"
-                  name="name"
-                  placeholder="Nombre asignado"
-                  onChange={handleChange}
-                  value={state.worker.name}
-                />
-                {error.name && (
-                  <span className="formErrorLbl">{error.name}</span>
-                )}
+               
                     <input
                   className={`form-input ${
                     error.name ? "form-input-error" : ""
@@ -245,20 +231,7 @@ export default function Postulation() {
                 )}
 
            
-                 <input
-                  className={`form-input ${
-                    error.phone ? "form-input-error" : ""
-                  }`}
-                  type="integer"
-                  name="phone"
-                  placeholder="Contacto/Tel"
-                  onChange={handleChange}
-                  value={state.phone}
-                />
-                {error.phone && (
-                  <span className="formErrorLbl">{error.phone}</span>
-                )}
-
+            
 
                       Selecciona el rubro del empleo:
                     <div className="flex flex-row flex-wrap gap-2 items-center justify-center">

@@ -1,9 +1,13 @@
 import { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 
-const JobpostulationsContext = createContext();
+export const JobpostulationsContext = createContext();
 
-export function UserProvider({ children }) {
+export function usePostulations() {
+  return useContext(JobpostulationsContext);
+}
+
+export function JobpostulationsProvider({ children }) {
   const [jobPostulations, setJobPostulations] = useState([]);
 
   const addJobPostulation = async (id) => {
@@ -21,8 +25,4 @@ export function UserProvider({ children }) {
       {children}
     </JobpostulationsContext.Provider>
   );
-}
-
-export function usePostulations() {
-  return useContext(JobpostulationsContext);
 }

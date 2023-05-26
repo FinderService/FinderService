@@ -1,28 +1,28 @@
 import { createContext, useContext, useState } from 'react';
 import axios from 'axios';
 
-const JobrequestsContext = createContext();
+export const JobrequestsContext = createContext();
 
-export function UserProvider({ children }) {
-  const [jobRequests, setJobRequest] = useState([]);
+export function useRequests() {
+  return useContext(JobrequestsContext);
+}
 
-  const addJobRequests = async (id) => {
+export function JobrequestsProvider({ children }) {
+  const [jobRequests, setJobRequests] = useState([]);
+
+  const addJobRequest = async (id) => {
     try {
       const response = await axios.post('/api/jobrequests', { id });
       const newJobRequest = response.data;
-      setJobRequest([...jobRequests, newJobRequest]);
+      setJobRequests([...jobRequests, newJobRequest]);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <PostulationsContext.Provider value={{ jobRequests, addJobRequests }}>
+    <JobrequestsContext.Provider value={{ jobRequests, addJobRequest }}>
       {children}
-    </PostulationsContext.Provider>
+    </JobrequestsContext.Provider>
   );
-}
-
-export function useRequests() {
-  return useContext(JobrequestsContext);
 }
