@@ -15,6 +15,8 @@ export default async function handler(req, res) {
         let { name, address } = req.query;
         const queryOptions = {
           deleted: {$ne: true},
+          active: {$ne: false}
+
         };
         if (address) {
           queryOptions["address.city"] = {
@@ -50,7 +52,6 @@ export default async function handler(req, res) {
         }
         console.log(req.body);
         const user = await Worker.findOne({ email }).exec();
-       
 
         if (!user) {
           await dbDisconnect();
@@ -69,8 +70,6 @@ export default async function handler(req, res) {
             .json({ success: false, msg: "Contraseña incorrecta" });
         }
 
-        
-
         const { encryptedPassword, newSalt } = await encryptPass(newpass);
 
         console.log(encryptedPassword);
@@ -80,7 +79,6 @@ export default async function handler(req, res) {
           { $set: { password: encryptedPassword, salt: newSalt } }
         ).exec();
 
-       
         if (result) {
           await dbDisconnect();
           return res.status(200).json({

@@ -9,7 +9,6 @@ import { serialize } from "cookie";
 import { verifyPassword } from "@/utils/lib";
 
 export default async function loginHandler(req, res) {
-  console.log("gononea");
   await dbConnect();
   try {
     console.log(req.body);

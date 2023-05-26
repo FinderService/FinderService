@@ -1,5 +1,5 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
-import { verifyPassword, encryptPass} from "@/utils/lib";
+import { verifyPassword, encryptPass } from "@/utils/lib";
 import Worker from "@/models/Worker";
 import Employer from "@/models/Employer";
 import Type from "@/models/Type";
@@ -33,10 +33,11 @@ export default async function registerHandler(req, res) {
 
     const { encryptedPassword, newSalt } = await encryptPass(password);
 
-    let user = await Promise.any([
-      Worker.findOne({ email }),
-      Employer.findOne({ email }),
-    ]);
+    let user = await Employer.findOne({ email }).exec();
+    if (!user) {
+      user = await Worker.findOne({ email }).exec();
+    }
+  
 
     if (user) {
       await dbDisconnect();
@@ -50,14 +51,13 @@ export default async function registerHandler(req, res) {
       encryptedPassword,
       newSalt
     );
-    
+
     if (!passwordMatch) {
       await dbDisconnect();
       return res
         .status(400)
         .json({ success: false, msg: "La contraseña es incorrecta" });
     }
-    
 
     let appUrl = process.env.APP_URL;
     let validator = newSalt.toString("base64");
@@ -95,7 +95,7 @@ export default async function registerHandler(req, res) {
         content
       );
       await newUser.save();
-      
+
       if (newUser) {
         await dbDisconnect();
         return res.status(201).json({
@@ -123,7 +123,7 @@ export default async function registerHandler(req, res) {
         content
       );
       await newUser.save();
-      
+
       if (newUser) {
         await dbDisconnect();
         return res.status(201).json({
