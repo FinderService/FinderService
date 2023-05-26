@@ -13,11 +13,11 @@ import {
 
 export default function Postulation() {
   const [state, setState] = useState({
-    name: "",
+    worker:{name: "",}, // name:"",
     phone: "",
     salary: "",
     message: "",
-    state: "",
+    state: "",  
     types: [],
     profile: "worker",
   });
@@ -59,6 +59,14 @@ export default function Postulation() {
         ...error,
         [e.target.name]: validateName(e.target.value),
       });
+
+      setState((preState)=>({
+        ...preState,
+        worker: {
+          ...preState.worker,
+          name: e.target.value,
+        },
+      })); //
     }
 
     if (e.target.name === "phone") {
@@ -66,6 +74,11 @@ export default function Postulation() {
         ...error,
         [e.target.name]: validatePhone(e.target.value),
       });
+
+      setState((preState) => ({
+        ...preState,
+        phone: e.target.value,
+      }));
     }
 
     if (e.target.name === "salary") {
@@ -73,24 +86,37 @@ export default function Postulation() {
         ...error,
         [e.target.name]: validateSalary(e.target.value),
       });
+
+      setState((preState) => ({
+        ...preState,
+        salary: e.target.value,
+      }));
     }
     if (e.target.name === "message") {
       setErrror({
         ...error,
         [e.target.name]: validateMessage(e.target.value),
       });
+
+      setState((preState) => ({
+        ...preState,
+        message: e.target.value,
+      }));
     }
+
     if (e.target.name === "state") {
       setErrror({
         ...error,
         [e.target.name]: validateState(e.target.value),
       });
+
+      setState((preState) => ({
+        ...preState,
+        state:e.target.value,
+      }));
+
     }
 
-    setState({
-      ...state,
-      [e.target.name]: e.target.value,
-    });
   };
 
 
@@ -113,7 +139,8 @@ export default function Postulation() {
         error.phone ||
         error.salary ||
         error.message ||
-        error.state 
+        error.state || 
+        !state.worker.name
       ) {
         toast.error("Todos los campos son obligatorios");
         return;
@@ -130,9 +157,11 @@ export default function Postulation() {
       toast.success(resp.data.msg);
       setState({
         ...state,
-        name: "",
+        worker: {
+          name: "",
+        },
         phone: "",
-        salaty: "",
+        salary: "",
         message: "",
         state: "",
 
@@ -183,7 +212,7 @@ export default function Postulation() {
                   name="name"
                   placeholder="Nombre asignado"
                   onChange={handleChange}
-                  value={state.name}
+                  value={state.worker.name}
                 />
                 {error.name && (
                   <span className="formErrorLbl">{error.name}</span>

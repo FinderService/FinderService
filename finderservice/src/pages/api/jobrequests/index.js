@@ -35,7 +35,7 @@ export default async function handler(req, res) {
 
         const newAddress = new Address({
           name: address[0].name,
-          city: address[0].city,
+          // city: address[0].city,
         });
 
         const employerDb = await Employer.findById(employerid);

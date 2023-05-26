@@ -51,7 +51,7 @@ export default function Navbar() {
             </button> 
           </> : <></>)
           }
-          <Login />
+          <Login/>
         </div>
       </div>
     </div>
