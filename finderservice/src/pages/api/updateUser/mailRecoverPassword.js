@@ -8,8 +8,9 @@ import { generateSalt } from "@/utils/lib";
 export default async function validateHandler(req, res) {
   await dbConnect();
   try {
-    const { email } = req.body;
+    const { username:email } = req.body;
 
+    console.log(email)
     let user = await Promise.any([
       Worker.findOne({ email }),
       Employer.findOne({ email }),
