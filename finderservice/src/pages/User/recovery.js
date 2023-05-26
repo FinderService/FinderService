@@ -38,7 +38,7 @@ export default function recovery() {
             toast.error("Por favor ingrese su correo");
             return;
           }
-          const res = await axios.post("/api/updateuser/mailRecoverPassword", state)
+          const res = await axios.put("/api/updateUser/mailRecoverPassword", state)
           toast.success(res.data.msg);
           setState({
             ...state,
