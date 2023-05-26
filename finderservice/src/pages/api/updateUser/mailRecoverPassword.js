@@ -8,13 +8,13 @@ import { generateSalt } from "@/utils/lib";
 export default async function validateHandler(req, res) {
   await dbConnect();
   try {
-    const { username:email } = req.body;
+    const { username: email } = req.body;
 
-    console.log(email)
-    let user = await Promise.any([
-      Worker.findOne({ email }),
-      Employer.findOne({ email }),
-    ]);
+    console.log(email);
+    let user = await Employer.findOne({ email }).exec();
+    if (!user) {
+      user = await Worker.findOne({ email }).exec();
+    }
 
     //console.log(user);
     if (!user) {
@@ -29,19 +29,26 @@ export default async function validateHandler(req, res) {
       let content = retrivePassword(validator, email, appUrl);
 
       let mail = await mailGun(email, "Recuperación de contraseña", content);
-      user.updateOne({
-        validator: validator,
-      });
-
-      await dbDisconnect();
-      return res.status(201).json({
-        success: true,
-        user: user,
-        msg:"Correo enviado con éxito",
-        mail,
-      })
+      let result =
+        user.profile === "worker"
+          ? await Worker.updateOne(
+              { email: email },
+              { $set: { validator: validator } }
+            ).exec()
+          : await Employer.updateOne(
+              { email: email },
+              { $set: { validator: validator } }
+            ).exec();
+      if (result) {
+        await dbDisconnect();
+        return res.status(201).json({
+          success: true,
+          user: user,
+          msg: "Correo enviado con éxito",
+          mail,
+        });
+      }
     }
-    
   } catch (error) {
     await dbDisconnect();
     console.log(error);
