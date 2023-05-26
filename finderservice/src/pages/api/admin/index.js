@@ -8,15 +8,15 @@ export default async function handler(req, res) {
   const session = await getSession({ req });
   const user = session === null ? "No user" : session.user.email;
 
-  const auth = async () => {
-    const dataAdmin = await Admin.find({});
-    return dataAdmin.some(
-      (x) => x.email === user[0].toUpperCase() + user.substring(1)
-    );
-  };
+  //const auth = async () => {
+  //  const dataAdmin = await Admin.find({});
+  //  return dataAdmin.some(
+  //    (x) => x.email === user[0].toUpperCase() + user.substring(1)
+  //  );
+  //};
 
-  const allowUser = await auth();
-  if (!allowUser) return res.status(401).json({ auth: "failed" });
+  //const allowUser = await auth();
+  //if (!allowUser) return res.status(401).json({ auth: "failed" });
   await dbConnect();
   const { method } = req;
   switch (method) {

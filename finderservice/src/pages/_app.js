@@ -5,6 +5,7 @@ import { UserProvider } from '@context/UserContext'
 import { HomeEmployerProvider } from '@context/HomeEmployerContext'
 import { useRouter } from 'next/router'
 import { WorkersProvider } from '@context/WorkersContext'
+import { AdminProvider } from '@context/AdminContext'
 
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
@@ -19,11 +20,13 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   return (
   <SessionProvider session={ session }>
     <UserProvider>
-      <HomeEmployerProvider>
-        <WorkersProvider>
-          <Component handleAction={handleAction} {...pageProps} />
-        </WorkersProvider>
-      </HomeEmployerProvider>
+      <AdminProvider>
+        <HomeEmployerProvider>
+          <WorkersProvider>
+            <Component handleAction={handleAction} {...pageProps} />
+          </WorkersProvider>
+        </HomeEmployerProvider>
+      </AdminProvider>
     </UserProvider>
   </SessionProvider>
   )
