@@ -1,21 +1,5 @@
 
 
-export function validateName (name){
-
-  if(name === ''){
-      return '* El nombre del empleo es obligatorio';
-  }
-
-  if(name.length > 25){
-      return '* Es muy largo';
-  }
-
-  if(name.length < 3){
-      return '* Debe tener almenos 3 letras';
-  }
-  
-  return '';
-}
 
 export function validateMessage (message){
 
@@ -60,23 +44,3 @@ export function validateState (state){
 }
 
 
-export function validatePhone (phone){
-
-  if(phone === ''){
-      return '* El campo es requerido.';
-  }
-
-  if(phone.length > 13){
-      return '* Es muy largo';
-  }
-
-  if(phone.length < 10){
-      return '* Debe ser tener al menos 10 digitos';
-  }
-
-  if(!/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g.test(phone)){
-      return 'El formato no es valido.';
-  }
-  
-  return '';
-}

@@ -1,20 +1,4 @@
 
-export function validateName (name){
-
-  if(name === ''){
-      return '* El nombre del empleo es obligatorio';
-  }
-
-  if(name.length > 25){
-      return '* Es muy largo';
-  }
-
-  if(name.length < 3){
-      return '* Debe tener almenos 3 letras';
-  }
-  
-  return '';
-}
 
 export function validateDescription (descripción){
 

@@ -4,7 +4,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 import {
-  validateName,
   validateMessage,
   validateSalary,
   validateState,
@@ -13,17 +12,16 @@ import {
 
 export default function Postulation() {
   const [state, setState] = useState({
-    name: "",
+    worker:{name: "",}, // name:"",
     phone: "",
     salary: "",
     message: "",
-    state: "",
+    state: "",  
     types: [],
     profile: "worker",
   });
   
   const [error, setErrror] = useState({
-    name: "",
     phone: "",
     salary: "",
     message: "",
@@ -59,6 +57,14 @@ export default function Postulation() {
         ...error,
         [e.target.name]: validateName(e.target.value),
       });
+
+      setState((preState)=>({
+        ...preState,
+        worker: {
+          ...preState.worker,
+          name: e.target.value,
+        },
+      })); //
     }
 
     if (e.target.name === "phone") {
@@ -66,6 +72,11 @@ export default function Postulation() {
         ...error,
         [e.target.name]: validatePhone(e.target.value),
       });
+
+      setState((preState) => ({
+        ...preState,
+        phone: e.target.value,
+      }));
     }
 
     if (e.target.name === "salary") {
@@ -73,24 +84,37 @@ export default function Postulation() {
         ...error,
         [e.target.name]: validateSalary(e.target.value),
       });
+
+      setState((preState) => ({
+        ...preState,
+        salary: e.target.value,
+      }));
     }
     if (e.target.name === "message") {
       setErrror({
         ...error,
         [e.target.name]: validateMessage(e.target.value),
       });
+
+      setState((preState) => ({
+        ...preState,
+        message: e.target.value,
+      }));
     }
+
     if (e.target.name === "state") {
       setErrror({
         ...error,
         [e.target.name]: validateState(e.target.value),
       });
+
+      setState((preState) => ({
+        ...preState,
+        state:e.target.value,
+      }));
+
     }
 
-    setState({
-      ...state,
-      [e.target.name]: e.target.value,
-    });
   };
 
 
@@ -113,7 +137,8 @@ export default function Postulation() {
         error.phone ||
         error.salary ||
         error.message ||
-        error.state 
+        error.state || 
+        !state.worker.name
       ) {
         toast.error("Todos los campos son obligatorios");
         return;
@@ -130,9 +155,11 @@ export default function Postulation() {
       toast.success(resp.data.msg);
       setState({
         ...state,
-        name: "",
+        worker: {
+          name: "",
+        },
         phone: "",
-        salaty: "",
+        salary: "",
         message: "",
         state: "",
 
@@ -175,19 +202,7 @@ export default function Postulation() {
               >
                 <h3 className="text-black font-bold">Generar postulación de empleo</h3>
                 
-                <input
-                  className={`form-input ${
-                    error.name ? "form-input-error" : ""
-                  }`}
-                  type="text"
-                  name="name"
-                  placeholder="Nombre asignado"
-                  onChange={handleChange}
-                  value={state.name}
-                />
-                {error.name && (
-                  <span className="formErrorLbl">{error.name}</span>
-                )}
+               
                     <input
                   className={`form-input ${
                     error.name ? "form-input-error" : ""
@@ -216,20 +231,7 @@ export default function Postulation() {
                 )}
 
            
-                 <input
-                  className={`form-input ${
-                    error.phone ? "form-input-error" : ""
-                  }`}
-                  type="integer"
-                  name="phone"
-                  placeholder="Contacto/Tel"
-                  onChange={handleChange}
-                  value={state.phone}
-                />
-                {error.phone && (
-                  <span className="formErrorLbl">{error.phone}</span>
-                )}
-
+            
 
                       Selecciona el rubro del empleo:
                     <div className="flex flex-row flex-wrap gap-2 items-center justify-center">
