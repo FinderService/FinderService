@@ -2,6 +2,8 @@ import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Worker from "@/models/Worker";
 import Employer from "@/models/Employer";
 import Admin from "@/models/Admin";
+import Address from "@/models/Address";
+import Type from '@/models/Type';
 
 export default async function registerHandler(req, res) {
   await dbConnect();
@@ -21,6 +23,23 @@ export default async function registerHandler(req, res) {
         user = await Admin.findOne({ email });
       }
     }
+
+    // obtener los types
+    let typesArr = await user.type.map( async t =>  await Type.findOne({ _id: t }) );
+
+    let types = [];
+    if(typesArr.length){
+      types = (await Promise.all(typesArr)).map(res => res );
+      user.type = [...types];
+    }
+
+    // obtener el address
+    let address = await Address.find({ id_usuario: user._id, deleted: false });
+    if(address){
+      user.address = [...address];
+    }
+
+    delete user.password;
 
     res.status(200).json({ user });
   } catch (error) {
