@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext } from "react";
+import { useRouter } from 'next/router';
 import Layout from "@components/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -7,10 +8,10 @@ import {
   validateMessage,
   validateSalary,
   validateState,
-  validatePhone,
 } from"../../utils/validationPost";
 
 export default function Postulation() {
+  const router = useRouter();
   const { addJobPostulation } = useContext(JobpostulationsContext);
   
   const [state, setState] = useState({
@@ -129,6 +130,7 @@ export default function Postulation() {
       console.log(error);
       toast.error(error.response.data.msg);
     }
+    router.push('/HomeWorker/Postulations');
   }
 
 
