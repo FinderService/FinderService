@@ -1,25 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Layout from "@components/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import { JobrequestsContext } from "@context/JobrequestsContext";
 import {
   validateDate,
   validateDescription,
   validatePhoto,
   validateAddress,
-} from"../../utils/validationReq";
+} from "../../utils/validationReq";
 
 export default function Postulation() {
+  const { addJobRequest } = useContext(JobrequestsContext);
+
   const [state, setState] = useState({
     date: "",
     description: "",
-    photo: "",
+    photo: null,
     types: [],
     address: "",
     profile: "employer",
   });
-  
+
   const [error, setErrror] = useState({
     date: "",
     description: "",
@@ -29,7 +31,7 @@ export default function Postulation() {
   });
 
   const [types, setTypes] = useState([]);
-  
+
   const handleOnChangeTypes = (type) => {
     let newTypes = [];
     if (state.types.length > 0) {
@@ -48,36 +50,33 @@ export default function Postulation() {
       ...state,
       types: newTypes,
     });
-  }; 
-
+  };
 
   const handleChange = (e) => {
-  
     if (e.target.name === "date") {
       setErrror({
         ...error,
-        [e.target.date]: validateDate(e.target.value),
+        [e.target.name]: validateDate(e.target.value),
       });
     }
     if (e.target.name === "description") {
       setErrror({
         ...error,
-        [e.target.description]: validateDescription(e.target.value),
+        [e.target.name]: validateDescription(e.target.value),
       });
     }
     if (e.target.name === "address") {
       setErrror({
         ...error,
-        [e.target.address]: validateAddress(e.target.value),
+        [e.target.name]: validateAddress(e.target.value),
       });
     }
     if (e.target.name === "photo") {
       setErrror({
         ...error,
-        [e.target.photo]: validatePhoto(e.target.value),
+        [e.target.name]: validatePhoto(e.target.value),
       });
     }
-    
 
     setState({
       ...state,
@@ -85,17 +84,18 @@ export default function Postulation() {
     });
   };
 
-
   const getTypes = async () => {
-    let res = await axios.get("/api/types"); 
-    setTypes(res.data);
+    try {
+      const res = await axios.get("/api/types");
+      setTypes(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     getTypes();
   }, []);
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,43 +104,53 @@ export default function Postulation() {
         error.description ||
         error.date ||
         error.photo ||
-        error.address 
+        error.address
       ) {
         toast.error("Todos los campos son obligatorios");
         return;
       }
 
-      if(state.profile === 'employer' && state.types.length <= 0){
+      if (state.profile === "employer" && state.types.length <= 0) {
         toast.error("Seleccione al menos un rubro");
         return;
       }
 
-      console.log(state.types)
-      const resp = await axios.post("/api/jobrequests", state);
-      console.log(resp);
-      toast.success(resp.data.msg);
+      const formData = new FormData();
+      formData.append("date", state.date); //metodo para agregar un nueva propiedad y valor
+      formData.append("description", state.description);
+      formData.append("photo", state.photo);
+      
+      
+      const resp = await axios.post("/jobrequests", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      
+      addJobRequest(resp.data);
+      toast.success('Su solicitud fue publicada exitosamente');
       setState({
         ...state,
-        name: "",
         date: "",
         description: "",
-        photo: "",
+        photo: null,
         address: "",
+        profile: "employer",
+        types: [],
       });
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.msg);
     }
-  }
+  };
 
-  /* const handlePostulation = () => {
-    alert("El posteo fue creado exitosamente")
-  }; */
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setState((prevState) => ({...prevState, photo: file }));
-  };
+    setState((prevState) => ({ ...prevState, photo: file }));
+  }; 
+
 
   return (
     <div className="h-screen bg-gradient-to-b from-gray-300 to-black">
@@ -148,124 +158,118 @@ export default function Postulation() {
         <Layout>
           <div className="flex flex-row items-center justify-center h-screen overflow-y-hidden">
             <div className="flex flex-col text-white mr-8 w-[30rem]">
-                <>
-                  <h1 className="text-3xl font-titleFont font-bold mb-2">
+              <>
+                <h1 className="text-3xl font-titleFont font-bold mb-2">
                   ¡Completa el siguiente formulario y encuentra una solución a tu necesidad!
-                  </h1>
-                <hr>
-
-                </hr>
-                  <ul className="list-disc mt-6">
-                    <li>Puedes agregar una foto del trabajo requerido, así el empleado que contrates podrá ver de qué se trata la petición en cuestión</li>
-                    <li>¡A solo un click, no esperes más!</li>
-                  </ul>
-                </>
-              
+                </h1>
+                <hr />
+                <ul className="list-disc mt-6">
+                  <li>Puedes agregar una foto del trabajo requerido, así quien contrates sabrá de qué se trata</li>
+                  <li>¡A solo un click, no esperes más!</li>
+                </ul>
+              </>
             </div>
- 
-              <form
-                 onSubmit={handleSubmit} 
-                className="flex flex-col bg-white p-6 w-[25rem] gap-2 bg-white/70 backdrop-blur-xl rounded-lg drop-shadow-xl border-8 border-green-500 p-8 rounded-lg bg-gray-200"
-                autoComplete="off"
-              >
-                <h3 className="text-black font-bold">Generar solicitud de empleo</h3>
-                
-            
-                 <input
-                  className={`form-input ${
-                    error.description ? "form-input-error" : ""
-                  }`}
-                  type="text"
-                  name="description"
-                  placeholder="Descripción"
-                  onChange={handleChange}
-                  value={state.description}
-                />
-                {error.description && (
-                  <span className="formErrorLbl">{error.description}</span>
-                )}
-    
-                    <input
-                  className={`form-input ${
-                    error.address ? "form-input-error" : ""
-                  }`}
-                  type="text"
-                  name="address"
-                  placeholder="Dirección"
-                  onChange={handleChange}
-                  value={state.address}
-                />
-                {error.address && (
-                  <span className="formErrorLbl">{error.address}</span>
-                )}
-               <div>
-                  <input
-                    type="date"
-                    name="date"
-                    className={`form-input w-full ${
-                      error.date ? "form-input-error" : ""
-                    }`}
-                    value={state.date}
-                    onChange={handleChange}
-                  />
-                  {error.date && (
-                    <span className="formErrorLbl">{error.date}</span>
-                  )}
-                </div>
-                  <div className="form-input">
-                   <label htmlFor="profile-picture">Adjuntar foto del trabajo a realizar</label>
-                    <input
-                   className="form-control"
-                   type="file"
-                   accept="image/*"
-                   placeholder="Puedes agregar una imagen de referencia"
-                   name="profile-picture"
-                   onChange={handleFileChange}
-                     />
-                   </div>
-                
-                
-                
-                      Selecciona el rubro del empleo:
-                    <div className="flex flex-row flex-wrap gap-2 items-center justify-center">
-           
-                      {types.length &&
-                        types?.map(({ name, _id: id }, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="border-2 rounded-md p-1 bg-slate-200 flex flex-row gap-1"
-                            >
-                              <input
-                                type="checkbox"
-                                id={`chk-gen-${index}`}
-                                name="typeChk"
-                                value={id}
-                                onChange={(e) => {
-                                  handleOnChangeTypes(name);
-                                }}
-                              />
-                              <label htmlFor={`chk-gen-${index}`}>{name}</label>
-                            </div>
-                          );
-                        })}
-                    </div>
 
-                
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col bg-white p-6 w-[25rem] gap-2 bg-white/70 backdrop-blur-xl rounded-lg drop-shadow-xl border-8 border-green-500 p-8 rounded-lg bg-gray-200"
+              autoComplete="off"
+            >
+              <h3 className="text-black font-bold">Generá una nueva solicitud de empleo</h3>
 
-                <div className="flex items-end justify-center">
-                  <button 
-                    type="submit"
-                    className="btn-navbar w-[6.5rem] text-center text-black font-bold border border-green-500"
-                    onClick={handleSubmit}
-                    
-                  >
-                    Añadir solicitud
-                  </button>
-    
+              <input
+                className={`form-input ${
+                  error.description ? "form-input-error" : ""
+                }`}
+                type="text"
+                name="description"
+                placeholder="Descripción"
+                onChange={handleChange}
+                value={state.description}
+              />
+              {error.description && (
+                <span className="formErrorLbl">{error.description}</span>
+              )}
+
+              <input
+                className={`form-input ${
+                  error.address ? "form-input-error" : ""
+                }`}
+                type="text"
+                name="address"
+                placeholder="Dirección"
+                onChange={handleChange}
+                value={state.address}
+              />
+              {error.address && (
+                <span className="formErrorLbl">{error.address}</span>
+              )}
+
+              <div>
+                <input
+                  type="date"
+                  name="date"
+                  className={`form-input w-full ${
+                    error.date ? "form-input-error" : ""
+                  }`}
+                  value={state.date}
+                  onChange={handleChange}
+                />
+                {error.date && (
+                  <span className="formErrorLbl">{error.date}</span>
+                )}
+              </div>
+
+              <div className="form-input">
+                <label htmlFor="profile-picture">Adjuntar foto del trabajo</label>
+                <input
+                  className="form-control"
+                  type="file"
+                  accept="image/*"
+                  placeholder="Puedes agregar una imagen de referencia"
+                  name="profile-picture"
+                  onChange={handleFileChange}
+                />
+              </div>
+
+              
+
+              <div>
+                Selecciona el rubro del empleo:
+                <div className="flex flex-row flex-wrap gap-2 items-center justify-center">
+                  {types.length &&
+                    types?.map(({ name, _id: id }, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="border-2 rounded-md p-1 bg-slate-200 flex flex-row gap-1"
+                        >
+                          <input
+                            type="checkbox"
+                            id={`chk-gen-${index}`}
+                            name="typeChk"
+                            value={id}
+                            onChange={(e) => {
+                              handleOnChangeTypes(name);
+                            }}
+                          />
+                          <label htmlFor={`chk-gen-${index}`}>{name}</label>
+                        </div>
+                      );
+                    })}
                 </div>
-              </form>
-            
+              </div>
+
+              <div className="flex items-end justify-center">
+                <button
+                 onClick={handleSubmit}
+                  type="submit"
+                  className="btn-navbar w-[6.5rem] text-center text-black font-bold border border-green-500"
+                >
+                  Añadir solicitud
+                </button>
+              </div>
+            </form>
           </div>
         </Layout>
       </div>
