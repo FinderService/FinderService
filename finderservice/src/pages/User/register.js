@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Layout from "@components/Layout";
 import { RiMailCheckLine } from "react-icons/ri";
-
+import { Loader } from "@googlemaps/js-api-loader"
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -11,14 +11,43 @@ import {
   validatePassword,
   validateName,
   validatePhone,
+  validateAddress,
   validateBirth,
 } from "@/utils/validators";
 
 export default function Register() {
+
+  const inputRef = useRef(null);
+
+const initAutocomplete = () => {
+
+  const input = inputRef.current
+  const autocomplete = new google.maps.places.Autocomplete(input);
+
+  autocomplete.addListener("place_changed", () => {
+    const place = autocomplete.getPlace();
+  })
+};
+
+useEffect(()=>{
+  const loader = new Loader({
+    apiKey: process.env.NEXT_PUBLIC_API_KEY,
+    version: "weekly",
+    libraries: ["places"],
+  });
+
+  loader.load().then(() => {
+    initAutocomplete();
+  });
+
+}, [])
+
+
   const [state, setState] = useState({
     name: "",
     last: "",
     phone: "",
+    address: '',
     birth: "",
     username: "",
     password: "",
@@ -33,6 +62,7 @@ export default function Register() {
     name: "",
     last: "",
     phone: "",
+    address: "",
     birth: "",
     username: "",
     password: "",
@@ -70,6 +100,13 @@ export default function Register() {
       setErrror({
         ...error,
         [e.target.name]: validatePhone(e.target.value),
+      });
+    }
+
+    if (e.target.name === "address") {
+      setErrror({
+        ...error,
+        [e.target.name]: validateAddress(e.target.value),
       });
     }
 
@@ -118,6 +155,7 @@ export default function Register() {
         error.name ||
         error.last ||
         error.phone ||
+        error.address ||
         error.birth ||
         error.password
       ) {
@@ -134,6 +172,7 @@ export default function Register() {
         !state.name ||
         !state.last ||
         !state.phone ||
+        !state.address ||
         !state.birth ||
         !state.password
       ) {
@@ -149,6 +188,7 @@ export default function Register() {
         name: "",
         last: "",
         phone: "",
+        address: "",
         birth: "",
         password: "",
         register: true,
@@ -269,6 +309,27 @@ export default function Register() {
                 {error.phone && (
                   <span className="formErrorLbl">{error.phone}</span>
                 )}
+                <input
+                  className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="address"
+                  placeholder="Dirección"
+                  onChange={handleChange}
+                  value={state.address}
+                  ref={inputRef}
+                />
+                {error.address && (
+                  <span className="formErrorLbl">{error.address}</span>
+                )}
+                {/* <input 
+              id='autocomplete-input'
+              type="text" 
+              placeholder="Dirección o punto de referencia" 
+              className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "
+              ref={inputRef} 
+            /> */}
                 <div>
                   <input
                     type="date"

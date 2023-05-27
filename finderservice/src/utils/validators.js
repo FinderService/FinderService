@@ -64,6 +64,14 @@ export function validatePhone (phone){
     return '';
 }
 
+export function validateAddress (address){
+    if(address === ""){
+        return "* Este campo es obligatorio"
+    }
+
+
+}
+
 export function validateBirth (birth){
 
     var hoy = new Date();
