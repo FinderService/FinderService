@@ -4,7 +4,6 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 import {
-  validateName,
   validateDate,
   validateDescription,
   validatePhoto,
@@ -13,7 +12,6 @@ import {
 
 export default function Postulation() {
   const [state, setState] = useState({
-    name: "",
     date: "",
     description: "",
     photo: "",
@@ -23,7 +21,6 @@ export default function Postulation() {
   });
   
   const [error, setErrror] = useState({
-    name: "",
     date: "",
     description: "",
     photo: "",
@@ -55,12 +52,7 @@ export default function Postulation() {
 
 
   const handleChange = (e) => {
-    if (e.target.name === "name") {
-      setErrror({
-        ...error,
-        [e.target.name]: validateName(e.target.value),
-      });
-    }
+  
     if (e.target.name === "date") {
       setErrror({
         ...error,
@@ -109,7 +101,6 @@ export default function Postulation() {
     e.preventDefault();
     try {
       if (
-        error.name ||
         error.description ||
         error.date ||
         error.photo ||
@@ -179,19 +170,7 @@ export default function Postulation() {
               >
                 <h3 className="text-black font-bold">Generar solicitud de empleo</h3>
                 
-                <input
-                  className={`form-input ${
-                    error.name ? "form-input-error" : ""
-                  }`}
-                  type="text"
-                  name="name"
-                  placeholder="Nombre asignado"
-                  onChange={handleChange}
-                  value={state.name}
-                />
-                {error.name && (
-                  <span className="formErrorLbl">{error.name}</span>
-                )}
+            
                  <input
                   className={`form-input ${
                     error.description ? "form-input-error" : ""
