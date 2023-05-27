@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Layout from "@components/Layout";
 import { RiMailCheckLine } from "react-icons/ri";
-import { Loader } from "@googlemaps/js-api-loader"
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -17,37 +16,18 @@ import {
 
 export default function Register() {
 
-  const inputRef = useRef(null);
-
-const initAutocomplete = () => {
-
-  const input = inputRef.current
-  const autocomplete = new google.maps.places.Autocomplete(input);
-
-  autocomplete.addListener("place_changed", () => {
-    const place = autocomplete.getPlace();
-  })
-};
-
-useEffect(()=>{
-  const loader = new Loader({
-    apiKey: process.env.NEXT_PUBLIC_API_KEY,
-    version: "weekly",
-    libraries: ["places"],
-  });
-
-  loader.load().then(() => {
-    initAutocomplete();
-  });
-
-}, [])
-
 
   const [state, setState] = useState({
     name: "",
     last: "",
     phone: "",
-    address: '',
+    address: [{
+      country: "",
+      state: "",
+      city: "",
+      street: "",
+      zipCode: "",
+    }],
     birth: "",
     username: "",
     password: "",
@@ -309,20 +289,65 @@ useEffect(()=>{
                 {error.phone && (
                   <span className="formErrorLbl">{error.phone}</span>
                 )}
-                <input
+                {/* <input
                   className={`form-input ${
                     error.address ? "form-input-error" : ""
                   }`}
                   type="text"
                   name="address"
-                  placeholder="Dirección"
+                  placeholder="Ubicación"
                   onChange={handleChange}
                   value={state.address}
-                  ref={inputRef}
+                  
                 />
                 {error.address && (
                   <span className="formErrorLbl">{error.address}</span>
-                )}
+                )} */}
+                <input className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+        type="text"
+        name="country"
+        value={state.address.country}
+        onChange={handleChange}
+        placeholder="País"
+      />
+      <input className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+        type="text"
+        name="state"
+        value={state.address.state}
+        onChange={handleChange}
+        placeholder="Estado"
+      />
+      <input className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+        type="text"
+        name="city"
+        value={state.address.city}
+        onChange={handleChange}
+        placeholder="Ciudad"
+      />
+      <input className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+        type="text"
+        name="street"
+        value={state.address.street}
+        onChange={handleChange}
+        placeholder="Calle"
+      />
+      <input className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+        type="text"
+        name="zipCode"
+        value={state.address.zipCode}
+        onChange={handleChange}
+        placeholder="Código Postal"
+      />
                 <div>
                   <input
                     type="date"
