@@ -8,8 +8,14 @@ import { validatePassword } from "@/utils/validators";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useRouter } from "next/router";
 
 export default function recoveryPsw() {
+
+  const router = useRouter();
+  const validator = router.query.c;
+  const email = router.query.m;
+  
   const [state, setState] = useState({
     password: "",
     password2: ""
@@ -47,7 +53,6 @@ export default function recoveryPsw() {
       toast.success(res.data.msg);
       setState({
         password: "",
-        password2: ""
       });
     } catch (error) {
       console.log(error);
