@@ -30,12 +30,12 @@ export default async function handler(req, res) {
       break;
     case "POST":
       try {
-        const { name, employerid, date, description, photo, type, address } =
+        const { employerid, date, description, photo, type, address } =
           body;
 
         const newAddress = new Address({
           name: address[0].name,
-          city: address[0].city,
+          // city: address[0].city,
         });
 
         const employerDb = await Employer.findById(employerid);
@@ -57,7 +57,6 @@ export default async function handler(req, res) {
           });
         }
         const newJobRequest = new JobRequest({
-          name,
           date,
           description,
           photo,
