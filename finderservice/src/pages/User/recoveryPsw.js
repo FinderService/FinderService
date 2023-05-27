@@ -9,6 +9,7 @@ import { validatePassword } from "@/utils/validators";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useRouter } from "next/router";
 
 export default function recoveryPsw() {
   const router = useRouter();
@@ -30,7 +31,6 @@ export default function recoveryPsw() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
  
   const handleChange = (e) => {
     setState({
