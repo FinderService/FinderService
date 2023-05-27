@@ -303,6 +303,8 @@ export default function Register() {
                 {error.address && (
                   <span className="formErrorLbl">{error.address}</span>
                 )} */}
+
+                
                 <input className={`form-input ${
                     error.address ? "form-input-error" : ""
                   }`}
