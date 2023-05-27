@@ -6,7 +6,7 @@ import { ubi } from '@public/assets';
 import Image from "next/image";
 import Link from "next/link";
 import { Loader } from "@googlemaps/js-api-loader"
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 export default function Home() {
   const { userData } = useUser();
@@ -35,16 +35,18 @@ useEffect(()=>{
 
 }, [])
 
-  // const inputRef = useRef(null);
-  // const autocompleteRef = useRef(null);
+  const [direccion, setDireccion] = useState('');
 
-  // useEffect(() => {
-  //   if(typeof google !== "undefined"){
-  //     autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current)
-  //   }
-  // }, []);
+  const handleInputChange = () => {
+    setDireccion(inputRef.current.value);
+  };
 
-  
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+    
+  // };
+
+  const isDireccionComplete = direccion.trim() !== '';
 
   return (
     <Layout>
@@ -75,11 +77,27 @@ useEffect(()=>{
               placeholder="Dirección o punto de referencia" 
               className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "
               ref={inputRef} 
+              onChange={handleInputChange}
             />
-            {userData.profile === 'worker'
-            ? <Link href='/HomeWorker' className="bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all"> Buscar </Link>
-            : <Link href='/HomeEmployer' className="bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all"> Buscar </Link>
-            }
+            {userData.profile === 'worker' ? (
+        <Link
+          href="/HomeWorker"
+          className={`bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all ${
+            !isDireccionComplete ? 'pointer-events-none opacity-50' : ''
+          }`}
+        >
+          Buscar
+        </Link>
+      ) : (
+        <Link
+          href="/HomeEmployer"
+          className={`bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all ${
+            !isDireccionComplete ? 'pointer-events-none opacity-50' : ''
+          }`}
+        >
+          Buscar
+        </Link>
+      )}
           </div>        
         </div>
       </div>
