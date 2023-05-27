@@ -7,12 +7,11 @@ export default async function recoverPassword(req, res) {
   await dbConnect();
   try {
     const { validator, email, password } = req.body;
+    console.log(req.body);
     let user = await Employer.findOne({ email }).exec();
     if (!user) {
       user = await Worker.findOne({ email }).exec();
     }
-      
-
 
     if (!user) {
       await dbDisconnect();
@@ -24,16 +23,24 @@ export default async function recoverPassword(req, res) {
       return res.status(404).json({ error: "El validator no es correcto" });
     } else {
       const { encryptedPassword, newSalt } = await encryptPass(password);
-      user.UpdateOne({
-        password: encryptedPassword,
-        salt: newSalt,
-      });
-      await dbDisconnect();
-      res.status(200).json({
-        success: true,
-        msg: "Se actualizó la contraseña exitosamente",
-        user: user,
-      });
+      let result =
+        user.profile === "worker"
+          ? await Worker.updateOne(
+              { email: email },
+              { $set: { password: encryptedPassword, salt: newSalt } }
+            ).exec()
+          : await Employer.updateOne(
+              { email: email },
+              { $set: { password: encryptedPassword, salt: newSalt } }
+            ).exec();
+      if (result) {
+        await dbDisconnect();
+        res.status(200).json({
+          success: true,
+          msg: "Se actualizó la contraseña exitosamente",
+          user: user,
+        });
+      }
     }
   } catch (error) {
     await dbDisconnect();
