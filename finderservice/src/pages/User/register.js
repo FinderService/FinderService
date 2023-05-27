@@ -323,13 +323,6 @@ useEffect(()=>{
                 {error.address && (
                   <span className="formErrorLbl">{error.address}</span>
                 )}
-                {/* <input 
-              id='autocomplete-input'
-              type="text" 
-              placeholder="Dirección o punto de referencia" 
-              className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "
-              ref={inputRef} 
-            /> */}
                 <div>
                   <input
                     type="date"
