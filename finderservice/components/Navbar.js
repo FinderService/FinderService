@@ -49,7 +49,12 @@ export default function Navbar() {
               <Image src={equipo} alt="icon_equipo" />
               <Link href="jobrequests">Postulá tu contratación</Link>
             </button> 
-          </> : <></>)
+          </> : <>
+          <button className="btn-navbar hover:border-blue-500">
+              <Image src={equipo} alt="icon_equipo" />
+              <Link href="jobpostulations">Postulá tu empleo</Link>
+            </button>
+          </>)
           }
           <Login/>
         </div>

@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useRouter } from 'next/router';
 import Layout from "@components/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import { JobpostulationsContext } from "@context/JobpostulationsContext";
 import {
   validateMessage,
   validateSalary,
   validateState,
-  validatePhone,
 } from"../../utils/validationPost";
 
 export default function Postulation() {
+  const router = useRouter();
+  const { addJobPostulation } = useContext(JobpostulationsContext);
+  
   const [state, setState] = useState({
-    worker:{name: "",}, // name:"",
     phone: "",
     salary: "",
     message: "",
@@ -52,76 +54,42 @@ export default function Postulation() {
 
 
   const handleChange = (e) => {
-    if (e.target.name === "name") {
-      setErrror({
-        ...error,
-        [e.target.name]: validateName(e.target.value),
-      });
-
-      setState((preState)=>({
-        ...preState,
-        worker: {
-          ...preState.worker,
-          name: e.target.value,
-        },
-      })); //
-    }
-
-    if (e.target.name === "phone") {
-      setErrror({
-        ...error,
-        [e.target.name]: validatePhone(e.target.value),
-      });
-
-      setState((preState) => ({
-        ...preState,
-        phone: e.target.value,
-      }));
-    }
-
-    if (e.target.name === "salary") {
+     
+     if (e.target.name === "salary") {
       setErrror({
         ...error,
         [e.target.name]: validateSalary(e.target.value),
       });
-
-      setState((preState) => ({
-        ...preState,
-        salary: e.target.value,
-      }));
     }
-    if (e.target.name === "message") {
-      setErrror({
-        ...error,
-        [e.target.name]: validateMessage(e.target.value),
+      if (e.target.name === "message") {
+        setErrror({
+          ...error,
+          [e.target.name]: validateMessage(e.target.value),
+        });
+      }
+      if (e.target.name === "state") {
+        setErrror({
+          ...error,
+          [e.target.name]: validateState(e.target.value),
+        });
+      }
+  
+      setState({
+        ...state,
+        [e.target.name]: e.target.value,
       });
-
-      setState((preState) => ({
-        ...preState,
-        message: e.target.value,
-      }));
-    }
-
-    if (e.target.name === "state") {
-      setErrror({
-        ...error,
-        [e.target.name]: validateState(e.target.value),
-      });
-
-      setState((preState) => ({
-        ...preState,
-        state:e.target.value,
-      }));
-
-    }
-
-  };
-
+    };
+    
 
   const getTypes = async () => {
-    let res = await axios.get("/api/types"); 
+    try {
+    const res = await axios.get("/api/types"); 
     setTypes(res.data);
+  } catch (error) {
+      console.log(error);
+    }
   };
+  
 
   useEffect(() => {
     getTypes();
@@ -133,12 +101,10 @@ export default function Postulation() {
     e.preventDefault();
     try {
       if (
-        error.name ||
         error.phone ||
         error.salary ||
         error.message ||
-        error.state || 
-        !state.worker.name
+        error.state 
       ) {
         toast.error("Todos los campos son obligatorios");
         return;
@@ -149,30 +115,23 @@ export default function Postulation() {
         return;
       }
 
-      console.log(state.types)
-      const resp = await axios.post("/api/jobpostulations", state);
-      console.log(resp);
-      toast.success(resp.data.msg);
+      const resp = await axios.post("/jobpostulations", state);
+      addJobPostulation(resp.data);
+      toast.success('Su anuncio fue publicado exitosamente');
       setState({
         ...state,
-        worker: {
-          name: "",
-        },
         phone: "",
         salary: "",
         message: "",
+        profile: "worker",
         state: "",
-
       });
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.msg);
     }
+    router.push('/HomeWorker/Postulations');
   }
-
-  /* const handlePostulation = () => {
-    alert("El posteo fue creado exitosamente")
-  }; */
 
 
   return (
@@ -200,7 +159,7 @@ export default function Postulation() {
                 className="flex flex-col bg-white p-6 w-[25rem] gap-2 bg-white/70 backdrop-blur-xl rounded-lg drop-shadow-xl border-8 border-blue-500"
                 autoComplete="off"
               >
-                <h3 className="text-black font-bold">Generar postulación de empleo</h3>
+                <h3 className="text-black font-bold">Generá una nueva postulación de empleo</h3>
                 
                
                     <input

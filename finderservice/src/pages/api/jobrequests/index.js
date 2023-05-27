@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       break;
     case "POST":
       try {
-        const { name, employerid, date, description, photo, type, address } =
+        const { employerid, date, description, photo, type, address } =
           body;
 
         const newAddress = new Address({
@@ -57,7 +57,6 @@ export default async function handler(req, res) {
           });
         }
         const newJobRequest = new JobRequest({
-          name,
           date,
           description,
           photo,
