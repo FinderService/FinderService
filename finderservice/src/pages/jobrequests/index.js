@@ -10,7 +10,7 @@ import {
   validateAddress,
 } from "../../utils/validationReq";
 import { useUser } from "@context/UserContext";
-import { dbDisconnect } from "@/utils/mongoose";
+
 
 export default function Postulation() {
   const router = useRouter();

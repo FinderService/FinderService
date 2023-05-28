@@ -175,6 +175,7 @@ export default async function registerHandler(req, res) {
             mail,
           });
         } catch (error) {
+          console.log(error)
           await dbDisconnect();
           return res.status(400).json({
             success: false,
