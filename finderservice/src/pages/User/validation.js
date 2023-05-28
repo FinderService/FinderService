@@ -11,6 +11,8 @@ export default function Validation() {
   const validator = router.query.c;
   const email = router.query.m;
   
+  
+
 
   const [state, setState] = useState({
     validator: "",
