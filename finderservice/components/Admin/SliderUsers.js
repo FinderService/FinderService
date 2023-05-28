@@ -2,17 +2,18 @@ import { useAdmin } from "@context/AdminContext";
 import { useEffect } from "react";
 import Image from "next/image";
 
-const SliderUsers = ({ users , workers , employers, clickOnUser}) =>{
+const SliderUsers = ({ tit1, tit2 ,users , workers , employers, clickOnUser}) =>{
     const { setUsersInfo } = useAdmin();
     useEffect(()=>{
         if(users.length){
             setUsersInfo();
         }
+        //eslint-disable-next-line
     },[users])
     return (
-    <div className="mt-10 flex justify-around">
+    <div className="mt-10 mb-10 flex justify-around">
         <div className="bg-yellow-100 rounded-xl p-5 w-2/5 flex flex-col">
-            <p className="font-bold">Workers/Empleados</p>
+            <p className="font-bold">{tit1}</p>
             <div className="flex">
                 <input name="workers" className="w-5/6 mt-3 mb-3 rounded"/>
                 <button className="pl-5">Buscar</button>
@@ -32,7 +33,7 @@ const SliderUsers = ({ users , workers , employers, clickOnUser}) =>{
             </div>
         </div>
         <div className="bg-lime-100 rounded-xl p-5 w-2/5 flex flex-col">
-            <p className="font-bold">Employers/Empleadores</p>
+            <p className="font-bold">{tit2}</p>
             <div className="flex">
                 <input name="employers" className="w-5/6 mt-3 mb-3 rounded"/>
                 <button className="pl-5">Buscar</button>
