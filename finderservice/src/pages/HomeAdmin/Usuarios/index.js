@@ -9,8 +9,7 @@ import Link from "next/link";
 
 const UsersAdmin = () =>{    
     const { data: session } = useSession();
-    const { users, getAllUsers , workers, employers, validusers, notValidusers } = useAdmin();
-    const [ detail , setDetail ] = useState({});
+    const { users, getAllUsers , userDetail , setUserDetail , workers, employers, validusers, notValidusers } = useAdmin();
 
     useEffect(()=>{
         if(!users.length){
@@ -19,7 +18,7 @@ const UsersAdmin = () =>{
     },[])
 
     const clickOnUser = (obj) =>{
-        setDetail(obj);
+        setUserDetail(obj);
     }
 
     if (session) {
@@ -30,18 +29,18 @@ const UsersAdmin = () =>{
                 <div className="bg-stone-800 w-full">
                     <div className="flex justify-center text-white text-3xl font-bold mt-10 ml-10">Configuración de Usuarios</div>
                     <div>
-                        {!detail.name? <p className="pl-20 text-white">Seleccione un usuario.</p>
+                        {!userDetail.name? <p className="pl-20 text-white">Seleccione un usuario.</p>
                         : <>
-                            <p className="font-bold mt-10 ml-20 pl-5 pt-3 pb-2 bg-stone-200 w-1/2">Informacion del Usuario</p>
-                            <div className="flex ml-20 mb-10 p-5 bg-stone-200 w-1/2">
-                                <Image width={100} height={100} src={detail.profilepic} alt='bigpic'/>
+                            <p className="font-bold mt-10 ml-20 pl-5 pt-3 pb-2 bg-stone-200 w-3/5">Informacion del Usuario</p>
+                            <div className="flex ml-20 mb-10 p-5 bg-stone-200 w-3/5">
+                                <Image width={100} height={100} src={userDetail.profilepic} alt='bigpic'/>
                                 <div className="w-1/2 pl-5 flex-col">
-                                    <p className="font-bold">{detail.name}</p>
-                                    <p>Phone: {detail.phone}</p>
-                                    <p>E-mail: {detail.email}</p>
+                                    <p className="font-bold">{userDetail.name}</p>
+                                    <p>Phone: {userDetail.phone}</p>
+                                    <p>E-mail: {userDetail.email}</p>
                                 </div>
-                                <div className="w-full flex justify-end">
-                                    <Link onClick={()=>{ console.log(detail);}} href={`/HomeAdmin/Usuarios/${detail._id}`}><button>Detalles Avanzados</button></Link>
+                                <div className="w-full flex justify-end ">
+                                    <Link href={`/HomeAdmin/Usuarios/${userDetail._id}`}><button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Detalles Avanzados</button></Link>
                                 </div>
                             </div>                      
                         </>}
