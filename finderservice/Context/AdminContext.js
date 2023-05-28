@@ -14,15 +14,21 @@ export const useAdmin = () =>{
 
 export const AdminProvider = ({ children }) => {
     const [users, setUsers ] = useState([]);
+    const [userDetail, setUserDetail] = useState({})
 
     const [workers, setWorkers] = useState([]);
     const [employers, setEmployers] = useState([]);
     const [validusers, setValidusers] = useState([]);
     const [notValidusers, setNotvalidusers] = useState([])
 
-    const getAllUsers = async () =>{
+    const getAllUsers = async () => {
         const { data } =  await axios.get("/api/admin");
         setUsers(data);
+    }
+
+    const getUserByID = async (id) => {
+        const { data } = await axios.get(`/api/admin/${id}`)
+        setUserDetail({...data});
     }
 
     const setUsersInfo = () =>{
@@ -42,6 +48,7 @@ export const AdminProvider = ({ children }) => {
     }
 
     return <AdminContext.Provider 
-    value={{ users, getAllUsers, workers, notValidusers, employers, validusers, setUsersInfo }}> {children}
+    value={{ users, getAllUsers, userDetail, setUserDetail, getUserByID,
+        workers, employers, notValidusers, validusers, setUsersInfo }}> {children}
     </AdminContext.Provider>;
 }
