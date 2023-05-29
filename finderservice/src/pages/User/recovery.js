@@ -8,7 +8,7 @@ import { validateUsername } from "@/utils/validators";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
-export default function recovery() {
+export default function Recovery() {
 
     const [ state, setState ] = useState({
         username: "",

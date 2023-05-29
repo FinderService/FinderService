@@ -3,54 +3,41 @@ import { useRouter } from 'next/router';
 import Layout from "@components/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { JobpostulationsContext } from "@context/JobpostulationsContext";
+import { useUser } from "@context/UserContext";
 import {
   validateMessage,
   validateSalary,
-  validateState,
 } from"../../utils/validationPost";
 
 export default function Postulation() {
   const router = useRouter();
-  const { addJobPostulation } = useContext(JobpostulationsContext);
-  
+  const { userData } = useUser();
+
   const [state, setState] = useState({
-    phone: "",
     salary: "",
     message: "",
-    state: "",  
     types: [],
     profile: "worker",
   });
   
   const [error, setErrror] = useState({
-    phone: "",
     salary: "",
     message: "",
-    state: "",
   });
 
   const [types, setTypes] = useState([]);
   
-  const handleOnChangeTypes = (type) => {
-    let newTypes = [];
-    if (state.types.length > 0) {
-      let res = state.types.filter((t) => type === t);
-      console.log(res);
-      if (res.length > 0) {
-        newTypes = state.types.filter((t) => type !== t);
-      } else {
-        newTypes = [...state.types, type];
-      }
-    } else {
-      newTypes.push(type);
-    }
+  const handleOnChangeTypes = (event) => {
+    const value = event.target.value;
+    const newType = types.filter((type) => type.name === value);
 
-    setState({
-      ...state,
-      types: newTypes,
-    });
-  }; 
+    if (value !== "Trabajo") {
+      setState({
+        ...state,
+        type: newType,
+      });
+    }
+  };
 
 
   const handleChange = (e) => {
@@ -67,12 +54,7 @@ export default function Postulation() {
           [e.target.name]: validateMessage(e.target.value),
         });
       }
-      if (e.target.name === "state") {
-        setErrror({
-          ...error,
-          [e.target.name]: validateState(e.target.value),
-        });
-      }
+    
   
       setState({
         ...state,
@@ -92,50 +74,53 @@ export default function Postulation() {
   
 
   useEffect(() => {
-    getTypes();
+    const fetchData = async () => {
+      try {
+        if(types.length === 0){
+          await getTypes();
+        }     
+      } catch (error) {
+          console.error('Error en la solicitud Axios:', error);
+      }
+    }
+  fetchData();
+    //eslint-disable-next-line
   }, []);
+ 
 
 
 
   const handleSubmit = async (e) => {
+    console.log(userData);
     e.preventDefault();
     try {
-      if (
-        error.phone ||
-        error.salary ||
-        error.message ||
-        error.state 
-      ) {
+      setState({ ...state, workerEmail: userData.email });
+      if ( error.salary || error.message ) {
         toast.error("Todos los campos son obligatorios");
         return;
       }
 
-      if(state.profile === 'worker' && state.types.length <= 0){
+      if(state.type.length === 0){
         toast.error("Seleccione al menos un rubro");
         return;
       }
 
-      const resp = await axios.post("/jobpostulations", state);
-      addJobPostulation(resp.data);
+      console.log(state);
+      const resp = await axios.post("/api/jobpostulations", state);
+      console.log(resp);
+      if (resp) {
       toast.success('Su anuncio fue publicado exitosamente');
-      setState({
-        ...state,
-        phone: "",
-        salary: "",
-        message: "",
-        profile: "worker",
-        state: "",
-      });
+      router.push('/HomeWorker/Postulations');
+      }
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.msg);
     }
-    router.push('/HomeWorker/Postulations');
-  }
+  };
 
 
   return (
-    <div className="h-screen bg-gradient-to-b from-black to-gray-300">
+    <div className="h-screen bg-gradient-to-b from-gray to-gray-300">
       <div className="h-full bg-black/40 overflow-y-scroll h-screen max-w-md mx- flex-grow overflow-y-scroll">
         <Layout>
           <div className="flex flex-row items-center justify-center h-screen overflow-y-hidden">
@@ -190,31 +175,21 @@ export default function Postulation() {
                 )}
 
            
-            
+<div>
+                Selecciona el rubro del empleo:
+                <div className="flex flex-row flex-wrap gap-2 items-center justify-center">
+                  <select onChange={handleOnChangeTypes}>
+                    <option value="Trabajo">-Trabajo-</option>
+                    {types.length !== 0 ? (
+                      types.map((type) => {
+                        return <option key={type.name} value={type.name}>{type.name}</option>;
+                      })
+                    ) : (
+                      <option>Cargando...</option>
+                    )}
+                  </select>
+                </div>
 
-                      Selecciona el rubro del empleo:
-                    <div className="flex flex-row flex-wrap gap-2 items-center justify-center">
-           
-                      {types.length &&
-                        types?.map(({ name, _id: id }, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="border-2 rounded-md p-1 bg-slate-200 flex flex-row gap-1"
-                            >
-                              <input
-                                type="checkbox"
-                                id={`chk-gen-${index}`}
-                                name="typeChk"
-                                value={id}
-                                onChange={(e) => {
-                                  handleOnChangeTypes(name);
-                                }}
-                              />
-                              <label htmlFor={`chk-gen-${index}`}>{name}</label>
-                            </div>
-                          );
-                        })}
                     </div>
 
                 
