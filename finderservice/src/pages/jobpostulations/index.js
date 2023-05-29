@@ -92,8 +92,19 @@ export default function Postulation() {
   
 
   useEffect(() => {
-    getTypes();
+    const fetchData = async () => {
+      try {
+        if(types.length === 0){
+          await getTypes();
+        }     
+      } catch (error) {
+          console.error('Error en la solicitud Axios:', error);
+      }
+    }
+  fetchData();
+    //eslint-disable-next-line
   }, []);
+ 
 
 
 

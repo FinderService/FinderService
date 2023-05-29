@@ -9,9 +9,9 @@ import { validatePassword } from "@/utils/validators";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useRouter } from "next/router";
 
-export default function recoveryPsw() {
+
+export default function RecoveryPsw() {
   const router = useRouter();
 
   const validator = router.query.c;
