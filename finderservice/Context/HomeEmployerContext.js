@@ -14,30 +14,55 @@ export const useWorker = () => {
 export const HomeEmployerProvider = ({ children }) => {
     const [workersData, setWorkersData] = useState([]);
     const [sortedWorkers, setSortedWorkers] = useState([]);
-    
+
+    const [filtersInfo, setFiltersInfo] = useState([]);
+
     const getAllWorkers = async () => {
-        
         let res = await axios.get('/api/workers')
-        console.log(res.data);
         setWorkersData([...res.data])
         setSortedWorkers([...res.data])
 
     };
     
+    
+    const addFilters = (value) =>{
+        const exist = filtersInfo.filter((filter) => filter === value )
+        if(exist.length === 0){
+            const filteredWorkers = sortedWorkers.filter((worker) => {
+                return worker.type.map((data)=> data.name ).includes(value)
+            });           
+            setSortedWorkers(filteredWorkers);
+            setFiltersInfo([...filtersInfo, value]);
+        }       
+    }
+
+    const delFilterWorkers = (event) =>{
+        const newInfoFilters = filtersInfo.filter((data)=> data !== event.target.value);    
+        if(newInfoFilters.length){
+            const newDataWorkers = workersData.filter((work) => {
+                return newInfoFilters.some(filter => work.type.map(data => data.name).includes(filter));
+            });
+            setSortedWorkers(newDataWorkers);
+            setFiltersInfo(newInfoFilters);
+        }else{
+            setSortedWorkers(workersData);
+            setFiltersInfo([]);
+        }
+    }
+
     const sortWorkers = (value) => {
         let sortedArr;
-        console.log(value);
-            if(value === 'Ascendente'){
-            sortedArr = [...workersData].sort((a, b) =>
-            a.name.localeCompare(b.name))
+        if(value === 'Ascendente'){
+            sortedArr = [...workersData].sort((a, b) => a.name.localeCompare(b.name));
         }else if(value === 'Descendente'){
-            sortedArr = [...workersData].sort((a, b) =>
-            b.name.localeCompare(a.name))
+            sortedArr = [...workersData].sort((a, b) => b.name.localeCompare(a.name));
+        }else if(value === 'Rating'){
+            sortedArr = [...workersData].sort((a, b) => a.rating.localeCompare(b.rating));
         }
-            setSortedWorkers(sortedArr)
+        setSortedWorkers(sortedArr);
     };
 
 
-    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers }}>{children}</HomeEmployerContext.Provider>;
+    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers }}>{children}</HomeEmployerContext.Provider>;
 }
 

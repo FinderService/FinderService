@@ -1,8 +1,7 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
-import Employer from "../../../models/Employer";
-import Address from "../../../models/Address";
-import { verifyPassword, encrypthPass } from "@/utils/lib";
-import mongoose from "mongoose";
+import Employer from "@/models/Employer.js";
+import Type from "@/models/Type.js";
+import Address from "@/models/Address.js";
 
 export default async function handler(req, res) {
   await dbConnect();
@@ -13,8 +12,8 @@ export default async function handler(req, res) {
       try {
         let { name, address } = query;
         const queryOptions = {
-          deleted: {$ne: true},
-          active: {$ne: false}
+          deleted: { $ne: true },
+          active: { $ne: false },
         };
         if (name) {
           queryOptions.name = { $regex: `${name}`, $options: "i" };
@@ -26,8 +25,12 @@ export default async function handler(req, res) {
           };
         }
         const response = queryOptions
-          ? await Employer.find(queryOptions)
+          ? await Employer.find(queryOptions).populate(
+              "address",
+              "-_id name street state country zipCode city"
+            )
           : await Employer.find({}).populate("address", "-_id name city");
+
         if (response.length === 0) {
           return res.status(404).json({
             error: `No se encontraron empleados con el nombre ${name}`,
@@ -37,6 +40,7 @@ export default async function handler(req, res) {
           return res.status(200).json(response);
         }
       } catch (error) {
+        console.log(error);
         await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Layout from "@components/Layout";
 import { RiMailCheckLine } from "react-icons/ri";
-
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -11,6 +10,7 @@ import {
   validatePassword,
   validateName,
   validatePhone,
+  validateAddress,
   validateBirth,
 } from "@/utils/validators";
 
@@ -19,6 +19,16 @@ export default function Register() {
     name: "",
     last: "",
     phone: "",
+    address: [
+      {
+        addressname: "",
+        country: "",
+        state: "",
+        city: "",
+        street: "",
+        zipCode: "",
+      },
+    ],
     birth: "",
     username: "",
     password: "",
@@ -33,6 +43,7 @@ export default function Register() {
     name: "",
     last: "",
     phone: "",
+    address: "",
     birth: "",
     username: "",
     password: "",
@@ -73,6 +84,20 @@ export default function Register() {
       });
     }
 
+    if (
+      e.target.name === "addressname" ||
+      e.target.name === "country" ||
+      e.target.name === "state" ||
+      e.target.name === "city" ||
+      e.target.name === "street" ||
+      e.target.name === "zipCode"
+    ) {
+      setErrror({
+        ...error,
+        address: validateAddress(e.target.value),
+      });
+    }
+
     if (e.target.name === "username") {
       setErrror({
         ...error,
@@ -93,11 +118,74 @@ export default function Register() {
         [e.target.name]: validateBirth(e.target.value),
       });
     }
-
-    setState({
-      ...state,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === "addressname") {
+      setState({
+        ...state,
+        address: [
+          {
+            ...state.address[0],
+            addressname: e.target.value,
+          },
+        ],
+      });
+    } else if (e.target.name === "country") {
+      setState({
+        ...state,
+        address: [
+          {
+            ...state.address[0],
+            country: e.target.value,
+          },
+        ],
+      });
+    } else if (e.target.name === "state") {
+      setState({
+        ...state,
+        address: [
+          {
+            ...state.address[0],
+            state: e.target.value,
+          },
+        ],
+      });
+    } else if (e.target.name === "city") {
+      setState({
+        ...state,
+        address: [
+          {
+            ...state.address[0],
+            city: e.target.value,
+          },
+        ],
+      });
+    } else if (e.target.name === "street") {
+      setState({
+        ...state,
+        address: [
+          {
+            ...state.address[0],
+            street: e.target.value,
+          },
+        ],
+      });
+    } else if (e.target.name === "zipCode") {
+      setState({
+        ...state,
+        address: [
+          {
+            ...state.address[0],
+            zipCode: e.target.value,
+          },
+        ],
+      });
+    } else {
+      
+      setState({
+        ...state,
+        [e.target.name]: e.target.value,
+      });
+      
+    }
   };
 
   const getTypes = async () => {
@@ -118,6 +206,7 @@ export default function Register() {
         error.name ||
         error.last ||
         error.phone ||
+        error.address ||
         error.birth ||
         error.password
       ) {
@@ -125,7 +214,7 @@ export default function Register() {
         return;
       }
 
-      if(state.profile === 'worker' && state.types.length <= 0){
+      if (state.profile === "worker" && state.types.length <= 0) {
         toast.error("Debe sleleccionar almenos una profesion");
         return;
       }
@@ -134,13 +223,14 @@ export default function Register() {
         !state.name ||
         !state.last ||
         !state.phone ||
+        !state.address ||
         !state.birth ||
         !state.password
       ) {
         toast.error("Todos los campos son obligatorios");
         return;
       }
-      console.log(state.types)
+      console.log(state);
       const resp = await axios.post("/api/auth/register", state);
       console.log(resp);
       toast.success(resp.data.msg);
@@ -149,6 +239,7 @@ export default function Register() {
         name: "",
         last: "",
         phone: "",
+        address: "",
         birth: "",
         password: "",
         register: true,
@@ -269,6 +360,81 @@ export default function Register() {
                 {error.phone && (
                   <span className="formErrorLbl">{error.phone}</span>
                 )}
+                {/* <input
+                  className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="address"
+                  placeholder="Ubicación"
+                  onChange={handleChange}
+                  value={state.address}
+                  
+                />
+                {error.address && (
+                  <span className="formErrorLbl">{error.address}</span>
+                )} */}
+
+                <input
+                  className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="addressname"
+                  value={state.address[0].addressname}
+                  onChange={handleChange}
+                  placeholder="Nombre del domicilio (casa,trabajo,etc)"
+                />
+                <input
+                  className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="country"
+                  value={state.address[0].country}
+                  onChange={handleChange}
+                  placeholder="País"
+                />
+                <input
+                  className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="state"
+                  value={state.address[0].state}
+                  onChange={handleChange}
+                  placeholder="Estado"
+                />
+                <input
+                  className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="city"
+                  value={state.address[0].city}
+                  onChange={handleChange}
+                  placeholder="Ciudad"
+                />
+                <input
+                  className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="street"
+                  value={state.address[0].street}
+                  onChange={handleChange}
+                  placeholder="Calle"
+                />
+                <input
+                  className={`form-input ${
+                    error.address ? "form-input-error" : ""
+                  }`}
+                  type="text"
+                  name="zipCode"
+                  value={state.address[0].zipCode}
+                  onChange={handleChange}
+                  placeholder="Código Postal"
+                />
                 <div>
                   <input
                     type="date"

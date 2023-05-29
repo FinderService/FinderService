@@ -1,6 +1,7 @@
-import { dbConnect } from "@/utils/mongoose";
+import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Worker from "@/models/Worker";
 import Employer from "@/models/Employer";
+
 import { uptloadCl } from "@/utils/cloudinary";
 
 export default async function avatarHandler(req, res) {
@@ -15,18 +16,18 @@ export default async function avatarHandler(req, res) {
     console.log(req.body);
 
     let user = await Employer.findById(id_usuario).exec();
-    console.log(user);
-
     if (!user) {
       user = await Worker.findById(id_usuario).exec();
     }
-    console.log("waos");
-    console.log(user);
+    
 
     if (!user) {
-      throw new Error("No se encontro el usuario");
+      await dbDisconnect();
+      return res
+        .status(404)
+        .json({ error: "No se encontró al empleado con ese id" });
     }
-
+    
     const clImg = await uptloadCl(avatar);
 
     let result =

@@ -1,36 +1,50 @@
 import Layout from "@components/Layout";
 import Footer from "@components/Footer";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import { logo } from "@public/assets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { validatePassword } from "@/utils/validators";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useRouter } from "next/router";
 
 export default function recoveryPsw() {
+  const router = useRouter();
+
+  const validator = router.query.c;
+  const email = router.query.m;
+
   const [state, setState] = useState({
     password: "",
-    password2: ""
+    password2: "",
+    validator: "",
+    email: "",
   });
+  
 
   const [error, setError] = useState({
     password: "",
-    password2: ""
+    password2: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
-
+ 
   const handleChange = (e) => {
     setState({
       ...state,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
+      validator: validator,
+      email: email,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log(state);
     if (state.password !== state.password2) {
       toast.error("Las contraseñas no coinciden");
       return;
@@ -43,11 +57,12 @@ export default function recoveryPsw() {
     }
 
     try {
+      console.log(state);
       const res = await axios.put("/api/updateUser/recoverPassword", state);
       toast.success(res.data.msg);
       setState({
         password: "",
-        password2: ""
+        password2: "",
       });
     } catch (error) {
       console.log(error);
@@ -74,10 +89,15 @@ export default function recoveryPsw() {
           <h1 className="w-full font-semibold text-2xl text-center py-4 text-gray-600">
             Ingresa tu nueva contraseña
           </h1>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-2 items-center">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-2 items-center"
+          >
             <div className="relative">
               <input
-                className={`form-input ${error.password ? "form-input-error" : ""}`}
+                className={`form-input ${
+                  error.password ? "form-input-error" : ""
+                }`}
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Nueva Contraseña"
@@ -88,12 +108,14 @@ export default function recoveryPsw() {
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                 onClick={toggleShowPassword}
               >
-                {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible /> }
+                {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
               </div>
             </div>
             <div className="relative">
               <input
-                className={`form-input ${error.password2 ? "form-input-error" : ""}`}
+                className={`form-input ${
+                  error.password2 ? "form-input-error" : ""
+                }`}
                 type={showPassword ? "text" : "password"}
                 name="password2"
                 placeholder="Repite la contraseña"
@@ -120,6 +142,3 @@ export default function recoveryPsw() {
     </Layout>
   );
 }
-
-
-
