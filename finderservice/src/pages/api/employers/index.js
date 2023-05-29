@@ -1,6 +1,5 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Employer from "@/models/Employer.js";
-import Type from "@/models/Type.js";
 import Address from "@/models/Address.js";
 
 export default async function handler(req, res) {

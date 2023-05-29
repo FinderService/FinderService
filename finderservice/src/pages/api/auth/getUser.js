@@ -25,14 +25,15 @@ export default async function registerHandler(req, res) {
     }
 
     // obtener los types
-    if (user.profile === "worker") {
-      let typesArr = await user.type.map(
-        async (t) => await Type.findOne({ _id: t })
-      );
 
-      let types = [];
-      if (typesArr.length) {
-        types = (await Promise.all(typesArr)).map((res) => res);
+    let typesArr = await user.type.map(
+      async (t) => await Type.findOne({ _id: t })
+    );
+
+    let types = [];
+    if (typesArr.length) {
+      types = (await Promise.all(typesArr)).map((res) => res);
+      if (user.profile === "worker") {
         user.type = [...types];
       }
     }
@@ -44,11 +45,11 @@ export default async function registerHandler(req, res) {
     }
 
     delete user.password;
-    await dbDisconnect();
+
     res.status(200).json({ user });
   } catch (error) {
     console.log(error);
-    await dbDisconnect();
+
     res.status(400).json({ success: false, error: error });
   }
 }
