@@ -8,14 +8,16 @@ import { loader } from "@public/assets";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import adminValidation from "@/utils/adminUserValidation";
+import { useUser } from "@context/UserContext";
 
 const userDetail = () => {
     const { data: session } = useSession();
+    const { userData } = useUser();
     const router = useRouter();
-    const { userDetail , getUserByID, setUserDetail} = useAdmin();
+    const { userDetail , getUserByID, putUserdataByID, setUserDetail} = useAdmin();
     const { id } = router.query;
 
-    const [showForm ,setShowForm ] = useState(false);
+    const [showForm , setShowForm] = useState(false);
     const [ sure , setSure ] = useState(false);
 
     const [formData, setFormData] = useState({
@@ -33,7 +35,9 @@ const userDetail = () => {
     })
 
     useEffect(()=>{
-        getUserByID(id);
+        if(userData.name){
+            getUserByID(id);
+        }
         return (setUserDetail({}))
         //eslint-disable-next-line
     },[])
@@ -64,8 +68,9 @@ const userDetail = () => {
             alert("Usuario: Por favor complete correctamente los datos.")
             return;
         }
-        console.log(error);
-        console.log(formData);
+        putUserdataByID(formData, formData._id)
+        setUserDetail(formData);
+        setShowForm(false)
         setSure(false);
     }
 
@@ -144,7 +149,7 @@ const userDetail = () => {
                                 <div dialogClassName="avatar-modal" className="w-full h-screen absolute top-0 left-0 bg-black/50 z-40 flex flex-col items-center justify-center">
                                     <div className="bg-white w-[40rem] pl-10 pr-10 pt-5 rounded-md flex flex-col overflow-hidden shadow-2xl">
                                      <p>¿Estás seguro que los datos modificados son correctos?</p>
-                                     <div className="p-4 flex flex-row gap-3 items-center justify-end bg-slate-100">
+                                     <div className="p-4 flex flex-row gap-3 items-center justify-end">
                                             <button value="no" className="btn-navbar" onClick={() => setSure(false)}>No</button>
                                             <button value="si" className="btn-navbar" onClick={handleSubmit} variant="primary" >Sí</button>
                                         </div>

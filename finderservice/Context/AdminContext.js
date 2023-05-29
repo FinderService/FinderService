@@ -31,6 +31,16 @@ export const AdminProvider = ({ children }) => {
         setUserDetail({...data});
     }
 
+    const putUserdataByID = async (formData, id) => {
+        try {
+            await axios.put(`/api/admin/${id}`, formData)
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+        
+    }
+
     const setUsersInfo = () =>{
         if(users.length){
             const allWorkers = users.filter((user)=> user.profile === 'worker');
@@ -48,7 +58,7 @@ export const AdminProvider = ({ children }) => {
     }
 
     return <AdminContext.Provider 
-    value={{ users, getAllUsers, userDetail, setUserDetail, getUserByID,
+    value={{ users, getAllUsers, userDetail, setUserDetail, getUserByID, putUserdataByID,
         workers, employers, notValidusers, validusers, setUsersInfo }}> {children}
     </AdminContext.Provider>;
 }
