@@ -20,6 +20,7 @@ export const AdminProvider = ({ children }) => {
     const [employers, setEmployers] = useState([]);
     const [validusers, setValidusers] = useState([]);
     const [notValidusers, setNotvalidusers] = useState([])
+    const [ removedUsers, setRemovedUsers ] = useState([])
 
     const getAllUsers = async () => {
         const { data } =  await axios.get("/api/admin");
@@ -54,11 +55,14 @@ export const AdminProvider = ({ children }) => {
 
             const notUsers = users.filter((user)=> user.active === false);
             setNotvalidusers([...notUsers]);
+
+            const deletedUsers = users.filter((user)=> user.deleted === true);
+            setRemovedUsers([...deletedUsers]);
         }
     }
 
     return <AdminContext.Provider 
     value={{ users, getAllUsers, userDetail, setUserDetail, getUserByID, putUserdataByID,
-        workers, employers, notValidusers, validusers, setUsersInfo }}> {children}
+        workers, employers, notValidusers, validusers, removedUsers, setUsersInfo }}> {children}
     </AdminContext.Provider>;
 }
