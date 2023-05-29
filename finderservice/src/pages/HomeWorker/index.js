@@ -40,9 +40,9 @@ export default function HomeWorker() {
     <Layout>
         {(!filterData.length) && (types.length === 0)?
         <>
-            <div className="flex justify-center pr-20">
-                <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
-            </div>
+        <div className="flex justify-center pr-20">
+            <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
+        </div>
         </>:<>
             <div className="bg-white flex justify-around">
                 <div className="w-1/5 h-80 p-4 mt-10">
