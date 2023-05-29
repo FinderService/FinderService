@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import { encryptPass, verifyPassword } from "@/utils/lib";
 
 export default async function handler(req, res) {
-  console.log("hola");
+
   await dbConnect();
 
   switch (req.method) {
@@ -14,9 +14,8 @@ export default async function handler(req, res) {
       try {
         let { name, address } = req.query;
         const queryOptions = {
-          deleted: {$ne: true},
-          active: {$ne: false}
-
+          deleted: { $ne: true },
+          active: { $ne: false },
         };
         if (address) {
           queryOptions["address.city"] = {
@@ -29,7 +28,14 @@ export default async function handler(req, res) {
         }
         const response = queryOptions
           ? await Worker.find(queryOptions)
-          : await Worker.find({}).populate("address", "-_id name city");
+              .populate(
+                "address",
+                "-_id name street state country zipCode city"
+              )
+              .populate("type", "-_id name ")
+          : await Worker.find({})
+              .populate("address", "-_id name street state country zipCode city")
+              .populate("type", "-_id name ");
         if (response.length === 0) {
           return res.status(404).json({
             error: `No se encontraron empleados con el nombre ${name}`,

@@ -2,7 +2,7 @@ import { Schema, model, models } from "mongoose";
 
 var jobRequestSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: [true, "Se necesita un nombre para el trabajo"],
       trim: true,
@@ -21,7 +21,6 @@ var jobRequestSchema = new Schema(
       type: String,
       required: [true, "Se necesita una breve descripción del trabajo"],
     },
-    photo: String,
     type: [
       {
         type: Schema.Types.ObjectId,
