@@ -10,15 +10,16 @@ import Link from "next/link";
 import adminValidation from "@/utils/adminUserValidation";
 import { useUser } from "@context/UserContext";
 
-const userDetail = () => {
+const UserDetail = () => {
     const { data: session } = useSession();
     const { userData } = useUser();
     const router = useRouter();
-    const { userDetail , getUserByID, putUserdataByID, setUserDetail} = useAdmin();
+    const { userDetail , getUserByID, getAllUsers, putUserdataByID, setUserDetail} = useAdmin();
     const { id } = router.query;
 
     const [showForm , setShowForm] = useState(false);
     const [ sure , setSure ] = useState(false);
+    const [wait , setWait] = useState(false)
 
     const [formData, setFormData] = useState({
         ...userDetail,
@@ -34,12 +35,21 @@ const userDetail = () => {
         flag: true
     })
 
-    useEffect(()=>{
-        if(userData.name){
-            getUserByID(id);
-        }
-        return (setUserDetail({}))
-        //eslint-disable-next-line
+     useEffect(()=>{
+        //const updateUsers = async () => await getAllUsers();
+        const fetchData = async () => {
+            try {
+                if(userData.name){
+                    await getUserByID(id);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud Axios:', error);
+            }
+        };
+
+        fetchData();
+        return (setUserDetail({}));
+    //eslint-disable-next-line
     },[])
     
     const handleClick = (event) => {
@@ -63,12 +73,15 @@ const userDetail = () => {
         }   
     }
 
-    const handleSubmit = () =>{
+    const handleSubmit = async () =>{
         if(!error.flag){
             alert("Usuario: Por favor complete correctamente los datos.")
             return;
         }
-        putUserdataByID(formData, formData._id)
+        setWait(true);
+        await putUserdataByID(formData, formData._id);
+        await getAllUsers();
+        setWait(false);
         setUserDetail(formData);
         setShowForm(false)
         setSure(false);
@@ -156,6 +169,15 @@ const userDetail = () => {
                                     </div>
                                 </div>
                             </>)}
+                            {wait && (<>
+                                <div dialogClassName="avatar-modal" className="w-full h-screen absolute top-0 left-0 bg-black/50 z-40 flex flex-col items-center justify-center">
+                                    <div className="bg-white w-[40rem] pl-10 pr-10 pt-5 rounded-md flex flex-col items-center overflow-hidden shadow-2xl">
+                                        <Image src={loader} width={300} height={150} alt="loading"/>
+                                     </div>
+                                </div>
+                            </>)
+
+                            }
                         </div>
                     </> : <>
                         <div className="flex justify-center items-center bg-white w-full h-screen">
@@ -168,7 +190,7 @@ const userDetail = () => {
             </div>
         </Layout>)
     }
-    return <p>Access Denied</p>; 
+    return (<p>Access Denied</p>); 
 }
 
-export default userDetail;
+export default UserDetail;

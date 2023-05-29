@@ -89,9 +89,17 @@ export default function Postulation() {
   };
 
   useEffect(() => {
-    if (types.length === 0) {
-      getTypes();
-    }
+    const fetchData = async () => {
+      try {
+        if(types.length === 0){
+          await getTypes();
+        }
+      } catch (error) {
+          console.error('Error en la solicitud Axios:', error);
+      }
+  };
+  fetchData();
+    //eslint-disable-next-line
   }, []);
 
   const handleSubmit = async (e) => {
@@ -254,7 +262,7 @@ export default function Postulation() {
                     <option value="Trabajo">-Trabajo-</option>
                     {types.length !== 0 ? (
                       types.map((type) => {
-                        return <option value={type.name}>{type.name}</option>;
+                        return <option key={type.name} value={type.name}>{type.name}</option>;
                       })
                     ) : (
                       <option>Cargando...</option>

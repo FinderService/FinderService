@@ -17,7 +17,6 @@ const HomeAdmin = () =>{
                     await getAllUsers();
                 }
             } catch (error) {
-                // Manejar el error de Axios aquí
                 console.error('Error en la solicitud Axios:', error);
             }
         };

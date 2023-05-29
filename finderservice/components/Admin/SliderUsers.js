@@ -4,12 +4,21 @@ import Image from "next/image";
 
 const SliderUsers = ({ tit1, tit2 ,users , workers , employers, clickOnUser}) =>{
     const { setUsersInfo } = useAdmin();
+
     useEffect(()=>{
-        if(users.length){
-            setUsersInfo();
-        }
-        //eslint-disable-next-line
+        const fetchData = async () => {
+            try {
+                if(users.length){
+                    await setUsersInfo();
+                }
+            } catch (error) {
+                console.error('Error en la solicitud Axios:', error);
+            }
+        };
+        fetchData();
+    //eslint-disable-next-line
     },[users])
+
     return (
     <div className="mt-10 mb-10 flex justify-around">
         <div className="bg-yellow-100 rounded-xl p-5 w-2/5 flex flex-col">
