@@ -15,8 +15,10 @@ var jobSchema = new Schema(
       },
     ],
     statejob: String,
-    review: String,
-    rating: String,
+    reviewworker: String,
+    reviewemployer: String,
+    ratingworker: String,
+    ratingemployer: String,
   },
   { timestamps: false, versionKey: false }
 );
