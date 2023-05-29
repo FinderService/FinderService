@@ -12,9 +12,17 @@ const UsersAdmin = () =>{
     const { users, getAllUsers , userDetail , setUserDetail , workers, employers, validusers, notValidusers } = useAdmin();
 
     useEffect(()=>{
-        if(!users.length){
-            getAllUsers();    
-        }  
+        const fetchData = async () => {
+            try {
+                if(!users.length){
+                    await getAllUsers();
+                }
+            } catch (error) {
+                console.error('Error en la solicitud Axios:', error);
+            }
+        };
+        fetchData();
+    //eslint-disable-next-line
     },[])
 
     const clickOnUser = (obj) =>{
