@@ -4,23 +4,34 @@ import Link from "next/link";
 import Image from "next/image"
 
 import { gas, obrero, llave, foco, manguera, tubo , ubi , equipo } from '@public/assets';
-import { useWorker } from "@context/HomeEmployerContext";
 import { useEffect } from "react";
 import { useUser } from "@context/UserContext";
+import { useWorkers } from "@context/WorkersContext";
+import { useWorker } from "@context/HomeEmployerContext";
+import ShowFilters from "@components/ShowFilters";
 
 
 export default function Search({ handleAction }) {
-    //const arr = ["1","2","3","4","5","6","7","8","9"];
-    const { workersData, getAllWorkers, sortWorkers, sortedWorkers } = useWorker();
+    const { workersData, getAllWorkers, sortWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers } = useWorker();
+    const { getTypes, types } = useWorkers();
 
     const handlerSort = (e) => {
-        sortWorkers(e.target.value)
+        const value = e.target.value;
+        if(value === 'Ascendente' || value === 'Descendente' || value === 'Rating'){
+            sortWorkers(e.target.value);
+        }
+    }
+
+    const handleChange = (event) =>{
+        addFilters(event.target.value);
     }
 
     useEffect(() => {
         if(workersData.length === 0){
             getAllWorkers();
-            console.log(workersData);
+        }
+        if(types.length === 0){
+            getTypes();
         }
         //eslint-disable-next-line
     },[workersData])
@@ -57,10 +68,9 @@ export default function Search({ handleAction }) {
                         </div>
                         <div className="mt-5">
                             <label className="font-bold mb-2">Filtrar por:</label>                
-                            <select name="Filters" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
+                            <select name="Filters" onChange={(e) => handlerSort(e)} className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
                                 <option value="Filtros">-Filtros-</option>
                                 <option value="Rating">Rating</option>
-                                <option value="Ofertas">Ofertas</option>
                             </select>                       
                         </div>
                     </div>
@@ -70,15 +80,25 @@ export default function Search({ handleAction }) {
                     <div className="w-5/6 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm ">
                         <input type="text" placeholder="Buscar por nombre" className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "/>
                     </div>
-                    <div className="font-bold mb-2 mt-5">{workersData.length} resultados encontrados</div>
+                    <ShowFilters filterData={sortedWorkers} infoFilters={filtersInfo} deleteFilter={delFilterWorkers}/>
                     <div className="mt-5 flex flex-col flex-wrap">
                         {sortedWorkers.map((info)=>{
                             return (
                                 <Link href="/WorkerDetail" key={info._id}>
-                                    <div key={info._id} className="bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
-                                        <h2>Nombre: {info.name}</h2>
-                                        <p>Informacion de: {info.address}</p>
-                                </div>
+                                    <div key={info._id} className="flex justify-start bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
+                                        <Image src={info.profilepic} width={100} height={200} alt="pics"/>
+                                        <div className="pl-10 w-full flex justify-between">
+                                            <div className="flex flex-col justify-around">
+                                                <p>Nombre: {info.name}</p>
+                                                <p>Rol: {info.profile}</p>
+                                                <p>Profesión: {info.type.map((info) => info.name).toString()}</p>                                               
+                                            </div>
+                                            <div className="flex flex-col justify-around items-end pr-5">
+                                                <p>{info.rating} ⭐</p>
+                                                <p>Edad: {info.age}</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </Link>
                             )
                         })}
@@ -96,11 +116,13 @@ export default function Search({ handleAction }) {
                     <div className="mt-5">
                         <label className="font-bold mb-2">Tipos de Trabajo</label>
                         <div>
-                            <select name="Works" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
+                            <select name="Works" onClick={()=> console.log(filtersInfo)} onChange={handleChange} className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
                                 <option value="Trabajos">-Trabajo-</option>
-                                <option value="Rating">Obrero</option>
-                                <option value="Ofertas">Jardinería</option>
-                                <option value="Ofertas">Limpieza</option>
+                                {types?.map((data)=> {
+                                    return (
+                                    <option value={data}>{data}</option>
+                                    )
+                                })}
                             </select>    
                         </div>
                     </div>
