@@ -51,15 +51,19 @@ export const HomeEmployerProvider = ({ children }) => {
     }
 
     const sortWorkers = (value) => {
-        let sortedArr;
-        if(value === 'Ascendente'){
-            sortedArr = [...workersData].sort((a, b) => a.name.localeCompare(b.name));
-        }else if(value === 'Descendente'){
-            sortedArr = [...workersData].sort((a, b) => b.name.localeCompare(a.name));
-        }else if(value === 'Rating'){
-            sortedArr = [...workersData].sort((a, b) => a.rating.localeCompare(b.rating));
+        const exist = filtersInfo.filter((filter) => filter === value )
+        if(exist.length === 0 && (value !== "Ordenar" && value !== "Cercano")){
+            if(value === 'Ascendente'){
+                const sortedArr = sortedWorkers.sort((a, b) => a.name.localeCompare(b.name));
+                setSortedWorkers([...sortedArr]);
+            }else if(value === 'Descendente'){
+                const sortedArr = sortedWorkers.sort((a, b) => b.name.localeCompare(a.name));
+                setSortedWorkers([...sortedArr]);
+            }else if(value === 'Rating'){
+                const sortedArr = sortedWorkers.sort((a, b) => a.rating.localeCompare(b.rating));
+                setSortedWorkers([...sortedArr]);
+            }
         }
-        setSortedWorkers(sortedArr);
     };
 
 

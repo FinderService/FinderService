@@ -11,9 +11,18 @@ const HomeAdmin = () =>{
     const { users, getAllUsers , workers, employers, validusers, notValidusers } = useAdmin();
 
     useEffect(()=>{
-        if(!users.length){
-            getAllUsers();    
-        }  
+        const fetchData = async () => {
+            try {
+                if(!users.length){
+                    await getAllUsers();
+                }
+            } catch (error) {
+                // Manejar el error de Axios aquí
+                console.error('Error en la solicitud Axios:', error);
+            }
+        };
+        fetchData();
+    //eslint-disable-next-line
     },[])
 
     if (session) {     
