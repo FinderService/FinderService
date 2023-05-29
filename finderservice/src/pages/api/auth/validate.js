@@ -2,7 +2,6 @@ import Worker from "@/models/Worker";
 import Employer from "@/models/Employer";
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 
-
 export default async function validateHandler(req, res) {
   await dbConnect();
   try {
@@ -18,7 +17,9 @@ export default async function validateHandler(req, res) {
     }
 
     if (user) {
-      if (user.validator == validator) {
+      let validatorEncoder = decodeURIComponent(user.validator);
+
+      if (validatorEncoder == validator) {
         let result =
           user.profile === "worker"
             ? await Worker.updateOne(
@@ -30,18 +31,17 @@ export default async function validateHandler(req, res) {
                 { $set: { active: true } }
               ).exec();
         if (result.acknowledged) {
-          return res
-            .status(200)
-            .json({
-              success: true,
-              msg: "Se actualizo con éxito.",
-              user: user,
-            });
+          return res.status(200).json({
+            success: true,
+            msg: "Se actualizo con éxito.",
+            user: user,
+          });
         }
       }
     }
     throw new Error("El validator no es válido");
   } catch (error) {
+    console.log(error);
     res.status(400).json({ success: false, error: error });
   }
 }

@@ -4,6 +4,7 @@ import axios from "axios";
 //import Avatar from 'react-avatar-edit';
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { loader } from '@public/assets';
 
 const Avatar = dynamic(() => import("react-avatar-edit"), { ssr: false });
 
@@ -54,12 +55,13 @@ export default function FormAvatar({ id, image }) {
 
     const url = "/api/updateUser/avatar";
     const datos = { avatar: state.preview, id_usuario: id };
-
+    console.log(state.preview)
     let res = await axios.put(url, datos);
     console.log(res);
   };
 
   return (
+
     <div className="static p-4">
       <div className="">
         <div className="w-[10rem]">

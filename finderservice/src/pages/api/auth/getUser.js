@@ -44,7 +44,7 @@ export default async function registerHandler(req, res) {
     }
 
     delete user.password;
-
+    await dbDisconnect();
     res.status(200).json({ user });
   } catch (error) {
     console.log(error);
