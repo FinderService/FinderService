@@ -10,7 +10,6 @@ var addressSchema = new Schema(
       type: String,
       required: [true, "Address is required"],
       trim: true,
-      unique: [true, "That address is already in the database"],
     },
     street: { type: String, required: true },
     city: { type: String, required: true },
