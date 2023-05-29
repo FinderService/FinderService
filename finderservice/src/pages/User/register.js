@@ -288,23 +288,7 @@ export default function Register() {
 
                 {error.phone && (
                   <span className="formErrorLbl">{error.phone}</span>
-                )}
-                {/* <input
-                  className={`form-input ${
-                    error.address ? "form-input-error" : ""
-                  }`}
-                  type="text"
-                  name="address"
-                  placeholder="Ubicación"
-                  onChange={handleChange}
-                  value={state.address}
-                  
-                />
-                {error.address && (
-                  <span className="formErrorLbl">{error.address}</span>
-                )} */}
-
-                
+                )}  
                 <input className={`form-input ${
                     error.address ? "form-input-error" : ""
                   }`}
