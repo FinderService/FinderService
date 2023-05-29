@@ -11,7 +11,9 @@ export default async function handlerId(req, res) {
   switch (req.method) {
     case "GET":
       try {
-        const workerId = await Worker.findById(id);
+        const workerId = await Worker.findById(id)
+          .populate("address", "_id name street state country zipCode city ")
+          .populate("type", "name");
         if (!workerId)
           return res.status(404).json({ error: " worker not found" });
         return res.status(200).json(workerId);

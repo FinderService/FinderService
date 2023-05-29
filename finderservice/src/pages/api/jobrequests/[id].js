@@ -16,8 +16,8 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const response = await JobRequest.findById(id)
-          .populate("employer", "name _id")
-          .populate("address", "name city")
+          .populate("employer", "_id name email age rating profilepic phone state")
+          .populate("address", "_id name street state country zipCode city ")
           .populate("type", "name");
         if (!response) {
           await dbDisconnect();
