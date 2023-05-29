@@ -1,7 +1,7 @@
 import { useAdmin } from "@context/AdminContext";
 import { useEffect } from "react";
 
-const ShowUsersData = ({ users, workers, employers, validusers, notValidusers }) =>{
+const ShowUsersData = ({ users, workers, employers, validusers, notValidusers, removedUsers }) =>{
     const { setUsersInfo } = useAdmin();
 
     useEffect(()=>{
@@ -40,6 +40,10 @@ const ShowUsersData = ({ users, workers, employers, validusers, notValidusers })
         <div className="m-10 p-5 bg-neutral-200 w-1/4 rounded-2xl">
             <h1 className="text-2xl font-bold">🔴 {notValidusers.length}</h1>
             <h1>Usuarios sin validar</h1>
+        </div>
+        <div className="m-10 p-5 bg-neutral-200 w-1/4 rounded-2xl">
+            <h1 className="text-2xl font-bold">⛔ {removedUsers.length}</h1>
+            <h1>Usuarios Deshabilitados</h1>
         </div>
     </div>)
 }
