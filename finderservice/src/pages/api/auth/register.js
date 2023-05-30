@@ -108,7 +108,7 @@ export default async function registerHandler(req, res) {
 
       let newAddress = new Address({
         id_usuario: newUser._id,
-        name: address[0].addressname,
+        addressName: address[0].addressName,
         country: address[0].country,
         state: address[0].state,
         city: address[0].city,
@@ -151,7 +151,7 @@ export default async function registerHandler(req, res) {
       });
       let newAddress = new Address({
         id_usuario: newUser._id,
-        name: address[0].addressname,
+        addressName: address[0].addressName,
         country: address[0].country,
         state: address[0].state,
         city: address[0].city,

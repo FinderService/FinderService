@@ -6,7 +6,7 @@ var addressSchema = new Schema(
       type: String,
       required: [true, "Address is required"],
     },
-    name: {
+    addressName: {
       type: String,
       required: [true, "Address is required"],
       trim: true,

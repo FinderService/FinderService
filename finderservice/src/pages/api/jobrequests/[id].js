@@ -68,26 +68,28 @@ export default async function handler(req, res) {
         await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }
-    case "DELETE":
-      try {
-        const jobRequestToDelete = await JobRequest.findById(id);
-        await JobRequest.findByIdAndDelete(id);
-        
-        if (!jobRequestToDelete) {
+
+    
+      case "DELETE":
+        try {
+          const jobRequestToDelete = await JobRequest.findById(id);
+          
+          if (!jobRequestToDelete) {
+            await dbDisconnect();
+            return res
+              .status(404)
+              .json({ error: "No se encontró la solicitud con ese id" });
+          } else {
+            await JobRequest.findByIdAndDelete(id);
+            await dbDisconnect();
+            return res.status(200).json("Se ha borrado la solicitud de trabajo");
+          }
+        } catch (error) {
           await dbDisconnect();
-          return res
-            .status(404)
-            .json({ error: "No se encontró la solicitud con ese id" });
-        } else {
-          await dbDisconnect();
-          return res.status(200).json("Se ha borrado la solicitud de trabajo");
+          return res.status(400).json({ error: error.message });
         }
-      } catch (error) {
+      default:
         await dbDisconnect();
-        return res.status(400).json({ error: error.message });
-      }
-    default:
-      await dbDisconnect();
-      return res.status(404).json({ error: "La petición HTTP no es correcta" });
-  }
+        return res.status(404).json({ error: "La petición HTTP no es correcta" });
+    }
 }

@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
     const updateUserData =  async(email) => {
         if(userData.email) return
         let res = await axios.post('/api/auth/getUser', {email})
-        //console.log(res,'Update desde el context!');
+        console.log(res,'Update desde el context!');
         if(!res){
             console.log('User logued bye social app!');
             return;

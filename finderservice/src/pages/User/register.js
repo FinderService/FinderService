@@ -21,7 +21,7 @@ export default function Register() {
     phone: "",
     address: [
       {
-        addressname: "",
+        addressName: "",
         country: "",
         state: "",
         city: "",
@@ -85,7 +85,7 @@ export default function Register() {
     }
 
     if (
-      e.target.name === "addressname" ||
+      e.target.name === "addressName" ||
       e.target.name === "country" ||
       e.target.name === "state" ||
       e.target.name === "city" ||
@@ -118,7 +118,7 @@ export default function Register() {
         [e.target.name]: validateBirth(e.target.value),
       });
     }
-    if (e.target.name === "addressname") {
+    if (e.target.name === "addressName") {
       setState({
         ...state,
         address: [
@@ -380,8 +380,8 @@ export default function Register() {
                     error.address ? "form-input-error" : ""
                   }`}
                   type="text"
-                  name="addressname"
-                  value={state.address[0].addressname}
+                  name="addressName"
+                  value={state.address[0].addressName}
                   onChange={handleChange}
                   placeholder="Nombre del domicilio (casa,trabajo,etc)"
                 />
