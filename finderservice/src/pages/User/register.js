@@ -307,7 +307,7 @@ export default function Register() {
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="flex flex-col bg-white p-6 w-[25rem] gap-2 bg-white/70 backdrop-blur-xl rounded-lg drop-shadow-xl"
+                className="flex flex-col bg-white p-6 w-[25rem] gap-2 bg-white/70 backdrop-blur-xl rounded-lg drop-shadow-xl overflow-y-auto h-[70vh]"
                 autoComplete="off"
               >
                 <h3>Registro</h3>

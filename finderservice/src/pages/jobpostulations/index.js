@@ -92,6 +92,10 @@ export default function Postulation() {
       }
     }
     fetchData();
+    setState({ ...state, workerEmail: userData.email, /* jobrequest:workInfo._id  */});
+    // eslint-disable-next-line
+  }, []);
+ 
     setState({ ...state, workerEmail: userData.email, /* jobrequest:workInfo._id  */ });
   }, [ types.length, userData.email]);
 

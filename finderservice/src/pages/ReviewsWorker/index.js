@@ -83,6 +83,13 @@ function ReviewsWorker() {
               /* onChange={(e) => setUserData({ ...userData, reviews: e.target.value })} */
             />
 
+
+            <div className="flex mt-4">
+              {fillStars(5).map((str, index) => {
+                // eslint-disable-next-line
+                const starRef = useRef(null);
+                starRefs.current[index] = starRef;
+
 <div className="flex mt-4">
   {fillStars(5).map((str, index) => (
     <label key={str} className="cursor-pointer">
@@ -101,6 +108,7 @@ function ReviewsWorker() {
     </label>
   ))}
 </div>
+
 
 
             <button
