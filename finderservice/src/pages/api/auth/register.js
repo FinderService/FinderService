@@ -73,8 +73,8 @@ export default async function registerHandler(req, res) {
 
     let appUrl = process.env.APP_URL;
     let validatorEncode = newSalt.toString("base64");
-    let validator = encodeURIComponent(validatorEncode)
-    console.log(validator)
+    let validator = encodeURIComponent(validatorEncode);
+    console.log(validator);
     let content = mailValidate(validator, email, appUrl);
     console.log(address);
 
@@ -102,7 +102,7 @@ export default async function registerHandler(req, res) {
         salt: newSalt,
         validator: validator,
         type: typesId,
-        profilepic: profilepic ? profilepic : ''
+        profilepic: profilepic ? profilepic : "",
       });
       console.log(address);
 
@@ -147,7 +147,7 @@ export default async function registerHandler(req, res) {
         rating: 0,
         salt: newSalt,
         validator: validator,
-        profilepic: profilepic ? profilepic : ''
+        profilepic: profilepic ? profilepic : "",
       });
       let newAddress = new Address({
         id_usuario: newUser._id,
@@ -161,15 +161,16 @@ export default async function registerHandler(req, res) {
       newUser.address = newAddress._id;
 
       if (newUser && newAddress) {
-        let mail = await mailGun(
-          username,
-          "Bienvenido a Finder Service",
-          content
-        );
         try {
-          await newUser.save();
           await newAddress.save();
+          await newUser.save();
+
           await dbDisconnect();
+          let mail = await mailGun(
+            username,
+            "Bienvenido a Finder Service",
+            content
+          );
 
           return res.status(201).json({
             success: true,
@@ -178,7 +179,7 @@ export default async function registerHandler(req, res) {
             mail,
           });
         } catch (error) {
-          console.log(error)
+          console.log(error);
           await dbDisconnect();
           return res.status(400).json({
             success: false,

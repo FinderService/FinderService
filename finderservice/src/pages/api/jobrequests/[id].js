@@ -16,8 +16,11 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const response = await JobRequest.findById(id)
-          .populate("employer", "name _id")
-          .populate("address", "name city")
+          .populate(
+            "employer",
+            "_id name email age rating profilepic phone state"
+          )
+          .populate("address", "_id name street state country zipCode city ")
           .populate("type", "name");
         if (!response) {
           await dbDisconnect();
@@ -36,32 +39,13 @@ export default async function handler(req, res) {
     case "PUT":
       try {
         const jobRequestToUpdate = await JobRequest.findById(id);
+
         if (!jobRequestToUpdate) {
           await dbDisconnect();
           return res
             .status(404)
             .json({ error: "No se encontró la petición de trabajo" });
         }
-        const { name, city } = body.address[0];
-        const nameType = body.type;
-
-        const typeJob = await Type.findOne({ name: nameType });
-        if (!typeJob) {
-          dbDisconnect();
-          return res.status(404).json({
-            error: "No se encontró el tipo de trabajo en la base de datos",
-          });
-        }
-
-        const updateAddress = await Address.findOneAndUpdate(
-          {
-            _id: jobRequestToUpdate.address,
-          },
-          {
-            $set: { name, city },
-          },
-          { new: true }
-        );
 
         const updateJobRequest = await JobRequest.findOneAndUpdate(
           {
@@ -70,8 +54,6 @@ export default async function handler(req, res) {
           {
             $set: {
               ...body,
-              address: updateAddress._id,
-              type: typeJob._id,
             },
           },
           { new: true }
@@ -90,7 +72,7 @@ export default async function handler(req, res) {
       try {
         const jobRequestToDelete = await JobRequest.findById(id);
         await JobRequest.findByIdAndDelete(id);
-        await Address.findByIdAndDelete(jobRequestToDelete.address);
+        
         if (!jobRequestToDelete) {
           await dbDisconnect();
           return res
@@ -106,6 +88,6 @@ export default async function handler(req, res) {
       }
     default:
       await dbDisconnect();
-      return res.status(404).json({error: "La petición HTTP no es correcta"})
+      return res.status(404).json({ error: "La petición HTTP no es correcta" });
   }
 }

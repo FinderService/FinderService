@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       try {
         const response = await Employer.findById(id).populate(
           "address",
-          "-_id name city"
+          "_id name street state country zipCode city "
         );
         if (!response) {
           return res
