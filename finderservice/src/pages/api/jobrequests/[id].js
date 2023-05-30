@@ -72,7 +72,6 @@ export default async function handler(req, res) {
       try {
         const jobRequestToDelete = await JobRequest.findById(id);
         await JobRequest.findByIdAndDelete(id);
-        
         if (!jobRequestToDelete) {
           await dbDisconnect();
           return res

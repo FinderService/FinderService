@@ -12,13 +12,13 @@ export default function FormData({ name, email, birthdate, phone, address }) {
   });
 
   const handleChange = (e) => {
-    if (e.target.name === "addressname") {
+    if (e.target.name === "addressName") {
       setState({
         ...state,
         address: [
           {
             ...state.address[0],
-            addressname: e.target.value,
+            addressName: e.target.value,
           },
         ],
       });
@@ -90,7 +90,7 @@ export default function FormData({ name, email, birthdate, phone, address }) {
         !state.email ||
         !state.name ||
         !state.phone ||
-        !state.address[0].addressname ||
+        !state.address[0].addressName ||
         !state.address[0].country ||
         !state.address[0].city ||
         !state.address[0].street ||
@@ -152,8 +152,8 @@ export default function FormData({ name, email, birthdate, phone, address }) {
       <h3 className="text-xl">Dirección:</h3>
       <input
         type="text"
-        name="addressname"
-        value={state.address[0].addressname}
+        name="addressName"
+        value={state.address[0].addressName}
         onChange={handleChange}
         className="form-input"
       />
