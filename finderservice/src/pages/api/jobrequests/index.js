@@ -11,10 +11,22 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const response = await JobRequest.find({})
-          .populate("employer", "name email")
-          .populate("address", "-_id name street state country zipCode city")
-          .populate("type", "name");
+        const { id } = query;
+
+        let response = []; 
+
+        if (id) {
+          response = await JobRequest.find({employer: id})
+            .populate("employer", "name email")
+            .populate("address", "-_id name street state country zipCode city")
+            .populate("type", "name");
+        } else {
+          response = await JobRequest.find({})
+            .populate("employer", "name email")
+            .populate("address", "-_id name street state country zipCode city")
+            .populate("type", "name");
+        }
+
         if (response.length === 0) {
           await dbDisconnect();
           return res.status(404).json({
@@ -77,7 +89,7 @@ export default async function handler(req, res) {
           description,
           employer: employerDb._id,
           type: typeJob._id,
-          address: employerDb.address
+          address: employerDb.address,
         });
         console.log(newJobRequest);
 
@@ -94,7 +106,7 @@ export default async function handler(req, res) {
         await dbDisconnect();
         return res.status(201).json(jobRequestComplete);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         await dbDisconnect();
         return res.status(400).json({ success: false, error: error });
       }
