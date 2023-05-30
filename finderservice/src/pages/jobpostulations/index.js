@@ -13,8 +13,9 @@ export default function Postulation() {
   const router = useRouter();
   const { userData } = useUser();
 
-  const workInfo = JSON.parse(localStorage.getItem('workInfo'))? JSON.parse(localStorage.getItem('workInfo')) : null;
-  localStorage.removeItem('workInfo');
+  /*  const workInfo = JSON.parse(localStorage.getItem('workInfo'))? JSON.parse(localStorage.getItem('workInfo')) : null;
+  localStorage.removeItem('workInfo');  */
+
 
   const [state, setState] = useState({
     salary: "",
@@ -89,8 +90,7 @@ export default function Postulation() {
       }
     }
     fetchData();
-    setState({ ...state, workerEmail: userData.email, jobrequest:workInfo._id});
-    //eslint-disable-next-line
+    setState({ ...state, workerEmail: userData.email, /* jobrequest:workInfo._id  */});
   }, []);
  
 
