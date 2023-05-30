@@ -11,7 +11,7 @@ const UsersAdmin = () =>{
             <div className="flex justify-start">
                 <NavBarAdmin />
                 <div className="bg-stone-800 w-full">
-                    
+                    <h1>Holaa</h1>
                 </div>
             </div>
         </Layout>);
