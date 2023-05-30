@@ -6,7 +6,7 @@ export function validateDescription (descripción){
       return '* La descripción del empleo es obligatoria';
   }
 
-  if(descripción.length > 70){
+  if(descripción.length > 150){
       return '* La descripción es muy extensa';
   }
 
