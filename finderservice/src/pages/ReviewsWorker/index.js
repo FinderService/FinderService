@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { GoStar } from "react-icons/go";
 import { IoIosStarOutline } from "react-icons/io";
@@ -24,8 +23,8 @@ function ReviewsWorker() {
 
   const handleReviewSubmit = (event) => {
     event.preventDefault();
-/*     setUserData({ ...userData, reviews: userData.reviews, stars: rating });
- */  };
+    setUserData({ ...userData, reviews: userData.reviews, stars: rating });
+  };
 
   return (
     <Layout>
@@ -43,7 +42,7 @@ function ReviewsWorker() {
 
         <div className="bg-neutral-300 p-7 mt-5 rounded-xl duration-200 hover:scale-105">
           <p className="text-black font-bold text-3xl mb-4 text-center">
-          ¿Qué te pareció la interacción del contratante?
+            ¿Qué te pareció el trabajo realizado?
           </p>
           <div className="flex justify-center mt-4 space-x-4">
             {[1, 2, 3, 4, 5].map((index) => (
@@ -68,7 +67,7 @@ function ReviewsWorker() {
         </div>
 
         <p className="text-black font-bold text-xl mt-12 mb-0 text-center">
-          Cuéntanos más acerca de este empleador
+          Cuéntanos más acerca de este empleado
         </p>
         <p className="text-black text-sm mt-1 mb-0 text-center">(Opcional)</p>
 
@@ -78,38 +77,31 @@ function ReviewsWorker() {
               className="h-40 md:h-150 border border-gray-400 p-4 md:p-15 text-base outline-none mx-auto w-1/2"
               name="reviews"
               type="text"
-              placeholder="Deja tu opinión sobre el trato y las condiciones con el empleador y puntúalo..."
+              placeholder="Deja tu opinión sobre el trabajo terminado por el empleado y puntúalo..."
               value={userData.reviews}
               /* onChange={(e) => setUserData({ ...userData, reviews: e.target.value })} */
             />
 
-
             <div className="flex mt-4">
-              {fillStars(5).map((str, index) => {
-                // eslint-disable-next-line
-                const starRef = useRef(null);
-                starRefs.current[index] = starRef;
-
-<div className="flex mt-4">
-  {fillStars(5).map((str, index) => (
-    <label key={str} className="cursor-pointer">
-      <input
-        type="radio"
-        value={str}
-        onClick={() => handleStarClick(index + 1)}
-        name="stars"
-        className="hidden"
-      />
-      <IoIosStarOutline
-        className={`text-gray-400 ${index < rating ? "text-blue-500 fill-current" : ""}`}
-        id={str}
-        style={{ fontSize: "32px" }}
-      />
-    </label>
-  ))}
-</div>
-
-
+              {fillStars(5).map((str, index) => (
+                <label key={str} className="cursor-pointer">
+                  <input
+                    type="radio"
+                    value={str}
+                    onClick={() => handleStarClick(index + 1)}
+                    name="stars"
+                    className="hidden"
+                  />
+                  <IoIosStarOutline
+                    className={`text-gray-400 ${
+                      index < rating ? "text-blue-500" : ""
+                    }`}
+                    id={str}
+                    style={{ fontSize: "32px" }}
+                  />
+                </label>
+              ))}
+            </div>
 
             <button
               type="submit"
