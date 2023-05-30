@@ -10,8 +10,8 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const jobApply = await JobPostulation.find({})
-          .populate("jobrequest", "name employer")
-          .populate("worker", "-_id name type");
+          .populate("jobrequest", "title employer")
+          .populate("worker", "-_id name type email");
 
         if (jobApply.length !== 0) {
           await dbDisconnect();
@@ -55,7 +55,20 @@ export default async function handler(req, res) {
           await dbDisconnect();
           return res.status(400).json({ error: "Job request not found" });
         }
+        const jobPostAlready = await JobPostulation.findOne({
+          jobrequest: jobrequest,
+          worker: jobPostWorker,
+        });
+        console.log(jobPostAlready)
 
+        if (jobPostAlready) {
+          await dbDisconnect();
+          return res.status(400).json({
+            success: false,
+            msg: "Ya hiciste una postulación a ese trabajo",
+          });
+        }
+        
         const newJobPostulation = new JobPostulation({
           jobrequest: [jobPostRequest._id],
           worker: [jobPostWorker._id],
@@ -70,6 +83,7 @@ export default async function handler(req, res) {
         await dbDisconnect();
         return res.status(201).json(jobPostulationPost);
       } catch (error) {
+        console.log(error);
         await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }
