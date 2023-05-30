@@ -42,26 +42,6 @@ export default async function handler(req, res) {
             .status(404)
             .json({ error: "No se encontró la petición de trabajo" });
         }
-        const { name, city } = body.address[0];
-        const nameType = body.type;
-
-        const typeJob = await Type.findOne({ name: nameType });
-        if (!typeJob) {
-          dbDisconnect();
-          return res.status(404).json({
-            error: "No se encontró el tipo de trabajo en la base de datos",
-          });
-        }
-
-        const updateAddress = await Address.findOneAndUpdate(
-          {
-            _id: jobRequestToUpdate.address,
-          },
-          {
-            $set: { name, city },
-          },
-          { new: true }
-        );
 
         const updateJobRequest = await JobRequest.findOneAndUpdate(
           {
@@ -70,8 +50,6 @@ export default async function handler(req, res) {
           {
             $set: {
               ...body,
-              address: updateAddress._id,
-              type: typeJob._id,
             },
           },
           { new: true }
@@ -86,26 +64,26 @@ export default async function handler(req, res) {
         await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }
-    case "DELETE":
-      try {
-        const jobRequestToDelete = await JobRequest.findById(id);
-        await JobRequest.findByIdAndDelete(id);
-        await Address.findByIdAndDelete(jobRequestToDelete.address);
-        if (!jobRequestToDelete) {
+
+      case "DELETE":
+        try {
+          const jobRequestToDelete = await JobRequest.findById(id);
+          await JobRequest.findByIdAndDelete(id);
+          if (!jobRequestToDelete) {
+            await dbDisconnect();
+            return res
+              .status(404)
+              .json({ error: "No se encontró la solicitud con ese id" });
+          } else {
+            await dbDisconnect();
+            return res.status(200).json("Se ha borrado la solicitud de trabajo");
+          }
+        } catch (error) {
           await dbDisconnect();
-          return res
-            .status(404)
-            .json({ error: "No se encontró la solicitud con ese id" });
-        } else {
-          await dbDisconnect();
-          return res.status(200).json("Se ha borrado la solicitud de trabajo");
+          return res.status(400).json({ error: error.message });
         }
-      } catch (error) {
+      default:
         await dbDisconnect();
-        return res.status(400).json({ error: error.message });
-      }
-    default:
-      await dbDisconnect();
-      return res.status(404).json({error: "La petición HTTP no es correcta"})
-  }
+        return res.status(404).json({ error: "La petición HTTP no es correcta" });
+    }
 }

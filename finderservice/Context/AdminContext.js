@@ -22,6 +22,9 @@ export const AdminProvider = ({ children }) => {
     const [notValidusers, setNotvalidusers] = useState([])
     const [ removedUsers, setRemovedUsers ] = useState([])
 
+    const [ jobReqs, setJobReqs ] = useState([]);
+    const [ jobDetails, setJobDetails ] = useState({});
+
     const getAllUsers = async () => {
         const { data } =  await axios.get("/api/admin");
         setUsers(data);
@@ -38,8 +41,7 @@ export const AdminProvider = ({ children }) => {
         } catch (error) {
             console.log(error);
             return;
-        }
-        
+        }       
     }
 
     const setUsersInfo = () =>{
@@ -61,8 +63,28 @@ export const AdminProvider = ({ children }) => {
         }
     }
 
+    const getAllJobReqs = async () =>{
+        const {data} = await axios.get("/api/jobrequests")
+        setJobReqs(data);
+    }
+
+    const getJobByID = async (id) =>{
+        const {data} = await axios.get(`/api/jobrequests/${id}`);
+        setJobDetails({...data});
+    }
+
+    const putJobDataByID = async (formData, id) =>{
+        try {
+            await axios.put(`/api/jobrequests/${id}`, formData)
+        } catch (error) {
+            console.log(error);
+            return;
+        }  
+    }
+
     return <AdminContext.Provider 
     value={{ users, getAllUsers, userDetail, setUserDetail, getUserByID, putUserdataByID,
-        workers, employers, notValidusers, validusers, removedUsers, setUsersInfo }}> {children}
+        workers, employers, notValidusers, validusers, removedUsers, setUsersInfo,
+        jobReqs, getAllJobReqs, jobDetails, setJobDetails, getJobByID, putJobDataByID}}> {children}
     </AdminContext.Provider>;
 }
