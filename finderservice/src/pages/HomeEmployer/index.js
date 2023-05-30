@@ -51,38 +51,59 @@ export default function Search({ handleAction }) {
     //eslint-disable-next-line
   }, []);
 
-    return (
-        <Layout>
-            {!workersData.length && (!types.length)? 
-            <>
-                <div className="flex justify-center pr-20">
-                    <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
-                </div>
-            </>
-            :<>
-            <div className="bg-white  flex justify-around">
-                <div className="mt-14 flex flex-col w-1/5 h-fit">
-                    <div className="flex flex-wrap justify-around rounded-2xl h-1/4">
-                        {objImgs.map((obj)=>{
-                            return ( 
-                                <Image src={obj.img} key={obj.work} onClick={()=> handleImgChange(obj.work)} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110 hover:cursor-pointer" alt={obj.work}></Image>
-                            )})
-                        }
-                    </div>
+  return (
+    <Layout>
+      {!workersData.length && !types.length ? (
+        <>
+          <div className="flex justify-center pr-20">
+            <Image
+              src={loader}
+              width={400}
+              height={200}
+              alt="loading"
+              priority={true}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="bg-white  flex justify-around">
+            <div className="mt-14 flex flex-col w-1/5 h-fit">
+              <div className="flex flex-wrap justify-around rounded-2xl h-1/4">
+                {objImgs.map((obj) => {
+                  return (
+                    <Image
+                      src={obj.img}
+                      key={obj.work}
+                      onClick={() => handleImgChange(obj.work)}
+                      className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110 hover:cursor-pointer"
+                      alt={obj.work}
+                    ></Image>
+                  );
+                })}
+              </div>
 
-                    <div className="bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
-                        <label className="font-bold mb-2">Ordenar por:</label>
-                        <div>
-                            <select onChange={(e) => handlerSort(e)} name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
-                                <option value="Ordenar">-Ordenar-</option>
-                                <option value="Cercano">Más cercanos</option>
-                                <option value="Ascendente">Nombres &lpar;Ascendente&rpar;</option>
-                                <option value="Descendente">Nombres &lpar;Descendente&rpar;</option>   
-                                <option value="Rating">Rating</option>            
-                            </select>
-                        </div>
-                    </div>
+              <div className="bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
+                <label className="font-bold mb-2">Ordenar por:</label>
+                <div>
+                  <select
+                    onChange={(e) => handlerSort(e)}
+                    name="OrderFilter"
+                    className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500"
+                  >
+                    <option value="Ordenar">-Ordenar-</option>
+                    <option value="Cercano">Más cercanos</option>
+                    <option value="Ascendente">
+                      Nombres &lpar;Ascendente&rpar;
+                    </option>
+                    <option value="Descendente">
+                      Nombres &lpar;Descendente&rpar;
+                    </option>
+                    <option value="Rating">Rating</option>
+                  </select>
                 </div>
+              </div>
+            </div>
 
             <div className="flex flex-col justify-around pt-5 mt-14 mb-6 pl-10 w-1/2 rounded-xl">
               <div className="w-5/6 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm ">
