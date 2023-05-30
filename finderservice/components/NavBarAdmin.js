@@ -8,6 +8,7 @@ const NavBarAdmin = () =>{
             <Link href="/HomeAdmin"><h1 className="pl-5 pt-1 h-9 hover:bg-blue-500">🏠 Home</h1></Link>
             <Link href="/HomeAdmin/Usuarios"><h1 className="pl-5 pt-1 h-9 hover:bg-blue-500">👥 Usuarios</h1></Link>
             <Link href="/HomeAdmin/Comments"><h1 className="pl-5 pt-1 h-9 hover:bg-blue-500">💬 Comentarios</h1></Link>
+            <Link href="/HomeAdmin/Jobs"><h1 className="pl-5 pt-1 h-9 hover:bg-blue-500">🗂️ Trabajos</h1></Link>
         </div>
     </div>)
 }
