@@ -38,6 +38,7 @@ module.exports = {
       },
       backgroundImage: {
         'herohome': "url('https://res.cloudinary.com/dacl2du1v/image/upload/v1684329549/pexels-bidvine-1249611_f3mjpw.jpg)",
+        'socialbk': "url('https://res.cloudinary.com/dacl2du1v/image/upload/v1685422611/pexels-ksenia-chernaya-5691495_dwc6ao.jpg')",
         'herohome2': "url('/assets/images/hero.jpg')",
         'login': "url('/assets/images/login.jpg')",
         'register': "url('/assets/images/register.jpg')",

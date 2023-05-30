@@ -22,6 +22,7 @@ export default async function registerHandler(req, res) {
       username,
       profile,
       types,
+      profilepic,
     } = req.body;
     console.log(address);
 
@@ -101,6 +102,7 @@ export default async function registerHandler(req, res) {
         salt: newSalt,
         validator: validator,
         type: typesId,
+        profilepic: profilepic ? profilepic : ''
       });
       console.log(address);
 
@@ -145,6 +147,7 @@ export default async function registerHandler(req, res) {
         rating: 0,
         salt: newSalt,
         validator: validator,
+        profilepic: profilepic ? profilepic : ''
       });
       let newAddress = new Address({
         id_usuario: newUser._id,
