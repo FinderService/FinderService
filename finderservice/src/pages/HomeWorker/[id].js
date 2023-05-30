@@ -21,9 +21,9 @@ export default function WorkDetail() {
     },[])
 
     const sendWorkInfo = () =>{
-        const { name, description, date, photo, type , address, employer} = workDetail;
+        const { _id, name, description, date, photo, type , address, employer} = workDetail;
 
-        localStorage.setItem('workInfo',JSON.stringify({ name, description, date, photo, type , address, employer}));
+        localStorage.setItem('workInfo',JSON.stringify({ _id, name, description, date, photo, type , address, employer}));
         localStorage.setItem('userInfo',JSON.stringify(userData));
     }
 

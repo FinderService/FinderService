@@ -13,11 +13,15 @@ export default function Postulation() {
   const router = useRouter();
   const { userData } = useUser();
 
+  const workInfo = JSON.parse(localStorage.getItem('workInfo'))? JSON.parse(localStorage.getItem('workInfo')) : null;
+  localStorage.removeItem('workInfo');
+
   const [state, setState] = useState({
     salary: "",
     message: "",
     types: [],
     profile: "worker",
+    workerEmail:"",
   });
   
   const [error, setErrror] = useState({
@@ -80,21 +84,20 @@ export default function Postulation() {
           await getTypes();
         }     
       } catch (error) {
-          console.error('Error en la solicitud Axios:', error);
+        console.error('Error en la solicitud Axios:', error);
       }
     }
-  fetchData();
+    fetchData();
+    setState({ ...state, workerEmail: userData.email, jobrequest:workInfo._id});
     //eslint-disable-next-line
   }, []);
  
-
-
 
   const handleSubmit = async (e) => {
     console.log(userData);
     e.preventDefault();
     try {
-      setState({ ...state, workerEmail: userData.email });
+      
       if ( error.salary || error.message ) {
         toast.error("Todos los campos son obligatorios");
         return;
