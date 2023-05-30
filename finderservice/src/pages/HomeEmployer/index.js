@@ -3,7 +3,7 @@ import Layout from "@components/Layout";
 import Link from "next/link";
 import Image from "next/image"
 import { loader } from '@public/assets';
-
+import { GoStar } from "react-icons/go";
 import { useEffect } from "react";
 import { useUser } from "@context/UserContext";
 import { useWorkers } from "@context/WorkersContext";
@@ -95,7 +95,7 @@ export default function Search({ handleAction }) {
                                                 <p>Profesión: {info.type.map((info) => info.name).toString()}</p>                                               
                                             </div>
                                             <div className="flex flex-col justify-around items-end pr-5">
-                                                <p>{info.rating} ⭐</p>
+     <p className="text-black font-bold">{info.rating} <Link href="/ReviewsEmployer">Puntuar<GoStar className="text-3xl text-blue-500 mx-auto text-center"/></Link></p>
                                                 <p>Edad: {info.age}</p>
                                             </div>
                                         </div>

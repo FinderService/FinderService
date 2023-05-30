@@ -7,7 +7,7 @@ export function validateMessage (message){
       return '* La descripción del empleo es obligatoria';
   }
 
-  if(message.length > 70){
+  if(message.length > 150){
       return '* La descripción es muy extensa';
   }
 
@@ -30,17 +30,6 @@ export function validateSalary (salary){
 }
 
 
-export function validateState (state){
 
-  if(state === ''){
-      return '* Debe indicar su estado de disponibilidad';
-  }
-
-  if(state.length > 15){
-      return '* Es muy extenso';
-  }
-  
-  return '';
-}
 
 

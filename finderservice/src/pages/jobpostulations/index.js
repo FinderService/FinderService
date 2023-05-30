@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import Layout from "@components/Layout";
 import axios from "axios";
@@ -21,6 +21,7 @@ export default function Postulation() {
   });
   
   const [error, setErrror] = useState({
+    workerEmail:"",
     salary: "",
     message: "",
   });
@@ -101,38 +102,38 @@ export default function Postulation() {
       }
 
       if(state.type.length === 0){
-        toast.error("Seleccione al menos un rubro");
+        toast.error("Debe seleccionar el rubro correspondiente");
         return;
       }
 
       console.log(state);
       const resp = await axios.post("/api/jobpostulations", state);
       console.log(resp);
-      if (resp) {
+      if (response) {
       toast.success('Su anuncio fue publicado exitosamente');
       router.push('/HomeWorker/Postulations');
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response.data.msg);
+      toast.error(error.response?.data?.msg);
     }
   };
 
 
   return (
-    <div className="h-screen bg-gradient-to-b from-gray to-gray-300">
-      <div className="h-full bg-black/40 overflow-y-scroll h-screen max-w-md mx- flex-grow overflow-y-scroll">
+    <div className="h-screen bg-gradient-to-b from-gray-300 to-black">
+      <div className="h-full bg-white/40 overflow-y-scroll h-screen max-w-md mx- flex-grow overflow-y-scroll">
         <Layout>
           <div className="flex flex-row items-center justify-center h-screen overflow-y-hidden">
-            <div className="flex flex-col text-white mr-8 w-[30rem]">
+            <div className="flex flex-col text-black mr-8 w-[30rem]">
                 <>
                   <h1 className="text-3xl font-titleFont font-bold mb-2">
-                  ¡Completa el siguiente formulario y consigue empleo ahora!
+                  Consigue empleo ahora
                   </h1>
                 <hr>
                 </hr>
                   <ul className="list-disc mt-6">
-                    <li>¡A solo un click, no esperes más!</li>
+                    <li>¡Completa el siguiente formulario, a solo un click!</li>
                   
                   </ul>
                 </>
