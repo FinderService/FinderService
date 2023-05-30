@@ -237,9 +237,13 @@ export default function RegisterSocial() {
         toast.error("Todos los campos son obligatorios");
         return;
       }
-      console.log(state);
+      //console.log(state);
       const resp = await axios.post("/api/auth/register", state);
-      console.log(resp);
+      //console.log(resp);
+
+      // removemos el localstorage del login social
+      localStorage.removeItem('socialLogin');
+
       toast.success(resp.data.msg);
       setState({
         ...state,

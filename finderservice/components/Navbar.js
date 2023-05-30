@@ -29,6 +29,7 @@ export default function Navbar() {
       router.push('/User/registerSocial');
     }
     console.log('Ruta actual: ', actualUrl);
+    // eslint-disable-next-line
   }, [])
 
   return (

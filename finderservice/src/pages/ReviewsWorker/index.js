@@ -80,6 +80,7 @@ function ReviewsEmployer() {
 
             <div className="flex mt-4">
               {fillStars(5).map((str, index) => {
+                // eslint-disable-next-line
                 const starRef = useRef(null);
                 starRefs.current[index] = starRef;
 

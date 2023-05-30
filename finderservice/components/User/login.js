@@ -21,6 +21,8 @@ export default function Login() {
 
 
   const handleSignOut = async () => {
+    // removemos el localstorage del login social
+    localStorage.removeItem('socialLogin');
     await signOut({ callbackUrl: "/User/login" });
   };
 
