@@ -43,10 +43,10 @@ useEffect(()=>{
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
-    
   // };
 
   const isDireccionComplete = direccion.trim() !== '';
+  console.log(direccion)
 
   return (
     <Layout>
