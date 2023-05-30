@@ -35,7 +35,7 @@ export default function Profile() {
                   birthdate={userData.birthdate}
                   phone={userData.phone}
                   id={userData._id}
-                  address={userData.address[0]}
+                  address={userData.address}
                 />
               </div>
               <div className="w-1/2 flex flex-col gap-6">

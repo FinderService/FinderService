@@ -63,7 +63,7 @@ export const authOptions = {
         }
         if (user.deleted) {
           throw new Error(
-            "El usuario ha sido borrado por incumplimiento de las normas"
+            "El usuario ha sido borrado por incumplimiento de las normas, si lo coonsidera un erro, envíe un mail a finderservice2023@gmail.com"
           );
         }
 
