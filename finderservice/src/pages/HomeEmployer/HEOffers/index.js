@@ -11,8 +11,8 @@ const Offers = () =>{
                         <p>Ir a:</p>
                         <p className="font-bold">🏠 <Link href="/HomeEmployer">Home</Link></p>
                         <p className="font-bold">💼 <Link href="/HomeEmployer/HEOffers">Mis ofertas de Empleo</Link></p>
-                        <p className="font-bold">📢 <Link href="/contratar">Crear oferta de Empleo</Link> </p>
-                        <p className="font-bold">📝 Reviews</p>
+                        <p className="font-bold">📢 <Link href="/jobrequests">Crear oferta de Empleo</Link> </p>
+                        <p className="font-bold"><Link href="/MyReviewsEmployer">⭐ Mis Reviews</Link></p>
                     </div>
                 </div>
                 <div className="flex flex-col justify-around w-1/2 mt-10 mb-5">

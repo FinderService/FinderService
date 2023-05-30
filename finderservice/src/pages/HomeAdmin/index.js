@@ -4,11 +4,13 @@ import NavBarAdmin from "@components/NavBarAdmin";
 import { useAdmin } from "@context/AdminContext";
 
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect } from "react";
+import { loader } from '@public/assets';
 
 const HomeAdmin = () =>{    
     const { data: session } = useSession();
-    const { users, getAllUsers , workers, employers, validusers, notValidusers } = useAdmin();
+    const { users, getAllUsers , workers, employers, validusers, notValidusers, removedUsers } = useAdmin();
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -17,7 +19,6 @@ const HomeAdmin = () =>{
                     await getAllUsers();
                 }
             } catch (error) {
-                // Manejar el error de Axios aquí
                 console.error('Error en la solicitud Axios:', error);
             }
         };
@@ -28,12 +29,18 @@ const HomeAdmin = () =>{
     if (session) {     
         return (
         <Layout >
-            <div className="flex justify-start">
-                <NavBarAdmin />
-                <div className="bg-stone-800 w-full h-screen">
-                    <ShowUsersData users={users} workers={workers} employers={employers} validusers={validusers} notValidusers={notValidusers}/>
+            {!users.length? <>
+                    <div className="flex justify-center pr-20">
+                        <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
+                    </div>
+            </>:<>
+                <div className="flex justify-start">
+                    <NavBarAdmin />
+                    <div className="bg-stone-800 w-full h-screen">
+                        <ShowUsersData users={users} workers={workers} employers={employers} validusers={validusers} notValidusers={notValidusers} removedUsers={removedUsers}/>
+                    </div>          
                 </div>
-            </div>
+            </>}        
         </Layout>);
     }
 return <p>Access Denied</p>; 

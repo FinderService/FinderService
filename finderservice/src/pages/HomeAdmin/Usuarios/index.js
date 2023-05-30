@@ -3,18 +3,27 @@ import Layout from "@components/Layout";
 import NavBarAdmin from "@components/NavBarAdmin";
 import { useAdmin } from "@context/AdminContext";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { loader } from '@public/assets';
 
 const UsersAdmin = () =>{    
     const { data: session } = useSession();
     const { users, getAllUsers , userDetail , setUserDetail , workers, employers, validusers, notValidusers } = useAdmin();
 
     useEffect(()=>{
-        if(!users.length){
-            getAllUsers();    
-        }  
+        const fetchData = async () => {
+            try {
+                if(!users.length){
+                    await getAllUsers();
+                }
+            } catch (error) {
+                console.error('Error en la solicitud Axios:', error);
+            }
+        };
+        fetchData();
+    //eslint-disable-next-line
     },[])
 
     const clickOnUser = (obj) =>{
@@ -24,6 +33,11 @@ const UsersAdmin = () =>{
     if (session) {
         return (
         <Layout >
+            {!users.length? <>
+                    <div className="flex justify-center pr-20">
+                        <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
+                    </div>
+            </>:<>
             <div className="flex justify-start">
                 <NavBarAdmin />
                 <div className="bg-stone-800 w-full">
@@ -49,6 +63,7 @@ const UsersAdmin = () =>{
                     <SliderUsers tit1="🟢 Usuarios Validados" tit2="🔴 Usuarios no validados" users={users} workers={validusers} employers={notValidusers} clickOnUser={clickOnUser}/>
                 </div>
             </div>
+            </>}
         </Layout>);
     }
    return <p>Access Denied</p>; 

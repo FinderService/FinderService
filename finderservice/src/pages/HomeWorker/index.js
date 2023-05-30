@@ -7,6 +7,8 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { loader } from '@public/assets';
 import ShowFilters from "@components/ShowFilters";
+import { GoStar } from "react-icons/go";
+
 
 //vista de home empleado
 export default function HomeWorker() {
@@ -20,7 +22,6 @@ export default function HomeWorker() {
                     await getTypes();
                 }
             } catch (error) {
-                // Manejar el error de Axios aquí
                 console.error('Error en la solicitud Axios:', error);
             }
         };
@@ -50,7 +51,7 @@ export default function HomeWorker() {
                         <div className="shadow-2xl shadow-zinc-400 flex flex-col">
                             <Link href="/HomeWorker"><p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200">🏠 Home</p></Link>
                             <Link href="/HomeWorker/Postulations"><p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200">📩 Mis Postulaciones</p></Link>
-                            <p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200">📝 Reviews</p>
+                            <p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200"><Link href="/MyReviewsWorker">⭐ Mis Reviews</Link></p>
                         </div>
                     </div>
                 </div>
@@ -66,7 +67,7 @@ export default function HomeWorker() {
                                     return (
                                     <Link onClick={()=> console.log(job) } href={`/HomeWorker/${job._id}`} key={job._id}>
                                         <div key={job._id} className="flex bg-neutral-300 p-5 mb-10 mr-5 duration-200 hover:scale-105 hover:shadow-xl">
-                                            <Image className="mr-7 w-30 h-20 rounded-2xl" src={job.photo} width={75} height={75} alt="imgjob" priority={true} />
+                                            <Image key={job._id} className="mr-7 w-30 h-20 rounded-2xl" src={job.photo} width={75} height={75} alt="imgjob" priority={true} />
                                             <div className="flex justify-between w-4/5">
                                                 <div className="flex flex-col justify-around">
                                                     <h2 className="font-bold">{job.title? job.title : job.name}</h2>
@@ -75,6 +76,7 @@ export default function HomeWorker() {
                                                 <div className="flex flex-col justify-around items-end">
                                                     <p>Ubicación: {job.address.length? `${job.address[0].city} - ${job.address[0].country}` : " - "}</p>
                                                     <p>Fecha: {job.date.slice(0,10)}</p>
+                                                    <p className="text-black font-bold"><Link href="/ReviewsWorker">Puntuar<GoStar className="text-3xl text-blue-500 mx-auto text-center"/></Link></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -93,7 +95,7 @@ export default function HomeWorker() {
                         <select name="Jobs" onChange={handleFilters} className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
                             <option value="Trabajos">-Trabajos-</option>
                             {types.map((type) => {
-                                return (<option value={type}>{type}</option>)
+                                return (<option key={type} value={type}>{type}</option>)
                             })}
                         </select>  
                     </div>

@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Layout from "@components/Layout";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { JobrequestsContext } from "@context/JobrequestsContext";
 import {
   validateDescription,
   validatePhoto,
@@ -14,7 +13,6 @@ import { useUser } from "@context/UserContext";
 
 export default function Postulation() {
   const router = useRouter();
-  //const { addJobRequest } = useContext(JobrequestsContext);
   const { userData } = useUser();
 
   const [state, setState] = useState({
@@ -89,9 +87,17 @@ export default function Postulation() {
   };
 
   useEffect(() => {
-    if (types.length === 0) {
-      getTypes();
-    }
+    const fetchData = async () => {
+      try {
+        if(types.length === 0){
+          await getTypes();
+        }
+      } catch (error) {
+          console.error('Error en la solicitud Axios:', error);
+      }
+  };
+  fetchData();
+    //eslint-disable-next-line
   }, []);
 
   const handleSubmit = async (e) => {
@@ -105,16 +111,11 @@ export default function Postulation() {
       }
 
       if (state.type.length === 0) {
-        toast.error("Seleccione al menos un rubro");
+        toast.error("Debe seleccionar el rubro correspondiente");
         return;
       }
 
-      //const formData = new FormData();
-      //formData.append("email", state.employerEmail);
-      //formData.append("title", state.title);
-      //formData.append("description", state.description); //metodo para agregar un nueva propiedad y valor
-      //formData.append("photo", state.photo);
-
+      
       console.log(state);
       const resp = await axios.post("/api/jobrequests", state);
       console.log(resp);
@@ -123,17 +124,13 @@ export default function Postulation() {
         router.push("/HomeEmployer/HEOffers");
       }
 
-      //addJobRequest(resp.data);
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.msg);
     }
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setState((prevState) => ({ ...prevState, photo: file }));
-  };
+  
 
   /*INPUT ADDRESS
   <input
@@ -176,29 +173,26 @@ export default function Postulation() {
 
   return (
     <div className="h-screen bg-gradient-to-b from-gray-300 to-black">
-      <div className="h-full bg-black/40 overflow-y-scroll h-screen max-w-md mx- overflow-y-scroll flex-grow ">
+      <div className="h-full bg-white/40 overflow-y-scroll h-screen max-w-md mx- overflow-y-scroll flex-grow ">
         <Layout>
           <div className="flex flex-row items-center justify-center h-screen overflow-y-hidden">
-            <div className="flex flex-col text-white mr-8 w-[30rem]">
+            <div className="flex flex-col text-black mr-8 w-[30rem]">
               <>
                 <h1 className="text-3xl font-titleFont font-bold mb-2">
-                  ¡Completa el siguiente formulario y encuentra una solución a
-                  tu necesidad!
+                  Encuentra una solución a
+                  tu necesidad
                 </h1>
                 <hr />
                 <ul className="list-disc mt-6">
-                  <li>
-                    Puedes agregar una foto del trabajo requerido, así quien
-                    contrates sabrá de qué se trata
-                  </li>
-                  <li>¡A solo un click, no esperes más!</li>
+                 
+                  <li>¡Completa el siguiente formulario, a solo un click, no esperes más!</li>
                 </ul>
               </>
             </div>
 
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col bg-white p-6 w-[25rem] gap-2 bg-white/70 backdrop-blur-xl rounded-lg drop-shadow-xl border-8 border-green-500 p-8 rounded-lg bg-gray-200"
+              className="flex flex-col bg-white p-6 w-[25rem] gap-2 bg-white/70 backdrop-blur-xl rounded-lg drop-shadow-xl border-8 border-blue-500 p-8 rounded-lg bg-gray-200"
               autoComplete="off"
             >
               <h3 className="text-black font-bold">
@@ -254,7 +248,7 @@ export default function Postulation() {
                     <option value="Trabajo">-Trabajo-</option>
                     {types.length !== 0 ? (
                       types.map((type) => {
-                        return <option value={type.name}>{type.name}</option>;
+                        return <option key={type.name} value={type.name}>{type.name}</option>;
                       })
                     ) : (
                       <option>Cargando...</option>
@@ -267,7 +261,7 @@ export default function Postulation() {
                 <button
                   onClick={handleSubmit}
                   type="submit"
-                  className="btn-navbar w-[6.5rem] text-center text-black font-bold border border-green-500"
+                  className="btn-navbar w-[6.5rem] text-center text-black font-bold border border-blue-500"
                 >
                   Añadir solicitud
                 </button>
