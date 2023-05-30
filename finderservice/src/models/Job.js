@@ -14,9 +14,23 @@ var jobSchema = new Schema(
         ref: "JobPostulation",
       },
     ],
+    worker: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Worker",
+      },
+    ],
+    employer: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Employer",
+      },
+    ],
     statejob: String,
-    review: String,
-    rating: String,
+    reviewWorker: String,
+    reviewEmployer: String,
+    ratingWorker: String,
+    ratingEmployer: String,
   },
   { timestamps: false, versionKey: false }
 );
