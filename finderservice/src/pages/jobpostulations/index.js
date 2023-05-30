@@ -96,8 +96,6 @@ export default function Postulation() {
     // eslint-disable-next-line
   }, []);
  
-    setState({ ...state, workerEmail: userData.email, /* jobrequest:workInfo._id  */ });
-  }, [ types.length, userData.email]);
 
   const handleSubmit = async (e) => {
     console.log(userData);
