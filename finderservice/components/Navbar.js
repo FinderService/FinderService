@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Login from "./User/login";
 import { useSession } from "next-auth/react";
 import { useUser } from "@context/UserContext";
+import { useEffect } from "react";
 
 
 export default function Navbar() {
@@ -19,6 +20,16 @@ export default function Navbar() {
     alert("Usuario: Debe iniciar sesión o registrarse para realizar esta acción.")
     router.push('/User/login');
   }
+
+  useEffect(() => {
+    let socialLogin = localStorage.getItem('socialLogin');
+    const actualUrl = router.pathname;
+    if( actualUrl !== '/User/registerSocial' && socialLogin){
+      console.log('No ha completado el registro social, redirigiendo...');
+      router.push('/User/registerSocial');
+    }
+    console.log('Ruta actual: ', actualUrl);
+  }, [])
 
   return (
     

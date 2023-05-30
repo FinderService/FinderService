@@ -4,7 +4,6 @@ import { RiMailCheckLine } from "react-icons/ri";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 
 import {
   validateUsername,
@@ -17,7 +16,6 @@ import {
 
 export default function RegisterSocial() {
   
-  const router = useRouter();
 
   const { data: session } = useSession();
 
@@ -204,7 +202,7 @@ export default function RegisterSocial() {
   };
 
   useEffect(() => {
-    localStorage.setItem('socialLogin', JSON.stringify(router.asPath));
+    localStorage.setItem('socialLogin', true);
     getTypes();
   }, []);
 
