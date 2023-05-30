@@ -7,7 +7,14 @@ export default function FormData({ name, email, birthdate, phone, address }) {
         email,
         birthdate,
         phone,
-        address,
+        address: [{
+            addressname: "",
+            country: "",
+            state: "",
+            city: "",
+            street: "",
+            zipCode: "",
+        }],
     })
 
     const handleChange = (e) => {
@@ -29,7 +36,7 @@ export default function FormData({ name, email, birthdate, phone, address }) {
             <input type="text" name="email" value={state.email} onChange={handleChange} className="form-input" readOnly />
             <input type="text" name="birth" value={state.birthdate} onChange={handleChange} className="form-input"  readOnly/>
             <input type="text" name="phone" value={state.phone} onChange={handleChange} className="form-input" />
-            <input type="text" name="address" value={state.address} onChange={handleChange} className="form-input" />
+            <input type="text" name="address" value={state.address[0].country} onChange={handleChange} className="form-input" />
         </div>
     )
 }
