@@ -46,7 +46,7 @@ export default function Search({ handleAction }) {
 
     return (
         <Layout>
-            {(!sortedWorkers.length) && (types.length)? 
+            {!workersData.length && (!types.length)? 
             <>
                 <div className="flex justify-center pr-20">
                     <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
@@ -69,8 +69,8 @@ export default function Search({ handleAction }) {
                             <select onChange={(e) => handlerSort(e)} name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
                                 <option value="Ordenar">-Ordenar-</option>
                                 <option value="Cercano">Más cercanos</option>
-                                <option value="Ascendente">Nombres (Ascendente)</option>
-                                <option value="Descendente">Nombres (Descendente)</option>   
+                                <option value="Ascendente">Nombres &lpar;Ascendente&rpar;</option>
+                                <option value="Descendente">Nombres &lpar;Descendente&rpar;</option>   
                                 <option value="Rating">Rating</option>            
                             </select>
                         </div>
