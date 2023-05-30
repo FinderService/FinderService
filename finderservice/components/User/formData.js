@@ -1,12 +1,13 @@
 import { useState } from "react"
 
-export default function FormData({ name, email, birthdate, phone }) {
+export default function FormData({ name, email, birthdate, phone, address }) {
 
     const[state, setState] = useState({
         name,
         email,
         birthdate,
-        phone
+        phone,
+        address,
     })
 
     const handleChange = (e) => {
@@ -28,6 +29,7 @@ export default function FormData({ name, email, birthdate, phone }) {
             <input type="text" name="email" value={state.email} onChange={handleChange} className="form-input" readOnly />
             <input type="text" name="birth" value={state.birthdate} onChange={handleChange} className="form-input"  readOnly/>
             <input type="text" name="phone" value={state.phone} onChange={handleChange} className="form-input" />
+            <input type="text" name="address" value={state.address} onChange={handleChange} className="form-input" />
         </div>
     )
 }
