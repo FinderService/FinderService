@@ -1,6 +1,6 @@
-import { dbConnect } from "@/utils/mongoose";
+import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import JobPostulation from "@/models/JobPostulation.js";
-import mongoose from "mongoose";
+
 
 export default async function handler(req, res) {
   await dbConnect();
@@ -11,30 +11,35 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const JobPostulationId = await JobPostulation.findById(id);
-        if (!JobPostulationId)
+        if (!JobPostulationId){
+          await dbDisconnect();
           return res.status(404).json({ error: " Job postulation not found" });
+        }
+        await dbDisconnect();
         return res.status(200).json(JobPostulationId);
+
       } catch (error) {
-        await mongoose.connection.close();
-        console.log("Connection shutdown");
+        await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }
 
     case "DELETE":
       try {
         const deleteJobPostulation = await JobPostulation.findByIdAndDelete(id);
-        if (!deleteJobPostulation)
+        if (!deleteJobPostulation){
+          await dbDisconnect();
           return res.status(404).json({ error: " Job postulation not found" });
+        }
+        await dbDisconnect();
         return res.status(204).json();
+
       } catch (error) {
-        await mongoose.connection.close();
-        console.log("Connection shutdown");
+        await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }
 
     default:
-      await mongoose.connection.close();
-      console.log("Connection shutdown");
+      await dbDisconnect();
       res.status(404).json({ error: "request do not exist" });
       break;
   }
