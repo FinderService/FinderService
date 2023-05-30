@@ -1,5 +1,4 @@
-
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { GoStar } from "react-icons/go";
 import { IoIosStarOutline } from "react-icons/io";
 import Layout from "@components/Layout";
@@ -9,7 +8,14 @@ import { useUser } from "@context/UserContext";
 function ReviewsEmployer() {
   const [rating, setRating] = useState(0);
   const { userData, setUserData } = useUser();
-  const starRefs = useRef([]);
+
+  const fillStars = (count) => {
+    const stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push(i);
+    }
+    return stars;
+  };
 
   const handleStarClick = (index) => {
     setRating(index);
@@ -17,12 +23,8 @@ function ReviewsEmployer() {
 
   const handleReviewSubmit = (event) => {
     event.preventDefault();
-    setUserData({ ...userData, reviews: userData.reviews, stars: rating });
-  };
-
-  const fillStars = (count) => {
-    return Array(count).fill("");
-  };
+/*     setUserData({ ...userData, reviews: userData.reviews, stars: rating });
+ */  };
 
   return (
     <Layout>
@@ -63,13 +65,14 @@ function ReviewsEmployer() {
             ))}
           </div>
         </div>
-       
+
         <p className="text-black font-bold text-xl mt-12 mb-0 text-center">
-            Cuéntanos más acerca de este empleado</p>  
-            <p className="text-black text-sm mt-1 mb-0 text-center"> (Opcional)</p>
-            
-           <form onSubmit={handleReviewSubmit} className="mt-8 w-full max-w-lg">
-           <div className="flex flex-col items-center">
+          Cuéntanos más acerca de este empleado
+        </p>
+        <p className="text-black text-sm mt-1 mb-0 text-center">(Opcional)</p>
+
+        <form onSubmit={handleReviewSubmit} className="mt-8 w-full max-w-lg">
+          <div className="flex flex-col items-center">
             <textarea
               className="h-40 md:h-150 border border-gray-400 p-4 md:p-15 text-base outline-none mx-auto w-1/2"
               name="reviews"
@@ -79,32 +82,25 @@ function ReviewsEmployer() {
               /* onChange={(e) => setUserData({ ...userData, reviews: e.target.value })} */
             />
 
-            <div className="flex mt-4">
-              {fillStars(5).map((str, index) => {
-                const starRef = useRef(null);
-                starRefs.current[index] = starRef;
+<div className="flex mt-4">
+  {fillStars(5).map((str, index) => (
+    <label key={str} className="cursor-pointer">
+      <input
+        type="radio"
+        value={str}
+        onClick={() => handleStarClick(index + 1)}
+        name="stars"
+        className="hidden"
+      />
+      <IoIosStarOutline
+        className={`text-gray-400 ${index < rating ? "text-blue-500 fill-current" : ""}`}
+        id={str}
+        style={{ fontSize: "32px" }}
+      />
+    </label>
+  ))}
+</div>
 
-                return (
-                  <label key={str} className="cursor-pointer">
-                    <input
-                      type="radio"
-                      value={str}
-                      onClick={() => handleStarClick(index + 1)}
-                      name="stars"
-                      className="hidden"
-                    />
-                    <IoIosStarOutline
-                      ref={starRef}
-                      className={`text-gray-400 ${
-                        index < rating ? "text-blue-500" : ""
-                      }`}
-                      id={str}
-                      style={{ fontSize: "32px" }}
-                    />
-                  </label>
-                );
-              })}
-            </div>
 
             <button
               type="submit"

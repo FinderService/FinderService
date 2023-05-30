@@ -79,6 +79,8 @@ export default function Postulation() {
   };
   
 
+
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -90,9 +92,8 @@ export default function Postulation() {
       }
     }
     fetchData();
-    setState({ ...state, workerEmail: userData.email, /* jobrequest:workInfo._id  */});
-  }, []);
- 
+    setState({ ...state, workerEmail: userData.email, /* jobrequest:workInfo._id  */ });
+  }, [ types.length, userData.email]);
 
   const handleSubmit = async (e) => {
     console.log(userData);
