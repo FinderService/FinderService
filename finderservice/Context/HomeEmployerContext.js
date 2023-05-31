@@ -14,12 +14,12 @@ export const useWorker = () => {
 export const HomeEmployerProvider = ({ children }) => {
     const [workersData, setWorkersData] = useState([]);
     const [sortedWorkers, setSortedWorkers] = useState([]);
-
+    
     const [filtersInfo, setFiltersInfo] = useState([]);
 
     const [myJobs , setMyJobs] = useState([])
     const [myJobById, setMyJobById] = useState({})
-
+    const [dataPostulation, setDataPostulation]= useState({})
     const [ infoReq ,setInfoReq ] = useState([])
 
     const getAllWorkers = async () => {
@@ -72,7 +72,7 @@ export const HomeEmployerProvider = ({ children }) => {
     };
 
     const getMyJobs = async (id) =>{
-        const {data} = await axios.get(`/api/jobrequests?id=${id}`);
+        const {data} = await axios.get(`/api/jobrequests?idEmployer=${id}`);
         setMyJobs(data);
     } 
 
@@ -100,6 +100,6 @@ export const HomeEmployerProvider = ({ children }) => {
         await axios.post("/api/jobs/newJob",formData);
     }
 
-    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, setSortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation, getWorkerByName }}>{children}</HomeEmployerContext.Provider>;
+    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, setSortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation, getWorkerByName, dataPostulation ,setDataPostulation }}>{children}</HomeEmployerContext.Provider>;
 }
 

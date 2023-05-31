@@ -8,55 +8,41 @@ import { useRouter } from "next/router";
 import { loader } from "@public/assets";
 
 const Contratacion = () =>{
-    const {postInfoToPostulation} = useWorker();
+    const {postInfoToPostulation, dataPostulation, setDataPostulation} = useWorker();
     const {userData} = useUser();
     const router = useRouter();
 
-    const [isLocalStorageAvailable, setIsLocalStorageAvailable] = useState(false);
-
     const[sure,setSure] = useState(false);
     const [wait, setWait] = useState(false);
-    const exist = isLocalStorageAvailable? localExists() : false;
-    const [postulationData] = useState(exist);
+
+    const [postulationData, setPostulationData] = useState(dataPostulation);
     const [formData, setFormData] = useState({
-        jobrequestId: postulationData === false? false :postulationData.jobrequest[0],
-        jobpostulationId: postulationData === false? false : postulationData._id,
-        workerId: postulationData === false? false: postulationData.worker[0]._id,
+        jobrequestId: "",
+        jobpostulationId: "",
+        workerId: "",
         employerId: userData._id,
     })
 
-    const localExists =() =>{
-        if(window.localStorage.getItem('workID')){
-            return {...JSON.parse(window.localStorage.getItem('workID'))}
-        }
-        return false;
-    }
-    
     useEffect(()=>{
-        setIsLocalStorageAvailable(typeof window !== "undefined" && window.localStorage);
-        if(postulationData !== false){
-            if (postulationData._id && postulationData.worker[0]._id && userData._id) {
-                setFormData({
-                    ...formData,
-                    jobrequestId: postulationData.jobrequest[0],
-                    jobpostulationId: postulationData._id,
-                    workerId: postulationData.worker[0]._id,
-                });
-            }
+        setPostulationData(dataPostulation);
+        if(postulationData._id){
+            setFormData({
+                jobrequestId: postulationData.jobrequest[0],
+                jobpostulationId: postulationData._id,
+                workerId: postulationData.worker[0]._id,
+                employerId: userData._id,
+            })
         }
-    //eslint-disable-next-line        
+    //eslint-disable-next-line
     },[])
 
     const handleSubmit = async () =>{      
-        if(exist !== false){
-            setWait(true);
-            await postInfoToPostulation(formData);
-            setWait(false);
-            alert('Contratación realizada con éxito');
-            router.replace('/HomeWorker/HEOffers')
-            localStorage.removeItem('workID');
-        }
-        console.log(formData);
+        setWait(true);
+        await postInfoToPostulation(formData);
+        setWait(false);
+        alert('Contratación realizada con éxito');
+        setDataPostulation({});      
+        router.push('/HomeWorker/HEOffers')
     }
 
     return(
