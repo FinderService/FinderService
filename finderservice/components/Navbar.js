@@ -22,6 +22,10 @@ export default function Navbar() {
   }
 
   useEffect(() => {
+    //es el admin??
+    if(session?.user?.email === 'adminfs@gmail.com'){
+      router.push('/HomeAdmin');
+    }
     let socialLogin = localStorage.getItem('socialLogin');
     const actualUrl = router.pathname;
     if( actualUrl !== '/User/registerSocial' && socialLogin){
