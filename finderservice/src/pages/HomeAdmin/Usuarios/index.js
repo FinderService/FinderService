@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { loader } from '@public/assets';
+import { avt } from "@public/assets";
 
 const UsersAdmin = () =>{    
     const { data: session } = useSession();
@@ -47,7 +48,9 @@ const UsersAdmin = () =>{
                         : <>
                             <p className="font-bold mt-10 ml-20 pl-5 pt-3 pb-2 bg-stone-200 w-3/5">Informacion del Usuario</p>
                             <div className="flex ml-20 mb-10 p-5 bg-stone-200 w-3/5">
-                                <Image width={100} height={100} src={userDetail.profilepic} alt='bigpic'/>
+                                {userDetail.profilepic.length? <Image width={100} height={100} src={userDetail.profilepic} alt='bigpic'/>
+                                : <Image width={100} height={100} src={avt} alt='userpic'/>
+                                }
                                 <div className="w-1/2 pl-5 flex-col">
                                     <p className="font-bold">{userDetail.name}</p>
                                     <p>Phone: {userDetail.phone}</p>

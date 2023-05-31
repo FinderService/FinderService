@@ -4,21 +4,24 @@ import Link from "next/link";
 import Image from "next/image"
 import { loader } from '@public/assets';
 import { GoStar } from "react-icons/go";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@context/UserContext";
 import { useWorkers } from "@context/WorkersContext";
 import { useWorker } from "@context/HomeEmployerContext";
 import ShowFilters from "@components/ShowFilters";
 import showImgs from "@/utils/showImgs";
 import { useRouter } from "next/router";
+import { avt } from "@public/assets";
 
 export default function Search({ handleAction }) {
     const router = useRouter();
     const objImgs = showImgs();
     const { userData } = useUser();
-    const { workersData, getAllWorkers, sortWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers, dataWorker } = useWorker();
+    const { workersData, getAllWorkers, sortWorkers, setSortedWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers, dataWorker, getWorkerByName } = useWorker();
     const { getTypes, types } = useWorkers();
-    
+    const [ error, setError ] = useState("")
+    const [wait, setWait] = useState(false);
+
     //const objImgs = types? showImgs(types) : null;
 
     const handlerSort = (e) => {
@@ -34,7 +37,28 @@ export default function Search({ handleAction }) {
        addFilters(value);
    }
 
-   const handlerClick = async (e) => {
+   const resetWorkersData = () =>{
+        setSortedWorkers(workersData);
+   }
+
+    const searchWorker = async (event) =>{
+        const enter = event.key;
+        const name = event.target.value;
+        if(enter === 'Enter'){
+            console.log("ENTER");
+            setWait(true);
+            const errorExist = await getWorkerByName(name);
+            if(errorExist){
+                alert(errorExist.response.data.error);
+                setWait(false);
+                return;
+            }
+            setWait(false);
+            console.log("ENTER");
+        }
+    }
+
+    const handlerClick = async (e) => {
         await dataWorker(e.target.value);
         router.push("/WorkerDetail");
         //console.log("evento click", e.target.value);
@@ -65,19 +89,18 @@ export default function Search({ handleAction }) {
                     <div className="flex flex-wrap justify-around rounded-2xl h-1/4">
                         {objImgs.map((obj)=>{
                             return ( 
-                                <Image src={obj.img} key={obj.work} onClick={()=> handleImgChange(obj.work)} className="flex justify-center items-center m-4 p-3 w-14 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110 hover:cursor-pointer" alt={obj.work}></Image>
+                                <Image src={obj.img} key={obj.work} onClick={()=> handleImgChange(obj.work)} className="shadow-xl flex justify-center items-center m-4 p-3 w-16 h-fit rounded-2xl bg-neutral-200 duration-200 hover:scale-110 hover:cursor-pointer" alt={obj.work}></Image>
                             )})
                         }
                     </div>
 
-                    <div className="bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
+                    <div className="shadow-2xl bg-neutral-300 mt-10 mb-10 p-6 rounded-xl">
                         <label className="font-bold mb-2">Ordenar por:</label>
                         <div>
                             <select onChange={(e) => handlerSort(e)} name="OrderFilter" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
                                 <option value="Ordenar">-Ordenar-</option>
-                                <option value="Cercano">Más cercanos</option>
-                                <option value="Ascendente">Nombres &lpar;Ascendente&rpar;</option>
-                                <option value="Descendente">Nombres &lpar;Descendente&rpar;</option>   
+                                <option value="Ascendente">Nombres (Ascendente) </option>
+                                <option value="Descendente">Nombres (Descendente)</option>   
                                 <option value="Rating">Rating</option>            
                             </select>
                         </div>
@@ -85,8 +108,11 @@ export default function Search({ handleAction }) {
                 </div>
 
                 <div className="flex flex-col justify-around pt-5 mt-14 mb-6 pl-10 w-1/2 rounded-xl">
-                    <div className="w-5/6 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm ">
-                        <input type="text" placeholder="Buscar por nombre" className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "/>
+                    <div className="flex">
+                        <div className="w-4/6 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm ">
+                            <input onKeyDown={searchWorker} type="text" placeholder="Enter para buscar por nombre" className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "/>
+                        </div>
+                        <button onClick={resetWorkersData} className="w-1/6 ml-3 text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold rounded">Todos los Trabajadores</button>
                     </div>
                     <ShowFilters filterData={sortedWorkers} infoFilters={filtersInfo} deleteFilter={delFilterWorkers}/>
                     <div className="mt-5 flex flex-col flex-wrap">
@@ -94,36 +120,42 @@ export default function Search({ handleAction }) {
                             return (
                                 <div key={info._id} id={info._id}>
 
-                                    <div key={info._id} className="flex justify-start bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
+                                    <div key={info._id} className="shadow-xl flex justify-start bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
                                      <button onClick={handlerClick} key={info._id} value={info._id} className="border-2 border-slate-400 rounded-md px-3 py-1 hover:border-blue-600 cursor-pointer duration-300 flex flex-row gap-2 items-center">Ver detalle</button>
-                                        <Image key={info._id} src={info.profilepic} width={100} height={200} alt="pics"/>
+                                        {info.profilepic.length? <Image key={info._id} width={100} height={200} src={info.profilepic} alt='bigpic'/>
+                                        : <Image key={info._id} width={100} height={200} src={avt} alt='userpic'/>
+                                        }
                                         <div className="pl-10 w-full flex justify-between">
                                             <div className="flex flex-col justify-around">
-                                                <p>Nombre: {info.name}</p>
+                                                <p className="text-xl font-bold">{info.name}</p>
                                                 <p>Rol: {info.profile}</p>
-                                                <p>Profesión: {info.type.map((info) => info.name).toString()}</p>                                               
+                                                <p>Profesión: {info.type.map((info) => info.name).toString()}</p>       
+                                                <p>Edad: {info.age}</p>                                        
                                             </div>
                                             <div className="flex flex-col justify-around items-end pr-5">
-     <p className="text-black font-bold">{info.rating} <Link href="/ReviewsEmployer">Puntuar<GoStar className="text-3xl text-blue-500 mx-auto text-center"/></Link></p>
-                                                <p>Edad: {info.age}</p>
+                                                <div className="flex">
+                                                    <p className="pr-2 text-black font-bold">{info.rating}</p>
+                                                    <GoStar className="text-3xl text-blue-500 mx-auto text-center"/>                                 
+                                                </div>
+                                                <Link href="/ReviewsEmployer"><button className="bg-blue-500 hover:bg-blue-600 text-white font-bold p-1 rounded">Puntuar</button></Link>                                                
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             )
                         })}
+                        {wait && (<>
+                            <div dialogClassName="avatar-modal" className="w-full h-screen absolute top-0 left-0 bg-black/50 z-40 flex flex-col items-center justify-center">
+                                <div className="bg-white w-[40rem] pl-10 pr-10 pt-5 rounded-md flex flex-col items-center overflow-hidden shadow-2xl">
+                                    <Image src={loader} width={300} height={150} alt="loading"/>
+                                    </div>
+                            </div>
+                        </>)}                      
                     </div>
                 </div>
-                <div className="bg-neutral-300 flex flex-col w-1/6 h-fit mt-14 mb-5 pl-6 pt-6 pr-6 rounded-xl">
-                    <div>
-                        <label className="font-bold mb-2">Métodos de Pago</label>
-                        <select name="Payment" className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">
-                            <option value="Ordenar">-Formas de Pago-</option>
-                            <option value="Descendente">Efectivo</option>
-                            <option value="Ascendente">Mercado Pago</option>
-                        </select>
-                    </div>
-                    <div className="mt-5">
+                <div className="bg-neutral-300 shadow-2xl flex flex-col w-1/6 h-fit mt-14 mb-5 pl-6 pt-6 pr-6 rounded-xl">
+
+                    <div className="mt-3">
                         <label className="font-bold mb-2">Tipos de Trabajo</label>
                         <div>
                             <select name="Works" onChange={handleChange} className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">

@@ -72,7 +72,7 @@ const AdminJobs = () => {
                                         <div onClick={()=> clickOnUser(item)} className="pl-5 pb-2 pt-2 mt-3 mb-3 flex hover:bg-blue-500 hover:cursor-pointer" key={index}>
                                             <div className="pl-5 flex-col">
                                                 <p className="font-bold">Titulo: {item.title}</p>
-                                                <p>Publicado por: {" - " }</p>
+                                                <p>Publicado por: {item.employer[0].name}</p>
                                                 <p>Fecha de publicacion: {item.date.slice(0,10)}</p> 
                                                 <p>Destinado para: {item.type[0].name}</p>
                                             </div>

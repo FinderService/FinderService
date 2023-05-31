@@ -46,6 +46,8 @@ export default function Login() {
       redirect: false,
       callbackUrl: "/",
     });
+    
+    console.log('login result: ', result);
 
     if (result.error) {
       setState({
