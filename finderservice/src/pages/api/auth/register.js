@@ -172,6 +172,13 @@ export default async function registerHandler(req, res) {
             content
           );
 
+          if (!mail) {
+            return res.status(400).json({
+              success: false,
+              msg: "No se pudo enviar el correo de validación",
+            });
+          }
+
           return res.status(201).json({
             success: true,
             user: newUser,

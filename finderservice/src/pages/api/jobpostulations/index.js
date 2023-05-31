@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const jobApply = await JobPostulation.find({})
-          .populate("jobrequest", "title employer")
+          .populate("jobrequest", "title employer type")
           .populate("worker", "-_id name type email");
 
         if (jobApply.length !== 0) {
