@@ -1,6 +1,7 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Job from "@/models/Job";
 import Worker from "@/models/Worker";
+import Employer from "@/models/Employer";
 
 export default async function reviewJob(req, res) {
   await dbConnect();
@@ -11,13 +12,13 @@ export default async function reviewJob(req, res) {
       reviewEmployer,
       ratingWorker,
       ratingEmployer,
-      statejob,
     } = req.body;
 
-    let jobDb = await Job.findById(jobId);
-    console.log('job: ', jobDb.worker);
 
-    //return res.send('Done!')
+    const statejob = 'Done';
+
+    let jobDb = await Job.findById(jobId);
+    //console.log('job: ', jobDb.worker);
 
     if (!jobDb) {
       await dbDisconnect();
@@ -47,16 +48,16 @@ export default async function reviewJob(req, res) {
         let rating = 0;
         let totalJobs = 0;
         jobs.map( j => {
-          rating += Number(j.ratingWorker);
+          rating += isNaN(j.ratingEmployer) ? 0 : Number(j.ratingEmployer) ;
           totalJobs++;
         });
 
-        let finalRating = rating / totalJobs;
+        let finalRating = Math.ceil(rating / totalJobs);
 
         let updateWorker = await Worker.updateOne(
           { _id: worker._id },
           {
-            $set: { rating: finalRating },
+            $set: { rating: Math.floor(finalRating) },
           }
         );
 
@@ -66,9 +67,6 @@ export default async function reviewJob(req, res) {
 
         throw new Error('Algo sali mal, inténtalo más tarde');
         
-
-
-
         //let updateWorkerReview = await Worker.updateOne({});
       }
 
@@ -79,6 +77,36 @@ export default async function reviewJob(req, res) {
             $set: { reviewEmployer , ratingEmployer, statejob },
           }
         );
+
+        // primero la data del user
+        let employerId = jobDb.employer;
+        let employer = await Employer.findById(employerId);
+
+        // ahora todos los jobs del user
+        let jobs = await Job.find({ employer: employer._id });
+
+        // sacamos las calificaciones de los jobs
+        let rating = 0;
+        let totalJobs = 0;
+        jobs.map( j => {
+          rating += isNaN(j.ratingEmployer) ? 0 : Number(j.ratingEmployer) ;
+          totalJobs++;
+        });
+
+        let finalRating = Math.ceil(rating / totalJobs);
+
+        let updateEmployer = await Employer.updateOne(
+          { _id: employer._id },
+          {
+            $set: { rating: finalRating },
+          }
+        );
+
+        if(updateJob && updateEmployer){
+          return res.status(200).json({ success: true, msg: 'Se guardo la reseña satisfactoriamente'});
+        }
+
+        throw new Error('Algo sali mal, inténtalo más tarde');
         //let updateEmployerReview = await Worker.updateOne({});
       }
     }
