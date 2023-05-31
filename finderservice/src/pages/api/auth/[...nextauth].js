@@ -54,10 +54,13 @@ export const authOptions = {
           }
         }
 
+        console.log(user);
+
         if (!user) {
           await dbDisconnect();
           throw new Error("Usuario y/o password incorrectos.");
         }
+        // if (!user.active && user.profile !== 'admin') {
         if (!user.active) {
           throw new Error("El usuario no ha sido activado");
         }
