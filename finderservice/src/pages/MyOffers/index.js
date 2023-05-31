@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function MyOffers() {
   return (
     <Layout>
-    <div className="font-bold mb-2 flex justify-center items-center mt-10">Ofertas creadas por este Profesional</div>
+    <div className="font-bold mb-2 flex justify-center items-center mt-10"><h2 className="text-3xl text-titleFont">Ofertas creadas por este Profesional</h2></div>
     <div className="mt-5 flex flex-row flex-wrap justify-center items-center">
     <div className="bg-neutral-300 p-5 mb-10 mr-5 ml-5 rounded-xl duration-200 hover:scale-105">
         <h2>Nombre del trabajo ofrecido</h2>
@@ -44,6 +44,7 @@ export default function MyOffers() {
         </Link>
     </div>
     </div>
+    <div className="h-40"></div>
     <Footer/>
     </Layout>
   )

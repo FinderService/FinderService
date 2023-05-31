@@ -10,12 +10,14 @@ import { useWorkers } from "@context/WorkersContext";
 import { useWorker } from "@context/HomeEmployerContext";
 import ShowFilters from "@components/ShowFilters";
 import showImgs from "@/utils/showImgs";
+import { useRouter } from "next/router";
 import { avt } from "@public/assets";
 
 export default function Search({ handleAction }) {
+    const router = useRouter();
     const objImgs = showImgs();
     const { userData } = useUser();
-    const { workersData, getAllWorkers, sortWorkers, setSortedWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers, getWorkerByName } = useWorker();
+    const { workersData, getAllWorkers, sortWorkers, setSortedWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers, dataWorker, getWorkerByName } = useWorker();
     const { getTypes, types } = useWorkers();
     const [ error, setError ] = useState("")
     const [wait, setWait] = useState(false);
@@ -55,6 +57,12 @@ export default function Search({ handleAction }) {
             console.log("ENTER");
         }
     }
+
+    const handlerClick = async (id) => {
+        await dataWorker(id);
+        router.push("/WorkerDetail");
+        //console.log("evento click", e.target.value);
+   }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -110,8 +118,10 @@ export default function Search({ handleAction }) {
                     <div className="mt-5 flex flex-col flex-wrap">
                         {sortedWorkers.map((info)=>{
                             return (
-                                <Link href="/WorkerDetail" key={info._id}>
-                                    <div key={info._id} className="shadow-xl flex justify-start bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
+                                <div key={info._id} id={info._id}>
+
+                                     {/* <button onClick={handlerClick} key={info._id} value={info._id} className="w-full"> */}
+                                    <div onClick={() => handlerClick (info._id)} key={info._id} className="hover:cursor-pointer shadow-xl flex justify-start bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
                                         {info.profilepic.length? <Image key={info._id} width={100} height={200} src={info.profilepic} alt='bigpic'/>
                                         : <Image key={info._id} width={100} height={200} src={avt} alt='userpic'/>
                                         }
@@ -131,7 +141,8 @@ export default function Search({ handleAction }) {
                                             </div>
                                         </div>
                                     </div>
-                                </Link>
+                                    {/* </button> */}
+                                </div>
                             )
                         })}
                         {wait && (<>
