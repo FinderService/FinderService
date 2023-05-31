@@ -13,7 +13,7 @@ const Offer = () =>{
     const router = useRouter();
     const {id} = router.query;
     const { userData } = useUser();
-    const { myJobById, getMyJobByID, infoReq, getMyJobPostulations } = useWorker();
+    const { myJobById, getMyJobByID, infoReq, getMyJobPostulations, setDataPostulation } = useWorker();
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -32,7 +32,8 @@ const Offer = () =>{
     },[])
 
     const saveWorkID = (data) =>{
-        localStorage.setItem('workID', JSON.stringify(data))
+        setDataPostulation(data)
+        console.log(data);
     }
 
     return(

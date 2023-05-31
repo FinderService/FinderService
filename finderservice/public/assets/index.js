@@ -8,6 +8,7 @@ import logo from './images/logo.png';
 import hero from './images/hero.jpg';
 import workers1 from './images/workers1.jpg';
 import loader from './images/loader.gif'
+import HomeWorker from './images/HomeWorker.jpg'
 //icons
 import equipo from './images/icons/equipo.svg';
 import foco from './images/icons/foco.svg';
@@ -21,4 +22,4 @@ import ubi from './images/icons/ubi.svg';
 import avt from './images/userAvt.png';
 
 
-export { loader, logo, hero, equipo, foco, gas, llave, manguera, obrero, tubo, ubi, cerrajero, carpintero, pintura, ninera, limpieza, electricista, workers1, avt }
+export { loader, logo, hero, equipo, foco, gas, llave, manguera, obrero, tubo, ubi, cerrajero, carpintero, pintura, ninera, limpieza, electricista, workers1, avt, HomeWorker }

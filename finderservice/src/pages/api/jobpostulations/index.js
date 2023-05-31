@@ -9,13 +9,23 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "GET":
       try {
-        const jobApply = await JobPostulation.find({})
-          .populate("jobrequest", "title employer type")
-          .populate("worker", "-_id name type email");
+        const { idWorker } = req.query;
+        let response;
+        if (idWorker) {
+          response = await JobPostulation.find({
+            worker: idWorker,
+          })
+            .populate("jobrequest", "title employer type")
+            .populate("worker", "_id name type email");
+        } else {
+          response = await JobPostulation.find({})
+            .populate("jobrequest", "title employer type")
+            .populate("worker", "_id name type email");
+        }
 
-        if (jobApply.length !== 0) {
+        if (response) {
           await dbDisconnect();
-          return res.status(200).json(jobApply);
+          return res.status(200).json(response);
         } else {
           await dbDisconnect();
           return res
@@ -59,7 +69,7 @@ export default async function handler(req, res) {
           jobrequest: jobrequest,
           worker: jobPostWorker,
         });
-        console.log(jobPostAlready)
+        console.log(jobPostAlready);
 
         if (jobPostAlready) {
           await dbDisconnect();
@@ -68,7 +78,7 @@ export default async function handler(req, res) {
             msg: "Ya hiciste una postulación a ese trabajo",
           });
         }
-        
+
         const newJobPostulation = new JobPostulation({
           jobrequest: [jobPostRequest._id],
           worker: [jobPostWorker._id],

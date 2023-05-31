@@ -14,13 +14,15 @@ export const useWorker = () => {
 export const HomeEmployerProvider = ({ children }) => {
     const [workersData, setWorkersData] = useState([]);
     const [sortedWorkers, setSortedWorkers] = useState([]);
-
+    
     const [filtersInfo, setFiltersInfo] = useState([]);
 
     const [myJobs , setMyJobs] = useState([])
     const [myJobById, setMyJobById] = useState({})
+    const [dataPostulation, setDataPostulation]= useState({})
+    const [ infoReq ,setInfoReq ] = useState([]);
 
-    const [ infoReq ,setInfoReq ] = useState([])
+    const [getWorker, setWorkerData ] = useState([]);
 
     const getAllWorkers = async () => {
         let res = await axios.get('/api/workers')
@@ -65,14 +67,14 @@ export const HomeEmployerProvider = ({ children }) => {
                 const sortedArr = sortedWorkers.sort((a, b) => b.name.localeCompare(a.name));
                 setSortedWorkers([...sortedArr]);
             }else if(value === 'Rating'){
-                const sortedArr = sortedWorkers.sort((a, b) => a.rating.localeCompare(b.rating));
+                const sortedArr = sortedWorkers.sort((a, b) => b.rating.localeCompare(a.rating));
                 setSortedWorkers([...sortedArr]);
             }
         }
     };
 
     const getMyJobs = async (id) =>{
-        const {data} = await axios.get(`/api/jobrequests?id=${id}`);
+        const {data} = await axios.get(`/api/jobrequests?idEmployer=${id}`);
         setMyJobs(data);
     } 
 
@@ -87,10 +89,25 @@ export const HomeEmployerProvider = ({ children }) => {
         setInfoReq(data);
     }
 
+    const getWorkerByName = async (name) =>{
+        try {
+            const {data} = await axios.get(`/api/workers?name=${name}`)
+            setSortedWorkers(data);
+        } catch (error) {
+            return error;
+        }
+    }
+
     const postInfoToPostulation = async (formData) =>{
         await axios.post("/api/jobs/newJob",formData);
     }
 
-    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation }}>{children}</HomeEmployerContext.Provider>;
+    const dataWorker = async (id) => {
+        const {data} = await axios.get(`/api/workers/${id}`);
+        setWorkerData(data);
+        
+    }
+
+    return <HomeEmployerContext.Provider value={{ dataWorker, getWorker, workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation, getWorkerByName, dataPostulation ,setDataPostulation }}>{children}</HomeEmployerContext.Provider>;
 }
 
