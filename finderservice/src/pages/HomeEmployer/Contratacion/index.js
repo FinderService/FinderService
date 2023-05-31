@@ -5,45 +5,63 @@ import { useEffect, useState } from "react";
 import { useWorker } from "@context/HomeEmployerContext";
 import { useUser } from "@context/UserContext";
 import { useRouter } from "next/router";
+import { loader } from "@public/assets";
 
 const Contratacion = () =>{
     const {postInfoToPostulation} = useWorker();
     const {userData} = useUser();
     const router = useRouter();
 
-    const[sure,setSure] = useState(false);
+    const [isLocalStorageAvailable, setIsLocalStorageAvailable] = useState(false);
 
-    const [postulationData] = useState({...JSON.parse(localStorage.getItem('workID'))});
+    const[sure,setSure] = useState(false);
+    const [wait, setWait] = useState(false);
+    const exist = isLocalStorageAvailable? localExists() : false;
+    const [postulationData] = useState(exist);
     const [formData, setFormData] = useState({
-        jobrequestId: postulationData.jobrequest[0],
-        jobpostulationId: postulationData._id,
-        workerId: postulationData.worker[0]._id,
+        jobrequestId: postulationData === false? false :postulationData.jobrequest[0],
+        jobpostulationId: postulationData === false? false : postulationData._id,
+        workerId: postulationData === false? false: postulationData.worker[0]._id,
         employerId: userData._id,
     })
+
+    const localExists =() =>{
+        if(window.localStorage.getItem('workID')){
+            return {...JSON.parse(window.localStorage.getItem('workID'))}
+        }
+        return false;
+    }
     
     useEffect(()=>{
-
-        if (postulationData._id && postulationData.worker[0]._id && userData._id) {
-            setFormData({
-                ...formData,
-                jobrequestId: postulationData.jobrequest[0],
-                jobpostulationId: postulationData._id,
-                workerId: postulationData.worker[0]._id,
-            });
-          }
+        setIsLocalStorageAvailable(typeof window !== "undefined" && window.localStorage);
+        if(postulationData !== false){
+            if (postulationData._id && postulationData.worker[0]._id && userData._id) {
+                setFormData({
+                    ...formData,
+                    jobrequestId: postulationData.jobrequest[0],
+                    jobpostulationId: postulationData._id,
+                    workerId: postulationData.worker[0]._id,
+                });
+            }
+        }
     //eslint-disable-next-line        
-    },[userData._id])
+    },[])
 
-    const handleSubmit = () =>{    
-        postInfoToPostulation(formData)
-        router.replace('/HomeWorker/HEOffers')
-        localStorage.removeItem('workID');
+    const handleSubmit = async () =>{      
+        if(exist !== false){
+            setWait(true);
+            await postInfoToPostulation(formData);
+            setWait(false);
+            alert('Contratación realizada con éxito');
+            router.replace('/HomeWorker/HEOffers')
+            localStorage.removeItem('workID');
+        }
         console.log(formData);
     }
 
     return(
         <Layout>
-            {!localStorage.getItem('workID')? <>
+            {postulationData === false? <>
                 <div className="flex justify-center items-center w-full h-screen">
                     <div className="flex flex-col items-center">
                         <p className="mb-10 font-bold text-xl">¡Necesitas seleccionar un empleado para poder contratarlo!</p>
@@ -89,6 +107,13 @@ const Contratacion = () =>{
                                 </div>
                             </>)                           
                             }
+                            {wait && (<>
+                                <div dialogClassName="avatar-modal" className="w-full h-screen absolute top-0 left-0 bg-black/50 z-40 flex flex-col items-center justify-center">
+                                    <div className="bg-white w-[40rem] pl-10 pr-10 pt-5 rounded-md flex flex-col items-center overflow-hidden shadow-2xl">
+                                        <Image src={loader} width={300} height={150} alt="loading"/>
+                                    </div>
+                                </div>
+                            </>)} 
                         </div>  
                     </div>
                 </div>
