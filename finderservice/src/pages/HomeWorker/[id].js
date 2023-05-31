@@ -31,14 +31,7 @@ export default function WorkDetail() {
   }, []);
 
   const sendWorkInfo = () => {
-    const { _id, name, description, date, type, address, employer } =
-      workDetail;
-
-    localStorage.setItem(
-      "workInfo",
-      JSON.stringify({ _id, name, description, date, type, address, employer })
-    );
-    localStorage.setItem("userInfo", JSON.stringify(userData));
+    setSaveData(workDetail)
   };
 
   return (
@@ -79,7 +72,7 @@ export default function WorkDetail() {
           </div>
         </>
       ) : (
-        <div className="flex justify-center">
+        <div onClick={()=> console.log(workDetail)} className="flex justify-center">
           <Image src={loader} width={600} height={300} alt="loading" />
         </div>
       )}

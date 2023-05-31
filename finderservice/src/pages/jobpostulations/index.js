@@ -5,23 +5,17 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useUser } from "@context/UserContext";
 import { validateMessage, validateSalary } from "../../utils/validationPost";
+import { useWorkers } from "@context/WorkersContext";
 
 export default function Postulation() {
   const router = useRouter();
   const { userData } = useUser();
-
-  let workInfo = null;
-
-  if (typeof localStorage !== "undefined") {
-    workInfo = JSON.parse(localStorage.getItem("workInfo"));
-    localStorage.removeItem("workInfo");
-  }
+  const { saveData } = useWorkers();
 
   const [state, setState] = useState({
     salary: "",
     message: "",
-    types: [],
-    profile: "worker",
+    jobrequest: "",
     workerEmail: "",
   });
 
@@ -30,20 +24,6 @@ export default function Postulation() {
     salary: "",
     message: "",
   });
-
-  const [types, setTypes] = useState([]);
-
-  const handleOnChangeTypes = (event) => {
-    const value = event.target.value;
-    const newType = types.filter((type) => type.name === value);
-
-    if (value !== "Trabajo") {
-      setState({
-        ...state,
-        type: newType,
-      });
-    }
-  };
 
   const handleChange = (e) => {
     if (e.target.name === "salary") {
@@ -65,52 +45,26 @@ export default function Postulation() {
     });
   };
 
-  const getTypes = async () => {
-    try {
-      const res = await axios.get("/api/types");
-      setTypes(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (types.length === 0) {
-          await getTypes();
-        }
-      } catch (error) {
-        console.error("Error en la solicitud Axios:", error);
-      }
-    };
-    fetchData();
     setState({
       ...state,
       workerEmail: userData.email,
-      jobrequest: workInfo._id,
+      jobrequest: saveData._id,
     });
     // eslint-disable-next-line
   }, []);
 
   const handleSubmit = async (e) => {
-    console.log(userData);
     e.preventDefault();
     try {
       if (error.salary || error.message) {
         toast.error("Todos los campos son obligatorios");
         return;
       }
-
-      if (state.type.length === 0) {
-        toast.error("Debe seleccionar el rubro correspondiente");
-        return;
-      }
-
       console.log(state);
       const resp = await axios.post("/api/jobpostulations", state);
-      console.log(resp);
-      if (response) {
+ 
+      if (resp) {
         toast.success("Su anuncio fue publicado exitosamente");
         router.push("/HomeWorker/Postulations");
       }
@@ -170,26 +124,6 @@ export default function Postulation() {
               {error.message && (
                 <span className="formErrorLbl">{error.message}</span>
               )}
-
-              <div>
-                Selecciona el rubro del empleo:
-                <div className="flex flex-row flex-wrap gap-2 items-center justify-center">
-                  <select onChange={handleOnChangeTypes}>
-                    <option value="Trabajo">-Trabajo-</option>
-                    {types.length !== 0 ? (
-                      types.map((type) => {
-                        return (
-                          <option key={type.name} value={type.name}>
-                            {type.name}
-                          </option>
-                        );
-                      })
-                    ) : (
-                      <option>Cargando...</option>
-                    )}
-                  </select>
-                </div>
-              </div>
 
               <div className="flex items-end justify-center">
                 <button
