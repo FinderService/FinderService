@@ -56,7 +56,7 @@ export default function WorkerDetail() {
   
   return (
     <Layout>
-       {!getWorker ? 
+       {!getWorker._id ? 
             <>
                 <div className="flex justify-center pr-20">
                     <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
