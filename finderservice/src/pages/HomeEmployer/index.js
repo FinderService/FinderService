@@ -58,8 +58,8 @@ export default function Search({ handleAction }) {
         }
     }
 
-    const handlerClick = async (e) => {
-        await dataWorker(e.target.value);
+    const handlerClick = async (id) => {
+        await dataWorker(id);
         router.push("/WorkerDetail");
         //console.log("evento click", e.target.value);
    }
@@ -120,8 +120,8 @@ export default function Search({ handleAction }) {
                             return (
                                 <div key={info._id} id={info._id}>
 
-                                    <div key={info._id} className="shadow-xl flex justify-start bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
-                                     <button onClick={handlerClick} key={info._id} value={info._id} className="border-2 border-slate-400 rounded-md px-3 py-1 hover:border-blue-600 cursor-pointer duration-300 flex flex-row gap-2 items-center">Ver detalle</button>
+                                     {/* <button onClick={handlerClick} key={info._id} value={info._id} className="w-full"> */}
+                                    <div onClick={() => handlerClick (info._id)} key={info._id} className="hover:cursor-pointer shadow-xl flex justify-start bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
                                         {info.profilepic.length? <Image key={info._id} width={100} height={200} src={info.profilepic} alt='bigpic'/>
                                         : <Image key={info._id} width={100} height={200} src={avt} alt='userpic'/>
                                         }
@@ -141,6 +141,7 @@ export default function Search({ handleAction }) {
                                             </div>
                                         </div>
                                     </div>
+                                    {/* </button> */}
                                 </div>
                             )
                         })}
