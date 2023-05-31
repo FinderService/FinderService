@@ -7,6 +7,7 @@ export default async function newJob(req, res) {
   await dbConnect();
   try {
     const { jobrequestId, jobpostulationId, workerId, employerId } = req.body;
+    console.log(req.body)
     const newJob = new Job({
       jobrequest: jobrequestId,
       jobpostulation: jobpostulationId,
