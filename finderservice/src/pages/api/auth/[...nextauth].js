@@ -107,6 +107,11 @@ export const authOptions = {
         };
 
         return logedUser;
+        //return '/User/profile';
+      }
+
+      if (account.provider === "credentials") {
+        console.log('credentials profile: ', profile);
       }
       return true // Do different verification for other providers that don't have `email_verified`
     },

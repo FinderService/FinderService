@@ -16,6 +16,10 @@ var jobPostulationSchema = new Schema(
     ],
     salary: Number,
     message: String,
+    state: {
+      type: String,
+      default:"pending"
+    }
     // state: String,
   },
   { timestamps: false, versionKey: false }

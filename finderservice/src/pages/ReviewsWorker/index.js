@@ -23,8 +23,8 @@ function ReviewsWorker() {
 
   const handleReviewSubmit = (event) => {
     event.preventDefault();
-    setUserData({ ...userData, reviews: userData.reviews, stars: rating });
-  };
+/*     setUserData({ ...userData, reviews: userData.reviews, stars: rating });
+ */  };
 
   return (
     <Layout>
@@ -67,7 +67,7 @@ function ReviewsWorker() {
         </div>
 
         <p className="text-black font-bold text-xl mt-12 mb-0 text-center">
-          Cuéntanos más acerca de este empleado
+          Cuéntanos más acerca de este empleador
         </p>
         <p className="text-black text-sm mt-1 mb-0 text-center">(Opcional)</p>
 
@@ -77,7 +77,7 @@ function ReviewsWorker() {
               className="h-40 md:h-150 border border-gray-400 p-4 md:p-15 text-base outline-none mx-auto w-1/2"
               name="reviews"
               type="text"
-              placeholder="Deja tu opinión sobre el trabajo terminado por el empleado y puntúalo..."
+              placeholder="Deja tu opinión sobre el trato y las condiciones con el empleador y puntúalo..."
               value={userData.reviews}
               /* onChange={(e) => setUserData({ ...userData, reviews: e.target.value })} */
             />
