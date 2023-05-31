@@ -120,7 +120,7 @@ export default function FormAvatar({ id, image }) {
                 variant="primary"
                 onClick={saveAvatar}
               >
-                Guradar
+                Guardar
               </button>
             </div>
           </div>

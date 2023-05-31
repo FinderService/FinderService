@@ -7,12 +7,18 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect } from "react";
 import { loader } from '@public/assets';
+import { useRouter } from "next/router";
 
 const HomeAdmin = () =>{    
+    const router = useRouter();
     const { data: session } = useSession();
     const { users, getAllUsers , workers, employers, validusers, notValidusers, removedUsers } = useAdmin();
 
     useEffect(()=>{
+        if(session && session.user?.email !== 'adminfs@gmail.com'){
+            router.push('/');
+        }
+
         const fetchData = async () => {
             try {
                 if(!users.length){
@@ -24,7 +30,7 @@ const HomeAdmin = () =>{
         };
         fetchData();
     //eslint-disable-next-line
-    },[])
+    },[session])
 
     if (session) {     
         return (

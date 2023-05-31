@@ -46,6 +46,8 @@ export default function Login() {
       redirect: false,
       callbackUrl: "/",
     });
+    
+    console.log('login result: ', result);
 
     if (result.error) {
       setState({
@@ -62,7 +64,7 @@ export default function Login() {
       <div className="h-full bg-black/40 overflow-y-hidden">
         <Layout>
           <div className="w-full h-screen flex flex-wrap items-center justify-center ">
-            <div className="flex flex-col bg-white/70 backdrop-blur-xl rounded-lg p-6 drop-shadow-xl">
+            <div className="flex flex-col bg-white/70 backdrop-blur-xl rounded-lg p-6 drop-shadow-xl ">
               <div className="w-full text-right">
                 <Link href="/" className="link text-sm">
                   Omitir
@@ -74,7 +76,7 @@ export default function Login() {
                 ¡Te damos la bienvenida!
               </h1>
               {state.loginError && (
-                <div className="w-full p-2 mb-2 border-2 border-red-900 text-red-900 rounded-md text-center bg-red-500/30">
+                <div className="w-[18rem] p-2 mb-2 border-2 border-red-900 text-red-900 rounded-md text-center bg-red-500/30">
                   {state.loginError}
                 </div>
               )}
