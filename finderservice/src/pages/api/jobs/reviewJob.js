@@ -1,5 +1,6 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
-import Job from "../../../models/Job";
+import Job from "@/models/Job";
+import Worker from "@/models/Worker";
 
 export default async function reviewJob(req, res) {
   await dbConnect();
@@ -10,15 +11,18 @@ export default async function reviewJob(req, res) {
       reviewEmployer,
       ratingWorker,
       ratingEmployer,
+      statejob,
     } = req.body;
 
-    let jobDb = await Job.find(jobId);
+    let jobDb = await Job.findById(jobId);
+    console.log('job: ', jobDb.worker);
+
+    //return res.send('Done!')
 
     if (!jobDb) {
       await dbDisconnect();
       return res.status(404).json({
         success: false,
-        error: error,
         msg: "No se encontró el servicio en la base de datos",
       });
     }
@@ -28,10 +32,54 @@ export default async function reviewJob(req, res) {
         let updateJob = await Job.updateOne(
           { _id: jobId },
           {
-            $set: { reviewWorker: reviewWorker, ratingWorker: ratingWorker },
+            $set: { reviewWorker, ratingWorker, statejob },
           }
         );
-        let updateWorkerReview = await Worker.updateOne({});
+
+        // primero la data del user
+        let workerId = jobDb.worker;
+        let worker = await Worker.findById(workerId);
+
+        // ahora todos los jobs del user
+        let jobs = await Job.find({ worker: worker._id });
+
+        // sacamos las calificaciones de los jobs
+        let rating = 0;
+        let totalJobs = 0;
+        jobs.map( j => {
+          rating += Number(j.ratingWorker);
+          totalJobs++;
+        });
+
+        let finalRating = rating / totalJobs;
+
+        let updateWorker = await Worker.updateOne(
+          { _id: worker._id },
+          {
+            $set: { rating: finalRating },
+          }
+        );
+
+        if(updateJob && updateWorker){
+          return res.status(200).json({ success: true, msg: 'Se guardo la reseña satisfactoriamente'});
+        }
+
+        throw new Error('Algo sali mal, inténtalo más tarde');
+        
+
+
+
+        //let updateWorkerReview = await Worker.updateOne({});
+      }
+
+      if (reviewEmployer && ratingEmployer) {
+        let updateJob = await Job.updateOne(
+          { _id: jobId },
+          {
+            $set: { reviewEmployer , ratingEmployer, statejob },
+          }
+        );
+        //let updateEmployerReview = await Worker.updateOne({});
       }
     }
   } catch (error) {
