@@ -19,26 +19,25 @@ const Offer = () =>{
         const fetchData = async () => {
             try {
                 if(userData._id){
-                    await getMyJobByID(id);
-                }
-                if(myJobById._id){
-                    await getMyJobPostulations(myJobById._id);
+                    const { _id } = await getMyJobByID(id);
+                    await getMyJobPostulations(_id);
                 }
             } catch (error) {
-                console.error('Error en la solicitud Axios:', error);
+                console.log(error);
             }
         };
         fetchData();
+
     //eslint-disable-next-line
     },[])
 
+    const saveWorkID = (data) =>{
+        localStorage.setItem('workID', JSON.stringify(data))
+    }
+
     return(
         <Layout >
-            {!myJobById.title? <>
-                    <div className="flex justify-center pr-20">
-                        <Image onClick={() => console.log(id)} src={loader} width={400} height={200} alt="loading" priority={true}/>
-                    </div>
-            </>:<>
+            {(myJobById.title)? <>
             <div className="flex justify-around">
                 <div className="bg-blue-300 w-1/5 h-60 mt-10 p-5 flex flex-col justify-around pl-5 rounded-2xl">
                     <p>Ir a:</p>
@@ -48,33 +47,49 @@ const Offer = () =>{
                     <p className="font-bold">⭐ <Link href="/MyReviewsEmployer">Mis Reviews</Link></p>
                 </div>
                 <div className="w-1/2 mt-10 mb-10">
-                    <h1 className="text-4xl font-bold mb-5">🛠️ {myJobById.title}</h1>
-                    <p className="font-bold mb-5">Total de empleados postulados: {infoReq.length}</p>
-                    <p>Empleados postulados:</p>
-                    <div className="flex justify-around">
-                            <Link href="/WorkerDetail">
-                                <div className="w-60 m-5 p-5 bg-slate-300 rounded-2xl duration-200 hover:scale-105">
-                                    <p>Nombre del empleado</p>
-                                    <Image
-                                        className="w-20"
-                                        src={workers1}
-                                        width={100}
-                                        height={100}
-                                        alt="waos"
-                                    />
-                                    <p>*Rating*</p>
-                                    <p>Oficio/s: Jardinería</p>
-                                    <p>Precio estimado: $$$$</p>
-                                </div>
-                            </Link>                                   
-                    </div>
+                    <h1 onClick={()=> console.log(infoReq)} className="text-4xl font-bold mb-5">{`🛠️ ${myJobById.title}`}</h1>
+                    {infoReq.length? <>
+                        <p onClick={()=> console.log(myJobById)} className="font-bold mb-5">Total de empleados postulados: {infoReq.length}</p>
+                        <p>Empleados postulados:</p>
+                        <div className="flex flex-col justify-around">
+                            {infoReq.map((info)=>{
+                                return(<>                               
+                                    <div className=" m-5 p-5 pl-10 bg-slate-300 rounded-2xl duration-200 hover:scale-105">
+                                        <p className="font-bold text-xl mb-3">{info.worker[0].name}</p>
+                                        <div className="flex justify-between">
+                                            <Image
+                                                className="w-20 mb-3"
+                                                src={info.worker[0].profilepic}
+                                                width={100}
+                                                height={100}
+                                                alt="waos"
+                                            />
+                                            <div className="ml-20 flex flex-col justify-around">
+                                                <p>Precio estimado: ${info.salary}</p>
+                                                <p>E-mail: {info.worker[0].email}</p>
+                                                <p>Mensaje: {info.message}</p>
+                                            </div>
+                                            <div className="w-1/4 flex justify-end">
+                                            <button onClick={()=> saveWorkID(info)} className="w-1/2 h-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold p-3 rounded-2xl"><Link href="/HomeEmployer/Contratacion">Contratar</Link> </button>
+                                            </div>
+                                        </div>                                       
+                                    </div>                                
+                                </>
+                                )
+                            })}                                                         
+                        </div>
+                    </>  : <p>Cargando...</p>}
                 </div>
 
                 <div className="w-1/4">
 
                 </div>
             </div>
-            </>}
+            </>:<> 
+                <div className="flex justify-center pr-20">
+                    <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
+                </div>
+            </>}            
             <Footer />
         </Layout >
     )

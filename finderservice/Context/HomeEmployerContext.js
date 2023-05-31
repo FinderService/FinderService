@@ -79,11 +79,12 @@ export const HomeEmployerProvider = ({ children }) => {
     const getMyJobByID = async (id) =>{
         const {data} = await axios.get(`/api/jobrequests/${id}`)
         setMyJobById({...data});
+        return {...data};
     }
 
     const getMyJobPostulations = async (idRequest) =>{
         const {data} = await axios.get(`/api/jobrequests?idRequest=${idRequest}`);
-        setInfoReq([...data]);
+        setInfoReq(data);
     }
 
     return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations }}>{children}</HomeEmployerContext.Provider>;
