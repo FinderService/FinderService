@@ -61,9 +61,9 @@ export default function Login() {
     <div className="w-screen h-screen bg-login bg-cover overflow-hidden">
       <div className="h-full bg-black/40 overflow-y-hidden">
         <Layout>
-          <div className="max-w-7xl h-screen flex flex-wrap items-center justify-center ">
-            <div className="flex flex-col bg-white/70 backdrop-blur-xl rounded-lg p-6 drop-shadow-xl max-w-7xl">
-              <div className="max-w-7xl text-right">
+          <div className="w-full h-screen flex flex-wrap items-center justify-center ">
+            <div className="flex flex-col bg-white/70 backdrop-blur-xl rounded-lg p-6 drop-shadow-xl ">
+              <div className="w-full text-right">
                 <Link href="/" className="link text-sm">
                   Omitir
                 </Link>
@@ -74,7 +74,7 @@ export default function Login() {
                 ¡Te damos la bienvenida!
               </h1>
               {state.loginError && (
-                <div className="max-w-7xl p-2 mb-2 border-2 border-red-900 text-red-900 rounded-md text-center bg-red-500/30">
+                <div className="w-[18rem] p-2 mb-2 border-2 border-red-900 text-red-900 rounded-md text-center bg-red-500/30">
                   {state.loginError}
                 </div>
               )}
