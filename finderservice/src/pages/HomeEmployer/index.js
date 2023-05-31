@@ -10,11 +10,13 @@ import { useWorkers } from "@context/WorkersContext";
 import { useWorker } from "@context/HomeEmployerContext";
 import ShowFilters from "@components/ShowFilters";
 import showImgs from "@/utils/showImgs";
+import { useRouter } from "next/router";
 
 export default function Search({ handleAction }) {
+    const router = useRouter();
     const objImgs = showImgs();
     const { userData } = useUser();
-    const { workersData, getAllWorkers, sortWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers } = useWorker();
+    const { workersData, getAllWorkers, sortWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers, dataWorker } = useWorker();
     const { getTypes, types } = useWorkers();
     
     //const objImgs = types? showImgs(types) : null;
@@ -30,6 +32,12 @@ export default function Search({ handleAction }) {
 
     const handleImgChange = (value) =>{
        addFilters(value);
+   }
+
+   const handlerClick = async (e) => {
+        await dataWorker(e.target.value);
+        router.push("/WorkerDetail");
+        //console.log("evento click", e.target.value);
    }
 
     useEffect(() => {
@@ -84,8 +92,10 @@ export default function Search({ handleAction }) {
                     <div className="mt-5 flex flex-col flex-wrap">
                         {sortedWorkers.map((info)=>{
                             return (
-                                <Link href="/WorkerDetail" key={info._id}>
+                                <div key={info._id} id={info._id}>
+
                                     <div key={info._id} className="flex justify-start bg-neutral-300 p-5 mb-10 mr-5 rounded-xl duration-200 hover:scale-105">
+                                     <button onClick={handlerClick} key={info._id} value={info._id} className="border-2 border-slate-400 rounded-md px-3 py-1 hover:border-blue-600 cursor-pointer duration-300 flex flex-row gap-2 items-center">Ver detalle</button>
                                         <Image key={info._id} src={info.profilepic} width={100} height={200} alt="pics"/>
                                         <div className="pl-10 w-full flex justify-between">
                                             <div className="flex flex-col justify-around">
@@ -99,7 +109,7 @@ export default function Search({ handleAction }) {
                                             </div>
                                         </div>
                                     </div>
-                                </Link>
+                                </div>
                             )
                         })}
                     </div>
