@@ -74,7 +74,7 @@ export default function Login() {
                 ¡Te damos la bienvenida!
               </h1>
               {state.loginError && (
-                <div className="w-full p-2 mb-2 border-2 border-red-900 text-red-900 rounded-md text-center bg-red-500/30">
+                <div className="w-[17rem] p-2 mb-2 border-2 border-red-900 text-red-900 rounded-md text-center bg-red-500/30">
                   {state.loginError}
                 </div>
               )}
