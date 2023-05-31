@@ -33,7 +33,12 @@ var jobRequestSchema = new Schema(
         ref: "Address",
       },
     ],
+    state: {
+      type: String,
+      default: "pending",
+    },
   },
+
   { timestamps: false, versionKey: false }
 );
 
