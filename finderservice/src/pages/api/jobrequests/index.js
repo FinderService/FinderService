@@ -1,6 +1,7 @@
 import { dbConnect, dbDisconnect } from "@/utils/mongoose";
 import Employer from "../../../models/Employer";
 import JobRequest from "../../../models/JobRequest";
+import JobPostulation from "../../../models/JobPostulation";
 import Address from "../../../models/Address";
 import Type from "../../../models/Type";
 import { uptloadCl } from "@/utils/cloudinary";
@@ -11,12 +12,15 @@ export default async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const { id } = query;
+        const { idEmployer, idRequest } = query;
 
-        let response = []; 
-
-        if (id) {
-          response = await JobRequest.find({employer: id})
+        let response = [];
+        if (idRequest) {
+          response = await JobPostulation.find({
+            jobrequest: idRequest,
+          }).populate("worker", "name email profilepic");
+        } else if (idEmployer) {
+          response = await JobRequest.find({ employer: idEmployer })
             .populate("employer", "name email")
             .populate("address", "-_id name street state country zipCode city")
             .populate("type", "name");

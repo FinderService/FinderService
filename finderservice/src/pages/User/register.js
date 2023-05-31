@@ -124,7 +124,7 @@ export default function Register() {
         address: [
           {
             ...state.address[0],
-            addressname: e.target.value,
+            addressName: e.target.value,
           },
         ],
       });

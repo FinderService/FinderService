@@ -21,7 +21,7 @@ export default async function handler(req, res) {
             "_id name email age rating profilepic phone state"
           )
           .populate("address", "_id name street state country zipCode city ")
-          .populate("type", "name");
+          .populate("type", "name")
         if (!response) {
           await dbDisconnect();
           return res
