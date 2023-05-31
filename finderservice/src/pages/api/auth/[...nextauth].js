@@ -58,9 +58,11 @@ export const authOptions = {
           await dbDisconnect();
           throw new Error("Usuario y/o password incorrectos.");
         }
+        console.log(user)
         if (!user.active) {
           throw new Error("El usuario no ha sido activado");
         }
+
         if (user.deleted) {
           throw new Error(
             "El usuario ha sido borrado por incumplimiento de las normas, si lo considera un error, envíe un mail a finderservice2023@gmail.com"
