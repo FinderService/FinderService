@@ -42,7 +42,7 @@ const Contratacion = () =>{
         setWait(false);
         alert('Contratación realizada con éxito');
         setDataPostulation({});      
-        router.push('/HomeWorker/HEOffers')
+        router.push('/')
     }
 
     return(
