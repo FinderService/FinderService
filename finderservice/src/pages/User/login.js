@@ -6,7 +6,6 @@ import { FcGoogle } from "react-icons/fc";
 import { SiFacebook } from "react-icons/si";
 
 import { logo } from "@public/assets";
-import toast from "react-hot-toast";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 

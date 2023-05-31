@@ -8,6 +8,7 @@ import Type from "@/models/Type";
 export default async function registerHandler(req, res) {
   await dbConnect();
   try {
+    console.log(req.body);
     const { email } = req.body;
     if (!email) {
       throw new Error("Falta el correo...");
@@ -21,6 +22,9 @@ export default async function registerHandler(req, res) {
 
       if (!user) {
         user = await Admin.findOne({ email });
+        if(!user){
+          throw new Error('No se encontro el usuario');
+        }
       }
     }
 
@@ -46,9 +50,10 @@ export default async function registerHandler(req, res) {
     delete user.password;
     await dbDisconnect();
     res.status(200).json({ user });
+
   } catch (error) {
     console.log(error);
     await dbDisconnect();
-    res.status(400).json({ success: false, error: error });
+    res.status(200).json({ success: false, error: error });
   }
 }
