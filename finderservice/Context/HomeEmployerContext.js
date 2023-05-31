@@ -87,6 +87,10 @@ export const HomeEmployerProvider = ({ children }) => {
         setInfoReq(data);
     }
 
-    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations }}>{children}</HomeEmployerContext.Provider>;
+    const postInfoToPostulation = async (formData) =>{
+        await axios.post("/api/jobs/newJob",formData);
+    }
+
+    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation }}>{children}</HomeEmployerContext.Provider>;
 }
 
