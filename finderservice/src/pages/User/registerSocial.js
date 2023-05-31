@@ -13,14 +13,17 @@ import {
   validateAddress,
   validateBirth,
 } from "@/utils/validators";
+import { useRouter } from "next/router";
 
 export default function RegisterSocial() {
   
+  const router = useRouter();
 
   const { data: session } = useSession();
+  const email = session?.user?.email;
 
   const [state, setState] = useState({
-    name: session ? session.user.name : "",
+    name:  "",
     last: "",
     phone: "",
     address: [
@@ -34,8 +37,8 @@ export default function RegisterSocial() {
       },
     ],
     birth: "",
-    username: session ? session.user.email : "",
-    profilepic: session ? session.user.image : "", 
+    username: "",
+    profilepic: "", 
     password: "",
     types: [],
     profile: "worker",
@@ -201,10 +204,30 @@ export default function RegisterSocial() {
     setTypes(res.data);
   };
 
+  const getUser = async () => {
+    // verificamos si antes ya completo el registro el usuario: 
+    let result = await axios.post("/api/auth/getUser", { email } );
+    console.log(result);
+    if(result.data.user){
+      localStorage.removeItem('socialLogin');
+      router.push('/');
+    }else{
+      await getTypes();
+    }
+  }
+
   useEffect(() => {
+
+    if(session?.user){
+      getUser();
+    }else{
+      console.log('Sin session...');
+    }
+
     localStorage.setItem('socialLogin', true);
-    getTypes();
-  }, []);
+    //getTypes();
+    // eslint-disable-next-line  
+  }, [session]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -262,6 +285,8 @@ export default function RegisterSocial() {
   };
 
   return (
+    <>
+    { types.length && 
     <div className="bg-socialbk bg-cover w-full h-screen">
       <div className="h-full bg-black/40 overflow-y-hidden">
         <Layout>
@@ -544,5 +569,7 @@ export default function RegisterSocial() {
         </Layout>
       </div>
     </div>
+    }
+    </>
   );
 }

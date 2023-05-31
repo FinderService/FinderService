@@ -30,7 +30,7 @@ export default function Navbar() {
     }
     console.log('Ruta actual: ', actualUrl);
     // eslint-disable-next-line
-  }, [])
+  }, [userData])
 
   return (
     

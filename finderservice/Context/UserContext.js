@@ -16,7 +16,9 @@ export const UserProvider = ({ children }) => {
     const [userData, setUserData] = useState({});
 
     const updateUserData =  async(email) => {
-        if(userData.email) return
+        let socialLogin = localStorage.getItem('socialLogin');
+        if(userData.email || socialLogin ) return
+        //if(userData.email) return
         let res = await axios.post('/api/auth/getUser', {email})
         console.log(res,'Update desde el context!');
         if(!res){
