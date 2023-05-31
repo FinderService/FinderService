@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         if (idRequest) {
           response = await JobPostulation.find({
             jobrequest: idRequest,
-          }).populate("worker", "name email");
+          }).populate("worker", "name email profilepic");
         } else if (idEmployer) {
           response = await JobRequest.find({ employer: idEmployer })
             .populate("employer", "name email")
