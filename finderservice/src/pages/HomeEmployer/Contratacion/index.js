@@ -10,8 +10,7 @@ import { useWorkers } from "@context/WorkersContext";
 import axios from "axios";
 
 const Contratacion = () =>{
-    const {postInfoToPostulation, dataPostulation, setDataPostulation, getJobIDEmployer} = useWorker(); //Employers
-    const {setSaveIds} = useWorkers();  //Workers
+    const {postInfoToPostulation, dataPostulation, setDataPostulation, getJobIDEmployer, setSaveId} = useWorker(); //Employers
     const {userData} = useUser();
     const router = useRouter();
 
@@ -29,10 +28,11 @@ const Contratacion = () =>{
     const handlePayClick = async () => {
       try {
         setWait(true);
-        await getJobIDEmployer(postulationData.jobrequest[0],postulationData._id)    //send IdRequest & IdPostulation 
-        setWait(false);
+        const idData = await getJobIDEmployer(postulationData.jobrequest[0],postulationData._id)    //send IdRequest & IdPostulation 
+        setSaveId(idData);
         alert('Contratación realizada con éxito');
         setDataPostulation({}); 
+        setWait(false);
         const response = await axios.post("/api/payment", {
           items: [
             {

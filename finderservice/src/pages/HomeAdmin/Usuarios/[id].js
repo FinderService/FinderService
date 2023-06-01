@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import adminValidation from "@/utils/adminUserValidation";
 import { useUser } from "@context/UserContext";
+import { avt } from "@public/assets";
 
 const UserDetail = () => {
     const { data: session } = useSession();
@@ -96,7 +97,10 @@ const UserDetail = () => {
                     {userDetail.name? <>
                         <div className="flex justify-center items-center bg-stone-800 w-full h-screen">
                             <div className="p-10 bg-neutral-200 flex w-3/4 rounded-2xl">
-                                <Image src={userDetail.profilepic} width={350} height={300} alt="userpic"/>
+                                {userDetail.profilepic.length? <Image src={userDetail.profilepic} width={350} height={300} alt="userpic"/>
+                                    : <Image width={50} height={50} src={avt} alt='userpic'/>
+                                }
+                                
                                 <div className="w-1/2">
                                     <div className="flex-col pl-10">
                                         <p className="font-bold text-3xl">{userDetail.name}</p>

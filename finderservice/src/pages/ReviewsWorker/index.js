@@ -4,11 +4,15 @@ import { IoIosStarOutline } from "react-icons/io";
 import Layout from "@components/Layout";
 import Footer from "@components/Footer";
 import { useWorker } from "@context/HomeEmployerContext";
+import { useWorkers } from "@context/WorkersContext";
+import { Router, useRouter } from "next/router";
 
 function ReviewsWorker() {
   const { setWorkerReviews } = useWorker();
+  const {savedID} = useWorkers
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState();
+  const router = useRouter();
 
   const fillStars = (count) => {
     const stars = [];
@@ -31,6 +35,7 @@ function ReviewsWorker() {
     /* formData.append('jobId', ); */
     setWorkerReviews({ ...formData });
     console.log(formData);
+    router.push("/HomeWorker/Postulations");
   };
 
   const handleOnChange = (e) => {

@@ -16,7 +16,7 @@ const MyPostulations = () =>{
 
     useEffect(()=>{
         const fetchData = async () => {
-            if (myPostulations.length === 0 && userData._id) {
+            if(userData._id){
                 await getMyPostulations(userData._id);
             }
         }
@@ -44,7 +44,6 @@ const MyPostulations = () =>{
                             <div className="shadow-2xl shadow-zinc-400 flex flex-col">
                                 <Link href="/HomeWorker"><p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200">🏠 Home</p></Link>
                                 <Link href="/HomeWorker/Postulations"><p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200">📩 Mis Postulaciones</p></Link>
-                                <Link href="/Reviews"><p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200">📝 Mis Reviews</p></Link>
                             </div>
                         </div>
                     </div>

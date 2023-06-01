@@ -16,7 +16,7 @@ const Offers = () =>{
     useEffect(()=>{
         const fetchData = async () => {
             try {
-                if(!myJobs.length && userData){
+                if(userData._id){
                     await getMyJobs(userData._id);
                 }
             } catch (error) {
@@ -41,7 +41,6 @@ const Offers = () =>{
                             <p className="font-bold">🏠 <Link href="/HomeEmployer">Home</Link></p>
                             <p className="font-bold">💼 <Link href="/HomeEmployer/HEOffers">Mis ofertas de Empleo</Link></p>
                             <p className="font-bold">📢 <Link href="/jobrequests">Crear oferta de Empleo</Link> </p>
-                            <p className="font-bold"><Link href="/MyReviewsEmployer">⭐ Mis Reviews</Link></p>
                         </div>
                     </div>
                     <div className="flex flex-col justify-around w-1/2 mt-10 mb-5">
