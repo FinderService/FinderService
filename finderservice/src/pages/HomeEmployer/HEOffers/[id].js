@@ -79,7 +79,11 @@ const Offer = () =>{
                                 )
                             })}                                                         
                         </div>
-                    </>  : <p>Cargando...</p>}
+                    </>  : <>
+                        <div className="mt-20 flex justify-center items-center">
+                            <p className="font-bold text-xl">🚩 !No hay postulaciones pendientes! 🚩</p>         
+                        </div>
+                    </>}
                 </div>
 
                 <div className="w-1/4">

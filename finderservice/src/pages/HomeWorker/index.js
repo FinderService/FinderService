@@ -69,13 +69,12 @@ export default function HomeWorkers() {
                                         <div key={job._id} className="shadow-xl flex justify-start bg-neutral-300 p-5 pl-10 mb-10 mr-5 duration-200 hover:scale-105 hover:shadow-xl">
                                             <div className="flex justify-between w-full">
                                                 <div className="flex flex-col justify-around w-1/2">
-                                                    <h2 className="font-bold text-xl">{job.title? job.title : job.name}</h2>
+                                                    <h2 className="mb-3 font-bold text-xl">{job.title? job.title : job.name}</h2>
                                                     <p>Trabajo para: { job.type.map((tipo)=> tipo.name)}</p>
                                                 </div>
                                                 <div className="flex flex-col justify-around items-end w-1/3">
-                                                    <p>Ubicación: {job.address.length? `${job.address[0].city} - ${job.address[0].country}` : " - "}</p>
+                                                    <p className="mb-3">Ubicación: {job.address.length? `${job.address[0].city} - ${job.address[0].country}` : " - "}</p>
                                                     <p>Fecha: {job.date.slice(0,10)}</p>
-                                                    <p className="text-black font-bold"><Link href="/ReviewsWorker">Puntuar<GoStar className="text-3xl text-blue-500 mx-auto text-center"/></Link></p>
                                                 </div>
                                             </div>
                                         </div>

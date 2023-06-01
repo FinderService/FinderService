@@ -8,9 +8,8 @@ import { loader } from "@public/assets";
 import { useUser } from "@context/UserContext";
 
 const MyPostulations = () =>{
-    const [ postDetails , setPostDetails ] = useState({});
     const { userData } = useUser();
-    const { myPostulations, getMyPostulations } = useWorkers();
+    const { myPostulations, getMyPostulations, postDetails, setPostDetails } = useWorkers();
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -46,10 +45,20 @@ const MyPostulations = () =>{
                         <div className="flex flex-col justify-around">
                             {myPostulations.length? myPostulations.map((item)=>{
                                 return(<>
-                                    <div onClick={()=> setPostDetails(item)} key={item.salary} className="flex justify-between bg-neutral-300 p-7 mt-5 rounded-xl duration-200 hover:scale-105">
+                                    <div onClick={()=> setPostDetails({...item})} key={item.salary} className="flex justify-between bg-neutral-300 p-7 mt-5 rounded-xl duration-200 hover:scale-105">
                                         <div>
-                                            <p className="font-bold text-xl mb-2">Título: {item.jobrequest[0].title}</p>
+                                            <p onClick={()=> console.log(item)} className="font-bold text-xl mb-2">Título: {item.jobrequest[0].title}</p>
                                             <p>Description: {item.jobrequest[0].description}</p>
+                                            <div className="flex flex-row mt-2">
+                                                    <p>Estado:</p>
+                                                    {(item.state === 'pending')?<>
+                                                        <p className="font-bold text-neutral-600">&nbsp;&nbsp;&nbsp;{item.state.toUpperCase()}</p>
+                                                    </>: (item.state === 'accepted')? <> 
+                                                        <p className="font-bold text-green-500">&nbsp;&nbsp;&nbsp;{item.state.toUpperCase()}</p>
+                                                    </>:<> 
+                                                        <p className="font-bold text-red-700">&nbsp;&nbsp;&nbsp;{item.state.toUpperCase()}</p>
+                                                    </>}                                     
+                                            </div>
                                         </div>
                                         <div className="flex flex-col items-end">
                                             <p className="mb-2">Propuesta de salario: ${item.salary}</p>
@@ -65,7 +74,7 @@ const MyPostulations = () =>{
                     </div>
                     <div className="bg-neutral-300 w-1/4 h-fit mt-10 mb-10 p-8 rounded-2xl">
                     {postDetails.salary?<>
-                        <h1 className="text-2xl mb-5 font-bold">Información del Empleo</h1>
+                        <h1 onClick={()=>console.log(postDetails)} className="text-2xl mb-5 font-bold">Información del Empleo</h1>
                         <h1 className="text-xl font-bold mb-2">{postDetails.jobrequest[0].title}</h1>
                         <p className="mb-2">Descripcion: {postDetails.jobrequest[0].description} </p>
                         <p className="mb-2">Empleo destinado para: {postDetails.jobrequest[0].type[0].name}</p>
@@ -76,9 +85,15 @@ const MyPostulations = () =>{
                         <p className="font-bold">Publicado por: {postDetails.jobrequest[0].employer[0].name}</p>
                         <br></br>
                         <div className="flex justify-around">
-                            <Link href="/HomeWorker/Postulations/Detail">
-                                <button className="bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200 py-2 px-4 rounded">Ver información detallada</button>
-                            </Link>
+                            {postDetails.state === 'accepted'?<>
+                            
+                                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Terminar & Calificar</button>
+                                
+                            </>:<>
+                                <Link href={`/HomeWorker/Postulations/PostDetails`}>
+                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver información detallada</button>
+                                </Link>
+                            </>}
                         </div>   
                     </>:<>
                         <p>🚩 Seleccione una postulacion para ver la información.</p>
