@@ -3,11 +3,12 @@ import { GoStar } from "react-icons/go";
 import { IoIosStarOutline } from "react-icons/io";
 import Layout from "@components/Layout";
 import Footer from "@components/Footer";
-import { useUser } from "@context/UserContext";
+import { useWorker } from "@context/HomeEmployerContext";
 
 function ReviewsWorker() {
+  const { setWorkerReviews } = useWorker();
   const [rating, setRating] = useState(0);
-  const { userData, setUserData } = useUser();
+  const [reviews, setReviews] = useState();
 
   const fillStars = (count) => {
     const stars = [];
@@ -19,12 +20,23 @@ function ReviewsWorker() {
 
   const handleStarClick = (index) => {
     setRating(index);
+    console.log(rating)
   };
 
   const handleReviewSubmit = (event) => {
     event.preventDefault();
-/*     setUserData({ ...userData, reviews: userData.reviews, stars: rating });
- */  };
+    var formData = new FormData();
+    formData.append('reviewWorker', reviews); 
+    formData.append('ratingWorker', rating);
+    /* formData.append('jobId', ); */
+    setWorkerReviews({ ...formData });
+    console.log(formData);
+  };
+
+  const handleOnChange = (e) => {
+    setReviews({ ...reviews, [e.target.name]: e.target.value });
+    console.log(reviews)
+  };
 
   return (
     <Layout>
@@ -67,9 +79,8 @@ function ReviewsWorker() {
         </div>
 
         <p className="text-black font-bold text-xl mt-12 mb-0 text-center">
-          Cuéntanos más acerca de este empleador
+          Cuéntanos más acerca de este empleado
         </p>
-        <p className="text-black text-sm mt-1 mb-0 text-center">(Opcional)</p>
 
         <form onSubmit={handleReviewSubmit} className="mt-8 w-full max-w-lg">
           <div className="flex flex-col items-center">
@@ -77,9 +88,8 @@ function ReviewsWorker() {
               className="h-40 md:h-150 border border-gray-400 p-4 md:p-15 text-base outline-none mx-auto w-1/2"
               name="reviews"
               type="text"
-              placeholder="Deja tu opinión sobre el trato y las condiciones con el empleador y puntúalo..."
-              value={userData.reviews}
-              /* onChange={(e) => setUserData({ ...userData, reviews: e.target.value })} */
+              placeholder="Deja tu opinión sobre el trabajo terminado por el empleado y puntúalo..."
+              onChange={handleOnChange}
             />
 
             <div className="flex mt-4">

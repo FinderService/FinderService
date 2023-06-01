@@ -137,7 +137,6 @@ export default function Search({ handleAction }) {
                                                     <p className="pr-2 text-black font-bold">{info.rating}</p>
                                                     <GoStar className="text-3xl text-blue-500 mx-auto text-center"/>                                 
                                                 </div>
-                                                <Link href="/ReviewsEmployer"><button className="bg-blue-500 hover:bg-blue-600 text-white font-bold p-1 rounded">Puntuar</button></Link>                                                
                                             </div>
                                         </div>
                                     </div>
