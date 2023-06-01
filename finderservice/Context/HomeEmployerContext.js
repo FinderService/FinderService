@@ -105,9 +105,8 @@ export const HomeEmployerProvider = ({ children }) => {
     const dataWorker = async (id) => {
         const {data} = await axios.get(`/api/workers/${id}`);
         setWorkerData(data);
-        
     }
 
-    return <HomeEmployerContext.Provider value={{ dataWorker, getWorker, workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation, getWorkerByName, dataPostulation ,setDataPostulation }}>{children}</HomeEmployerContext.Provider>;
+    return <HomeEmployerContext.Provider value={{ dataWorker, getWorker, workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation, getWorkerByName, dataPostulation ,setDataPostulation, setSortedWorkers}}>{children}</HomeEmployerContext.Provider>;
 }
 

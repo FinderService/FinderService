@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useUser } from "@context/UserContext";
 
 export default function WorkDetail() {
-  const { workDetail, setWorkDetail, getJobReqs } = useWorkers();
+  const { workDetail, setWorkDetail, getJobReqs, setSaveData } = useWorkers();
   const router = useRouter();
   const { id } = router.query;
   const { userData } = useUser();

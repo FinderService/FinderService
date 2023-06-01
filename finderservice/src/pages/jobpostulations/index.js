@@ -26,6 +26,11 @@ export default function Postulation() {
   });
 
   const handleChange = (e) => {
+    setState({
+      ...state,
+      workerEmail: userData.email,
+      jobrequest: saveData._id,
+    })
     if (e.target.name === "salary") {
       setErrror({
         ...error,
