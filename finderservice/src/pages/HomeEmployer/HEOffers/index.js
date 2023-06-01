@@ -45,7 +45,7 @@ const Offers = () =>{
                         </div>
                     </div>
                     <div className="flex flex-col justify-around w-1/2 mt-10 mb-5">
-                        <h1 className="text-4xl font-bold">💼 Mis ofertas de Empleo</h1>
+                        <h1 onClick={()=> console.log(myJobs)} className="text-4xl font-bold">💼 Mis ofertas de Empleo</h1>
                         <p className="pt-5 pb-3 font-bold">{myJobs.length} ofertas de empleo creadas</p>
                         <div className="flex flex-col justify-around">
                             {myJobs.map((item)=>{
