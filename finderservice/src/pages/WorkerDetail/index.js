@@ -28,33 +28,6 @@ export default function WorkerDetail() {
     fetchData();
     //eslint-disable-next-line
 },[])
-//   const handlePayClick = async () => {
-//     try {
-      
-//       const response = await axios.post("/api/payment", {
-//         items: [
-//           {
-//             title: 'Worker',
-//             quantity:1,
-//             currency_id:'ARS',
-//             unit_price:1000
-//           }
-//         ],
-//         back_urls:{
-//           success:'http://localhost:3000',
-//           failure:'http://localhost:3000',
-//           pending:'http://localhost:3000',
-//         },
-//         auto_return:'approved',
-//         binary_mode:false,
-//       });
-//       const { init_point } = response.data;
-//       // Redirige al usuario a la URL de pago proporcionada por `init_point`
-//       window.location.href = init_point;
-//     } catch (error) {
-//       console.error("Error al crear la preferencia de pago:", error);
-//     }
-//   };
 
 // //   useEffect(() => {
 // //     const fetchData = async () => {
@@ -87,11 +60,7 @@ export default function WorkerDetail() {
                                 <p>Teléfono: {getWorker.phone}</p>
                                 <p>Profesión: {getWorker.type.map((getWorker) => getWorker.name).toString()}</p>    
                                 {/* <br></br>                                        */}
-                            <div class= "flex  items-center space-x-8 mt-5 flex-row">
-                              
-                                    {/* <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                                    onClick={handlePayClick}>CONTRATAR</button>
-                                 */}
+                            <div class= "flex  items-center space-x-8 mt-5 flex-row">                         
 
                                   <Link href="/MyOffers">
                                     <button class="bg-blue-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Ver Servicios</button>

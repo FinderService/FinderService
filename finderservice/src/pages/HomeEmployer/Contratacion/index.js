@@ -6,9 +6,12 @@ import { useWorker } from "@context/HomeEmployerContext";
 import { useUser } from "@context/UserContext";
 import { useRouter } from "next/router";
 import { loader } from "@public/assets";
+import { useWorkers } from "@context/WorkersContext";
+import axios from "axios";
 
 const Contratacion = () =>{
-    const {postInfoToPostulation, dataPostulation, setDataPostulation, setSaveIds, getJobIDEmployer} = useWorker();
+    const {postInfoToPostulation, dataPostulation, setDataPostulation, getJobIDEmployer} = useWorker(); //Employers
+    const {setSaveIds} = useWorkers();  //Workers
     const {userData} = useUser();
     const router = useRouter();
 
@@ -23,6 +26,37 @@ const Contratacion = () =>{
         employerId: userData._id,
     })
 
+    const handlePayClick = async () => {
+      try {
+        setWait(true);
+        await getJobIDEmployer(postulationData.jobrequest[0],postulationData._id)    //send IdRequest & IdPostulation 
+        setWait(false);
+        alert('Contratación realizada con éxito');
+        setDataPostulation({}); 
+        const response = await axios.post("/api/payment", {
+          items: [
+            {
+              title: 'Worker',
+              quantity:1,
+              currency_id:'ARS',
+              unit_price:1000
+            }
+          ],
+          back_urls:{
+            success:'http://localhost:3000/ReviewsEmployer',
+            failure:'http://localhost:3000/ReviewsEmployer',
+            pending:'http://localhost:3000/ReviewsEmployer',
+          },
+          auto_return:'approved',
+          binary_mode:false,
+        });
+        const { init_point } = response.data;
+        // Redirige al usuario a la URL de pago proporcionada por `init_point`
+        window.location.href = init_point;
+      } catch (error) {
+        console.error("Error al crear la preferencia de pago:", error);
+      }
+    };
 
     useEffect(()=>{
         setPostulationData(dataPostulation);
@@ -37,16 +71,11 @@ const Contratacion = () =>{
     //eslint-disable-next-line
     },[])
 
-    const handleSubmit = async () =>{
-        setWait(true);
-        await getJobIDEmployer(postulationData.jobrequest[0],postulationData._id)    //send IdRequest & IdPostulation  
-        await postInfoToPostulation(formData);
-        setWait(false);
-        alert('Contratación realizada con éxito');
-        setDataPostulation({});      
-        router.push('/HomeEmployer/HEOffers')
+    const handleContratac = async () =>{
+      setWait(true);
+      await postInfoToPostulation(formData); 
+      setWait(false);
     }
-
   return (
     <Layout>
       {postulationData === false ? (
@@ -97,13 +126,11 @@ const Contratacion = () =>{
                       <br></br>
                       <div class="flex justify-center items-center space-x-8 mt-5 flex-row">
                         {(postulationData.state === "accepted")?<>
-                          <Link href="/ReviewsEmployer" onClick={() => setSaveIds(formData)}>
-                            <button                            
+                            <button onClick={handlePayClick}                           
                               class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                             >
                               Terminar & Calificar
                             </button>
-                          </Link>
                         </>:<>
                           <button
                             onClick={() => setSure(true)}
@@ -145,7 +172,7 @@ const Contratacion = () =>{
                             <button
                               value="si"
                               className="btn-navbar"
-                              onClick={handleSubmit}
+                              onClick={handleContratac}
                               variant="primary"
                             >
                               Sí
