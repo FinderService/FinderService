@@ -15,12 +15,40 @@ export default async function handler(req, res) {
           response = await JobPostulation.find({
             worker: idWorker,
           })
-            .populate("jobrequest", "title employer type")
-            .populate("worker", "_id name type email");
+            .populate({
+              path: "jobrequest",
+              select: "title employer type",
+              populate: {
+                path: "type",
+                select: "name",
+              },
+            })
+            .populate({
+              path: "worker",
+              select: "_id name email type",
+              populate: {
+                path: "type",
+                select: "name",
+              },
+            });
         } else {
           response = await JobPostulation.find({})
-            .populate("jobrequest", "title employer type")
-            .populate("worker", "_id name type email");
+            .populate({
+              path: "jobrequest",
+              select: "title employer type",
+              populate: {
+                path: "type",
+                select: "name",
+              },
+            })
+            .populate({
+              path: "worker",
+              select: "_id name email type",
+              populate: {
+                path: "type",
+                select: "name",
+              },
+            });
         }
 
         if (response) {
