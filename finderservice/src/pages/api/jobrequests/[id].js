@@ -22,7 +22,6 @@ export default async function handler(req, res) {
           )
           .populate("address", "_id name street state country zipCode city ")
           .populate("type", "name")
-          .populate("jobpostulation", "_id email")
         if (!response) {
           await dbDisconnect();
           return res

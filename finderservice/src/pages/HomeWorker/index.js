@@ -11,7 +11,7 @@ import { GoStar } from "react-icons/go";
 
 
 //vista de home empleado
-export default function HomeWorker() {
+export default function HomeWorkers() {
     const { JobReqs, getJobReqs, addressJobReqs, filterData, infoFilters, jobFilters, delFilter, getTypes, types } = useWorkers();
 
     useEffect(()=>{
@@ -46,7 +46,7 @@ export default function HomeWorker() {
             <Image src={loader} width={400} height={200} alt="loading" priority={true}/>
         </div>
         </>:<>
-            <div className="bg-white flex justify-around">
+            <div className="bg-white flex justify-around">                      
                 <div className="w-1/5 h-80 p-4 mt-10">
                     <div className="h-60 pt-5 flex flex-col justify-around">
                         <div className="shadow-2xl shadow-zinc-400 flex flex-col">
@@ -67,14 +67,13 @@ export default function HomeWorker() {
                                 {filterData.map((job)=>{
                                     return (
                                     <Link onClick={()=> console.log(job) } href={`/HomeWorker/${job._id}`} key={job._id}>
-                                        <div key={job._id} className="flex bg-neutral-300 p-5 mb-10 mr-5 duration-200 hover:scale-105 hover:shadow-xl">
-                                            <Image key={job._id} className="mr-7 w-30 h-20 rounded-2xl" src={job.photo} width={75} height={75} alt="imgjob" priority={true} />
-                                            <div className="flex justify-between w-4/5">
-                                                <div className="flex flex-col justify-around">
-                                                    <h2 className="font-bold">{job.title? job.title : job.name}</h2>
+                                        <div key={job._id} className="shadow-xl flex justify-start bg-neutral-300 p-5 pl-10 mb-10 mr-5 duration-200 hover:scale-105 hover:shadow-xl">
+                                            <div className="flex justify-between w-full">
+                                                <div className="flex flex-col justify-around w-1/2">
+                                                    <h2 className="font-bold text-xl">{job.title? job.title : job.name}</h2>
                                                     <p>Trabajo para: { job.type.map((tipo)=> tipo.name)}</p>
                                                 </div>
-                                                <div className="flex flex-col justify-around items-end">
+                                                <div className="flex flex-col justify-around items-end w-1/3">
                                                     <p>Ubicación: {job.address.length? `${job.address[0].city} - ${job.address[0].country}` : " - "}</p>
                                                     <p>Fecha: {job.date.slice(0,10)}</p>
                                                     <p className="text-black font-bold"><Link href="/ReviewsWorker">Puntuar<GoStar className="text-3xl text-blue-500 mx-auto text-center"/></Link></p>
@@ -90,7 +89,7 @@ export default function HomeWorker() {
                         </>
                     }
                 </div>
-                <div className="bg-neutral-300 flex flex-col w-1/6 h-fit mt-14 mb-10 p-6 rounded-xl">
+                <div className="shadow-xl bg-neutral-300 flex flex-col w-1/6 h-fit mt-14 mb-10 p-6 rounded-xl">
                     <div>
                         <label className="font-bold mb-2">Filtrar por:</label>                
                         <select name="Jobs" onChange={handleFilters} className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-8 rounded focus:outline-none focus:border-gray-500">

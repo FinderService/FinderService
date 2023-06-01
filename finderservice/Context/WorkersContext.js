@@ -21,6 +21,8 @@ export const WorkersProvider = ({ children }) => {
     const [filterData, setFilterData] = useState([]);
     const [workDetail, setWorkDetail] = useState([]);
 
+    const [myPostulations, setMyPostulations] = useState([])
+    const [saveData, setSaveData] = useState({})
     const getAllEmployers =  async () => {  
         let res = await axios.get('/api/employers')
         setEmployersData([...res.data])
@@ -81,11 +83,16 @@ export const WorkersProvider = ({ children }) => {
         const allTypes = data.map((type)=> type.name);
         setTypes(allTypes);
     }
+
+    const getMyPostulations = async (id) => {
+        const {data} = await axios.get(`/api/jobpostulations?idWorker=${id}`)
+        setMyPostulations(data);
+    }
     
   return <WorkersContext.Provider 
     value={{ employersData, getAllEmployers, JobReqs, getJobReqs, workDetail , setWorkDetail,
         filterData, infoFilters, jobFilters, delFilter,
-        types, getTypes, addressJobReqs}}>
+        types, getTypes, saveData, setSaveData, myPostulations, getMyPostulations, addressJobReqs}}>
         {children}
     </WorkersContext.Provider>;
 };

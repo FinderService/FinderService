@@ -5,11 +5,12 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { loader } from '@public/assets';
+import { toast } from "react-hot-toast";
 
 const Avatar = dynamic(() => import("react-avatar-edit"), { ssr: false });
 
 export default function FormAvatar({ id, image }) {
-  console.log(id, image);
+  //console.log(id, image);
 
   const [state, setState] = useState({
     preview: image ? image : null,
@@ -35,6 +36,7 @@ export default function FormAvatar({ id, image }) {
   };
 
   const onCrop = (preview) => {
+    // console.log(preview);
     setState({
       ...state,
       preview,
@@ -43,7 +45,7 @@ export default function FormAvatar({ id, image }) {
 
   const onBeforeFileLoad = (elem) => {
     if (elem.target.files[0].size > 1097152) {
-      alert("La imagen es muy grande!");
+      toast.error("La imagen es muy grande!");
       elem.target.value = "";
     }
   };
@@ -51,23 +53,31 @@ export default function FormAvatar({ id, image }) {
   const classesAlert = "alert " + state.alertAvatar;
 
   const saveAvatar = async (e) => {
-    console.log("guardar el avatar");
+    //console.log("guardar el avatar");
 
     const url = "/api/updateUser/avatar";
     const datos = { avatar: state.preview, id_usuario: id };
-    console.log(state.preview)
+    //console.log(state.preview)
     let res = await axios.put(url, datos);
     console.log(res);
+    if(res.data.success){
+      toast.success(res.data.msg);
+      setState({ ...state, actualAvatar: state.preview })
+      return;
+    }
+
+    toast.error('Algo salio mal, intentalo más tarde.')
   };
 
   return (
 
-    <div className="static p-4">
-      <div className="">
-        <div className="w-[10rem]">
+    <div className="static">
+      <h3 className="text-xl p-4 bg-slate-100 text-slate-700">Actualizar avatar:</h3>
+      <div className="p-4 ">
+        <div className="w-full flex flex-col gap-3 items-center justify-center">
           <Image
             className="avatar-preview"
-            src={image}
+            src={ state.actualAvatar }
             alt="avatar"
             width="100"
             height="100"
@@ -120,7 +130,7 @@ export default function FormAvatar({ id, image }) {
                 variant="primary"
                 onClick={saveAvatar}
               >
-                Guradar
+                Guardar
               </button>
             </div>
           </div>

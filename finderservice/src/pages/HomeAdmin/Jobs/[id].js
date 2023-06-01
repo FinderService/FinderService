@@ -23,7 +23,7 @@ const JobsDetails = () =>{
     const [wait , setWait] = useState(false);
 
     const [formData , setFormData ] = useState({
-        ...jobDetails,
+        _id: jobDetails._id,
         title: jobDetails.title
     })
 
@@ -31,7 +31,7 @@ const JobsDetails = () =>{
         title: "",
         flag: true
     })
-
+    console.log(jobDetails);
     useEffect(()=>{
         const fetchData = async () => {
             if(userData.name){
@@ -66,7 +66,7 @@ const JobsDetails = () =>{
         await putJobDataByID(formData, formData._id);
         await getAllJobReqs();
         setWait(false);
-        setJobDetails(formData);
+        setJobDetails({...jobDetails, _id: formData._id, title: formData.title });
         setShowForm(false)
         setSure(false);
     }
@@ -85,7 +85,7 @@ const JobsDetails = () =>{
                                     <p className="mb-1">Destinado para: {jobDetails.type[0].name}</p>
                                     <p className="mb-1">Description: {jobDetails.description}</p>
                                     <p className="mb-1">Fecha de publicacion: {jobDetails.date.slice(0,10)}</p>
-                                    <p>Ubicación: {jobDetails.address[0].name} - {jobDetails.address[0].city}</p>
+                                    <p>Ubicación: {jobDetails.address[0].city}, {jobDetails.address[0].state}, {jobDetails.address[0].country}</p>
                                     <br/>
                                     <p className="font-bold">Publicado por: {jobDetails.employer[0].name}</p>
                                 </div>

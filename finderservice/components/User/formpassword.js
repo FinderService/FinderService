@@ -109,7 +109,7 @@ export default function FormPassword({ id }) {
         />
         { error.renew && <p className="formErrorLbl">{error.renew}</p>}
         <div className="flex flex-row justify-end pt-2">
-          <button type="submit" className="btn-default">Enviar</button>
+          <button type="submit" className="btn-navbar">Enviar</button>
         </div>
       </form>
     </div>
