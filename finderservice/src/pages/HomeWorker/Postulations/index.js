@@ -42,36 +42,42 @@ const MyPostulations = () =>{
                     </div>
                     <div className="flex flex-col justify-around w-1/2 mt-10 mb-5">
                         <h1 className="text-4xl font-bold">📩 Mis postulaciones a Empleos</h1>
-                        <p className="pt-5 pb-3 font-bold">4 postulaciones aplicadas a trabajos</p>
+                        <p className="pt-5 pb-3 font-bold">{myPostulations.length} postulaciones aplicadas a trabajos</p>
                         <div className="flex flex-col justify-around">
-                            {myPostulations.map((item)=>{
+                            {myPostulations.length? myPostulations.map((item)=>{
                                 return(<>
-                                    <div key={item.salary} className="flex justify-between bg-neutral-300 p-7 mt-5 rounded-xl duration-200 hover:scale-105">
+                                    <div onClick={()=> setPostDetails(item)} key={item.salary} className="flex justify-between bg-neutral-300 p-7 mt-5 rounded-xl duration-200 hover:scale-105">
                                         <div>
-                                            <p>ESTADO: Pendiente</p>
-                                            <p>Título del trabajo: Reparación de ...</p>
+                                            <p className="font-bold text-xl">Título: {item.jobrequest[0].title}</p>
+                                            <p>Description: {item.message}</p>
                                         </div>
                                         <div className="flex flex-col items-end">
-                                            <p>Postulados: 324</p>
-                                            <p>Título del trabajo: Obrero, Gasista</p>
+                                            <p>Propuesta de salario: ${item.salary}</p>
                                         </div>
                                     </div>
                                 </>)
                             })
-                            }
+                            :<>
+                                <p>No hay postulaciones realizadas.</p>
+                            </>}
                         </div>   
                     </div>
                     <div className="bg-neutral-300 w-1/4 h-fit mt-10 mb-10 p-8 rounded-2xl">
+                    {postDetails.salary?<>
                         <h1 className="text-2xl mb-5 font-bold">Información del Empleo</h1>
-                        <h1 className="text-xl mb-2">Título del empleo</h1>
-                        <p className="mb-2"> Descripcion </p>
+                        <h1 className="text-xl mb-2">{postDetails.title}</h1>
+                        <p className="mb-2"> Descripcion: {} </p>
                         <p className="mb-2">Empleo destinado para: Gasista</p>
-                        <p className="mb-6">Total de postulados: 777</p>
                         <div className="flex justify-around">
                             <Link href="/HomeWorker/Postulations/Detail">
                                 <button className="bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200 py-2 px-4 rounded">Ver información detallada</button>
                             </Link>
-                        </div>                   
+                        </div>   
+                    </>:<>
+                        <p>Seleccione una postulacion para ver la información.</p>
+                    </>
+                    }
+                                        
                     </div>
                 </div> 
             </>}
