@@ -111,11 +111,11 @@ export default async function reviewJob(req, res) {
             .status(200)
             .json({
               success: true,
-              msg: "Se guardo la reseña satisfactoriamente",
+              msg: "Se guardó la reseña satisfactoriamente",
             });
         }
 
-        throw new Error("Algo sali mal, inténtalo más tarde");
+        throw new Error("Algo salió mal, inténtalo más tarde");
         //let updateEmployerReview = await Worker.updateOne({});
       }
     }

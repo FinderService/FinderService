@@ -6,8 +6,6 @@ import { HomeEmployerProvider } from '@context/HomeEmployerContext';
 import { useRouter } from 'next/router';
 import { WorkersProvider } from '@context/WorkersContext';
 import { AdminProvider } from '@context/AdminContext';
-import { JobrequestsProvider } from '@context/JobrequestsContext';
-import { JobpostulationsProvider } from '@context/JobpostulationsContext';
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter();
@@ -21,8 +19,6 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
   return (
     <SessionProvider session={session}>
       <UserProvider>
-        <JobpostulationsProvider>
-          <JobrequestsProvider>
             <AdminProvider>
               <HomeEmployerProvider>
                 <WorkersProvider>
@@ -30,8 +26,6 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
                 </WorkersProvider>
               </HomeEmployerProvider>
             </AdminProvider>
-          </JobrequestsProvider>
-        </JobpostulationsProvider>
       </UserProvider>
     </SessionProvider>
   );

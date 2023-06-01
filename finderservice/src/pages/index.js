@@ -7,10 +7,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { Loader } from "@googlemaps/js-api-loader"
 import React, { useRef, useEffect, useState } from "react";
+import {useRouter} from "next/router";
 
 export default function Home() {
   const { userData } = useUser();
   const inputRef = useRef(null);
+  const router = useRouter();
 
 const initAutocomplete = () => {
 
@@ -46,7 +48,25 @@ useEffect(()=>{
   // };
 
   const isDireccionComplete = direccion.trim() !== '';
-  console.log(direccion)
+  // console.log(direccion)
+
+  const searchWorkerAddress = ()=>{
+    const addressTaken = direccion.trim();
+
+    if (userData.profile === "worker") {
+      router.push({
+        pathname: "/HomeWorker",
+        query: { search: addressTaken },
+      });
+    } else {
+      router.push({
+        pathname: "/HomeEmployer",
+        query: { search: addressTaken },
+      });
+    }
+    
+  }
+  
 
   return (
     <Layout>
@@ -81,6 +101,7 @@ useEffect(()=>{
             />
             {userData.profile === 'worker' ? (
         <Link
+          onClick={searchWorkerAddress}
           href="/HomeWorker"
           className={`bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all ${
             !isDireccionComplete ? 'pointer-events-none opacity-50' : ''
@@ -90,6 +111,7 @@ useEffect(()=>{
         </Link>
       ) : (
         <Link
+          onClick={searchWorkerAddress}
           href="/HomeEmployer"
           className={`bg-gray-500/50 py-1 px-4 rounded-md hover:bg-blue-300 duration-300 transition-all ${
             !isDireccionComplete ? 'pointer-events-none opacity-50' : ''

@@ -17,7 +17,7 @@ export default function Search({ handleAction }) {
     const router = useRouter();
     const objImgs = showImgs();
     const { userData } = useUser();
-    const { workersData, getAllWorkers, sortWorkers, setSortedWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers, dataWorker, getWorkerByName } = useWorker();
+    const { workersData, getAllWorkers, sortWorkers, setSortedWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers, addressWorkers, dataWorker, getWorkerByName } = useWorker();
     const { getTypes, types } = useWorkers();
     const [ error, setError ] = useState("")
     const [wait, setWait] = useState(false);
@@ -29,7 +29,8 @@ export default function Search({ handleAction }) {
     }
 
     const handleChange = (event) =>{
-         const value = event.target.value;
+        const value = event.target.value;
+        addressWorkers(value);
         addFilters(value);
     }
 

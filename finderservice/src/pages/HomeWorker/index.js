@@ -12,13 +12,14 @@ import { GoStar } from "react-icons/go";
 
 //vista de home empleado
 export default function HomeWorkers() {
-    const { JobReqs, getJobReqs, filterData, infoFilters, jobFilters, delFilter, getTypes, types } = useWorkers();
+    const { JobReqs, getJobReqs, addressJobReqs, filterData, infoFilters, jobFilters, delFilter, getTypes, types } = useWorkers();
 
     useEffect(()=>{
         const fetchData = async () => {
             try {
                 if (JobReqs.length === 0) {
                     await getJobReqs();;
+                    await addressJobReqs();
                     await getTypes();
                 }
             } catch (error) {

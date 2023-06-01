@@ -19,13 +19,18 @@ export const WorkersProvider = ({ children }) => {
 
     const [JobReqs, setJobReqs] = useState([]);
     const [filterData, setFilterData] = useState([]);
-    const [workDetail, setWorkDetail] = useState([]);
-
+    
     const [myPostulations, setMyPostulations] = useState([]);
     const [ postDetails , setPostDetails ] = useState({});
     const [saveData, setSaveData] = useState({});
     const [savedID , setSavedID] = useState("")
     const [saveIds, setSaveIds] = useState({});
+
+
+    const [workDetail, setWorkDetail] = useState([]);
+    const [employerReviews, setEmployerReviews] = useState({})
+
+
 
     const getAllEmployers =  async () => {  
         let res = await axios.get('/api/employers')
@@ -35,6 +40,17 @@ export const WorkersProvider = ({ children }) => {
     const getJobReqs = async (id) => {
         if(id){
             let res = await axios.get(`/api/jobrequests/${id}`)
+            setWorkDetail(res.data)
+        }else{  
+            let res2 = await axios.get('/api/jobrequests')
+            setJobReqs([...res2.data])
+            setFilterData([...res2.data])
+        }
+    }
+
+    const addressJobReqs = async (search) => {
+        if(search){
+            let res = await axios.get(`/api/searchRequestaddress/search=${search}`)
             setWorkDetail(res.data)
         }else{  
             let res2 = await axios.get('/api/jobrequests')
@@ -81,6 +97,10 @@ export const WorkersProvider = ({ children }) => {
         const {data} = await axios.get(`/api/jobpostulations?idWorker=${id}`)
         setMyPostulations(data);
     }
+    const putReviewsEmployer = async (data) =>{
+        await axios.put("/api/jobs/reviewJob");
+        setWorkerReviews(data);
+    }
 
     const getJobIDWorker = async (idRequest, idPostulation) => {
         const {data} = await axios.get(`/api/jobs/getJobId?idRequest=${idRequest}&idPostulation=${idPostulation}`);
@@ -88,9 +108,9 @@ export const WorkersProvider = ({ children }) => {
     }
     
   return <WorkersContext.Provider 
-    value={{ employersData, getAllEmployers, JobReqs, getJobReqs, workDetail , setWorkDetail,
+    value={{putReviewsEmployer, employerReviews, setEmployerReviews, employersData, getAllEmployers, JobReqs, getJobReqs, workDetail , setWorkDetail,
         filterData, infoFilters, jobFilters, delFilter,
-        types, getTypes, saveData, setSaveData, myPostulations, getMyPostulations, 
+        types, getTypes, saveData, setSaveData, myPostulations, getMyPostulations, addressJobReqs,
         postDetails, setPostDetails, saveIds, setSaveIds, savedID, getJobIDWorker}}>
         {children}
     </WorkersContext.Provider>;
