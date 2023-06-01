@@ -37,6 +37,17 @@ export const WorkersProvider = ({ children }) => {
         }
     }
 
+    const addressJobReqs = async (search) => {
+        if(search){
+            let res = await axios.get(`/api/searchRequestaddress/search=${search}`)
+            setWorkDetail(res.data)
+        }else{  
+            let res2 = await axios.get('/api/jobrequests')
+            setJobReqs([...res2.data])
+            setFilterData([...res2.data])
+        }
+    }
+
     const jobFilters = (filter) =>{
         if(filter !== 'Trabajos'){
             const filteredWorks = JobReqs.filter((work) => {
@@ -74,7 +85,7 @@ export const WorkersProvider = ({ children }) => {
   return <WorkersContext.Provider 
     value={{ employersData, getAllEmployers, JobReqs, getJobReqs, workDetail , setWorkDetail,
         filterData, infoFilters, jobFilters, delFilter,
-        types, getTypes}}>
+        types, getTypes, addressJobReqs}}>
         {children}
     </WorkersContext.Provider>;
 };

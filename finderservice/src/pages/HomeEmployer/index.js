@@ -14,7 +14,7 @@ import showImgs from "@/utils/showImgs";
 export default function Search({ handleAction }) {
     const objImgs = showImgs();
     const { userData } = useUser();
-    const { workersData, getAllWorkers, sortWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers } = useWorker();
+    const { workersData, getAllWorkers, sortWorkers, sortedWorkers, filtersInfo, addFilters, delFilterWorkers, addressWorkers } = useWorker();
     const { getTypes, types } = useWorkers();
     
     //const objImgs = types? showImgs(types) : null;
@@ -24,7 +24,8 @@ export default function Search({ handleAction }) {
     }
 
     const handleChange = (event) =>{
-         const value = event.target.value;
+        const value = event.target.value;
+        addressWorkers(value);
         addFilters(value);
     }
 

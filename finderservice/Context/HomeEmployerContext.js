@@ -23,6 +23,12 @@ export const HomeEmployerProvider = ({ children }) => {
         setSortedWorkers([...res.data])
 
     };
+
+    const addressWorkers = async (search) => {
+        let res = await axios.get(`/api/searchWorkeraddress/search=${search}`)
+        setWorkersData([...res.data])
+        setSortedWorkers([...res.data])
+    }
     
     
     const addFilters = (value) =>{
@@ -67,6 +73,6 @@ export const HomeEmployerProvider = ({ children }) => {
     };
 
 
-    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers }}>{children}</HomeEmployerContext.Provider>;
+    return <HomeEmployerContext.Provider value={{ workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, addressWorkers}}>{children}</HomeEmployerContext.Provider>;
 }
 

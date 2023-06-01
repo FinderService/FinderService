@@ -167,20 +167,17 @@ export default async function handler(req, res) {
         const workerWithAT = await Worker.findById(saveWorker._id)
           .populate("address", "-_id name city")
           .populate("type", "-_id name");
-        await mongoose.connection.close();
-        console.log("Connection shutdown");
+        await dbDisconnect();
         return res.status(201).json(workerWithAT);
 
         // return res.status(201).json(saveWorker); //201 es el objeto nuevo que se ha creado en el backend
       } catch (error) {
-        await mongoose.connection.close();
-        console.log("Connection shutdown");
+        await dbDisconnect();
         return res.status(400).json({ error: error.message });
       }
 
     default:
-      await mongoose.connection.close();
-      console.log("Connection shutdown");
+      await dbDisconnect();
       res.status(404).json({ error: "request do not exist" });
       break;
   }
