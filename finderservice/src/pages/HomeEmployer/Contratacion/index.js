@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { loader } from "@public/assets";
 
 const Contratacion = () =>{
-    const {postInfoToPostulation, dataPostulation, setDataPostulation} = useWorker();
+    const {postInfoToPostulation, dataPostulation, setDataPostulation, setSaveIds, getJobIDEmployer} = useWorker();
     const {userData} = useUser();
     const router = useRouter();
 
@@ -37,13 +37,14 @@ const Contratacion = () =>{
     //eslint-disable-next-line
     },[])
 
-    const handleSubmit = async () =>{      
+    const handleSubmit = async () =>{
         setWait(true);
+        await getJobIDEmployer(postulationData.jobrequest[0],postulationData._id)    //send IdRequest & IdPostulation  
         await postInfoToPostulation(formData);
         setWait(false);
         alert('Contratación realizada con éxito');
         setDataPostulation({});      
-        router.push('/')
+        router.push('/HomeEmployer/HEOffers')
     }
 
   return (
@@ -74,7 +75,7 @@ const Contratacion = () =>{
                 <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                   {postulationData.salary && userData._id ? (
                     <>
-                      <h2 className="font-bold text-xl">
+                      <h2 onClick={()=> console.log(formData)} className="font-bold text-xl">
                         {postulationData.worker[0].name}
                       </h2>
                       <br></br>
@@ -95,12 +96,23 @@ const Contratacion = () =>{
                       <h3>Mensaje: {postulationData.message}</h3>
                       <br></br>
                       <div class="flex justify-center items-center space-x-8 mt-5 flex-row">
-                        <button
-                          onClick={() => setSure(true)}
-                          class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                        >
-                          CONTRATAR
-                        </button>
+                        {(postulationData.state === "accepted")?<>
+                          <Link href="/ReviewsEmployer" onClick={() => setSaveIds(formData)}>
+                            <button                            
+                              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                            >
+                              Terminar & Calificar
+                            </button>
+                          </Link>
+                        </>:<>
+                          <button
+                            onClick={() => setSure(true)}
+                            class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                          >
+                            CONTRATAR
+                          </button>
+                        </>
+                        }
                         <button class="bg-amber-400 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded">
                           <Link href="/HomeWorker/HEOffers">Volver</Link>
                         </button>

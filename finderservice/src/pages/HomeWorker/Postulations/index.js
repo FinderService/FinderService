@@ -6,10 +6,13 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { loader } from "@public/assets";
 import { useUser } from "@context/UserContext";
+import { useWorker } from "@context/HomeEmployerContext";
 
 const MyPostulations = () =>{
     const { userData } = useUser();
-    const { myPostulations, getMyPostulations, postDetails, setPostDetails } = useWorkers();
+    const { myPostulations, getMyPostulations, postDetails, setPostDetails, getJobIDWorker} = useWorkers();
+
+    const [wait, setWait] = useState(false);
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -20,6 +23,12 @@ const MyPostulations = () =>{
         fetchData();
         //eslint-disable-next-line
     },[])
+
+    const sendDataToReviews = async () =>{
+        setWait(true);
+        await getJobIDWorker(postDetails.jobrequest[0]._id, postDetails._id);   //idRequest & idPostulation
+        setWait(false);
+    }
 
     return(
         <Layout>
@@ -47,7 +56,7 @@ const MyPostulations = () =>{
                                 return(<>
                                     <div onClick={()=> setPostDetails({...item})} key={item.salary} className="flex justify-between bg-neutral-300 p-7 mt-5 rounded-xl duration-200 hover:scale-105">
                                         <div>
-                                            <p onClick={()=> console.log(item)} className="font-bold text-xl mb-2">Título: {item.jobrequest[0].title}</p>
+                                            <p className="font-bold text-xl mb-2">Título: {item.jobrequest[0].title}</p>
                                             <p>Description: {item.jobrequest[0].description}</p>
                                             <div className="flex flex-row mt-2">
                                                     <p>Estado:</p>
@@ -86,9 +95,9 @@ const MyPostulations = () =>{
                         <br></br>
                         <div className="flex justify-around">
                             {postDetails.state === 'accepted'?<>
-                            
-                                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Terminar & Calificar</button>
-                                
+                                <Link href="/ReviewsWorker" >
+                                    <button onClick={sendDataToReviews} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Terminar & Calificar</button>
+                                </Link>
                             </>:<>
                                 <Link href={`/HomeWorker/Postulations/PostDetails`}>
                                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver información detallada</button>
@@ -99,7 +108,13 @@ const MyPostulations = () =>{
                         <p>🚩 Seleccione una postulacion para ver la información.</p>
                     </>
                     }
-                                        
+                    {wait && (<>
+                        <div dialogClassName="avatar-modal" className="w-full h-screen absolute top-0 left-0 bg-black/50 z-40 flex flex-col items-center justify-center">
+                            <div className="bg-white w-[40rem] pl-10 pr-10 pt-5 rounded-md flex flex-col items-center overflow-hidden shadow-2xl">
+                                <Image src={loader} width={300} height={150} alt="loading"/>
+                                </div>
+                        </div>
+                    </>)}                    
                     </div>
                 </div> 
             </>}

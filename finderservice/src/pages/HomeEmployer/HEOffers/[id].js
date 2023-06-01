@@ -13,7 +13,7 @@ const Offer = () =>{
     const router = useRouter();
     const {id} = router.query;
     const { userData } = useUser();
-    const { myJobById, getMyJobByID, infoReq, getMyJobPostulations, setDataPostulation } = useWorker();
+    const { myJobById, setMyJobById, getMyJobByID, infoReq, getMyJobPostulations, setDataPostulation } = useWorker();
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -27,7 +27,7 @@ const Offer = () =>{
             }
         };
         fetchData();
-
+        return(setMyJobById({}))
     //eslint-disable-next-line
     },[])
 

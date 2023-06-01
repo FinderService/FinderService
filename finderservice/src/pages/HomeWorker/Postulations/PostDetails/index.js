@@ -11,7 +11,7 @@ const WorkDetails = () =>{
     <Layout>
         {postDetails.salary?
         <>
-            <div className="text-3xl font-bold flex justify-center items-center mt-10">Detalle de la Postulación seleccionada</div>
+            <div onClick={()=> console.log(postDetails)} className="text-3xl font-bold flex justify-center items-center mt-10">Detalle de la Postulación seleccionada</div>
                 <div class="flex justify-center items-center mt-10 ">
                 <div class="bg-white shadow-2xl rounded-xl px-8 pt-6 pb-8 mb-4">
                     <h2 className="text-2xl font-bold">Título: {postDetails.jobrequest[0].title}</h2>
@@ -19,9 +19,13 @@ const WorkDetails = () =>{
                     <br></br>
                     <p className="font-bold">Publicado por: {postDetails.jobrequest[0].employer[0].name}</p>
                     <br></br>
-                    <h3>- Ubicación: ????????</h3>
+                    <h3>- Ubicación: {postDetails.jobrequest[0].address[0].street}, 
+                        {postDetails.jobrequest[0].address[0].city}, 
+                        {postDetails.jobrequest[0].address[0].state}, 
+                        {postDetails.jobrequest[0].address[0].country}
+                    </h3>
                     <br></br>
-                    <p>- Fecha: ??????????</p>
+                    <p>- Fecha: {postDetails.jobrequest[0].date.slice(0,10)}</p>
                     <br></br>
                     <p>- Detalles del trabajo: {postDetails.jobrequest[0].description}</p>
                     <br></br>
@@ -29,7 +33,7 @@ const WorkDetails = () =>{
                     <br></br>
                     <p >- Mensaje enviado: {postDetails.message}</p>
                     <br></br>
-                    <p className="font-bold">Estado de la solicitud: {postDetails.state}</p>
+                    <p className="font-bold">Estado de la solicitud: {postDetails.state.toUpperCase()}</p>
                     <br></br>
                     <div class= "flex justify-center items-center space-x-8 mt-5 flex-row">
                         <Link href="/HomeWorker/Postulations">

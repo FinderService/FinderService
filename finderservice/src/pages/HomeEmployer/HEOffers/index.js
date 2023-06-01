@@ -25,8 +25,8 @@ const Offers = () =>{
         };
         fetchData();
     //eslint-disable-next-line
-    },[])
-    
+    },[myJobs.length])
+
     return(
         <Layout>
             {!userData._id? <>
@@ -88,15 +88,9 @@ const Offers = () =>{
                             <p className="mb-2">- Empleo destinado para: {showDetails.type[0].name}</p>
                             <p className="mb-10">- Estado: {showDetails.state.toUpperCase()}</p>
                             <div className="flex justify-around">
-                                {showDetails.state === 'accepted'?<>
-                                    <Link href={`/HomeEmployer/HEOffers/${showDetails._id}`}>
-                                        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Terminar & Calificar</button>
-                                    </Link>
-                                </>:<>
-                                    <Link href={`/HomeEmployer/HEOffers/${showDetails._id}`}>
-                                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver información detallada</button>
-                                    </Link>
-                                </>}
+                            <Link href={`/HomeEmployer/HEOffers/${showDetails._id}`}>
+                                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver información detallada</button>
+                            </Link>
                             </div>               
                         </div>
                     </>:<p className="w-1/4 h-full flex justify-center items-center">🚩 Por favor, seleccione un empleo. 🚩</p>
