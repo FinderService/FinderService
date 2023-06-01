@@ -49,28 +49,22 @@ export default function Navbar() {
         
         <div className="hidden mdl:inline-flex items-center gap-7 ">
           {showBtns && (!session?.user ?
-          <>
-            <button onClick={handleAction} className="btn-navbar">
-              <Image src={equipo} alt="icon_equipo" />
-              <p>Postulá tu empleo</p>
-            </button>
+            <>
+              <button onClick={handleAction} className="btn-navbar">
+                <Image src={equipo} alt="icon_equipo" />
+                <p>Postulá tu empleo</p>
+              </button>
 
-            <button onClick={handleAction}  className="btn-navbar hover:border-green-500">
-              <Image src={equipo} alt="icon_equipo" />
-              <p>Postulá tu contratación</p>
-            </button>
-            
-          </> : (userData.profile === 'employer')? <>       
-            <button className="btn-navbar hover:border-green-500">
-              <Image src={equipo} alt="icon_equipo" />
-              <Link href="jobrequests">Postulá tu contratación</Link>
-            </button> 
-          </> : <>
-          <button className="btn-navbar hover:border-blue-500">
-              <Image src={equipo} alt="icon_equipo" />
-              <Link href="jobpostulations">Postulá tu empleo</Link>
-            </button>
-          </>)
+              <button onClick={handleAction}  className="btn-navbar hover:border-green-500">
+                <Image src={equipo} alt="icon_equipo" />
+                <p>Postulá tu contratación</p>
+              </button>            
+            </> : (userData.profile === 'employer') && (<>    
+              <button className="btn-navbar hover:border-green-500">
+                <Image src={equipo} alt="icon_equipo" />
+                <Link href="/jobrequests">Publica tu empleo</Link>
+              </button> 
+            </>)) 
           }
           <Login/>
         </div>

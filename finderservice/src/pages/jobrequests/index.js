@@ -16,7 +16,7 @@ export default function Postulation() {
   const { userData } = useUser();
 
   const [state, setState] = useState({
-    employerEmail: "",
+    employerEmail: userData.email,
     title: "",
     description: "",
     // photo: null,
@@ -101,7 +101,7 @@ export default function Postulation() {
   }, []);
 
   const handleSubmit = async (e) => {
-    console.log(userData);
+    console.log(state);
     e.preventDefault();
     try {
       setState({ ...state, employerEmail: userData.email });

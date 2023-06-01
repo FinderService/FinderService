@@ -21,11 +21,11 @@ export const HomeEmployerProvider = ({ children }) => {
     const [myJobById, setMyJobById] = useState({})
     const [dataPostulation, setDataPostulation]= useState({})
     const [ infoReq ,setInfoReq ] = useState([]);
+    const [savedID , setSavedID] = useState("")
     const [getWorker, setWorkerData ] = useState([]);
     const [jobsReviews, setJobsReviews] = useState([]);
     const [workerReviews, setWorkerReviews] = useState({})
 
-    setJobsReviews
     const getAllWorkers = async () => {
         let res = await axios.get('/api/workers')
         setWorkersData([...res.data])
@@ -113,9 +113,13 @@ export const HomeEmployerProvider = ({ children }) => {
     const dataWorker = async (id) => {
         const {data} = await axios.get(`/api/workers/${id}`);
         setWorkerData(data);
-        
     }
-    
+
+    const getJobIDEmployer = async (idRequest, idPostulation) => {
+        const {data} = await axios.get(`/api/jobs/getJobId?idRequest=${idRequest}&idPostulation=${idPostulation}`);
+        setSavedID(data);
+    }
+
     const getJobsReviews = async (idWorker) =>{
         const {data} = await axios.get(`/api/jobs/getJob?idWorker=${idWorker}`);
         setJobsReviews(data);
@@ -125,7 +129,13 @@ export const HomeEmployerProvider = ({ children }) => {
         await axios.put("/api/jobs/reviewJob");
         setWorkerReviews(data);
     }
-   
-    return <HomeEmployerContext.Provider value={{ postReviewsWorker, workerReviews, setWorkerReviews, getJobsReviews, jobsReviews, setJobsReviews, dataWorker, getWorker, workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation, getWorkerByName, dataPostulation ,setDataPostulation }}>{children}</HomeEmployerContext.Provider>;
+
+    return <HomeEmployerContext.Provider value={{ dataWorker, getWorker, workersData, getAllWorkers, 
+        sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, 
+        myJobs, getMyJobs, myJobById, setMyJobById, getMyJobByID, infoReq, getMyJobPostulations, 
+        postInfoToPostulation, getWorkerByName, dataPostulation ,setDataPostulation, 
+        setSortedWorkers, savedID, setSavedID, getJobIDEmployer, addressWorkers,
+        postReviewsWorker, workerReviews, setWorkerReviews, getJobsReviews, jobsReviews, setJobsReviews
+    }}>{children}</HomeEmployerContext.Provider>;
 }
 

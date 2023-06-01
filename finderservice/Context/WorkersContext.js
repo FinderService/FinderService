@@ -20,8 +20,12 @@ export const WorkersProvider = ({ children }) => {
     const [JobReqs, setJobReqs] = useState([]);
     const [filterData, setFilterData] = useState([]);
     
-    const [myPostulations, setMyPostulations] = useState([])
-    const [saveData, setSaveData] = useState({})
+    const [myPostulations, setMyPostulations] = useState([]);
+    const [ postDetails , setPostDetails ] = useState({});
+    const [saveData, setSaveData] = useState({});
+    const [savedID , setSavedID] = useState("")
+    const [saveIds, setSaveIds] = useState({});
+
 
     const [workDetail, setWorkDetail] = useState([]);
     const [employerReviews, setEmployerReviews] = useState({})
@@ -93,16 +97,21 @@ export const WorkersProvider = ({ children }) => {
         const {data} = await axios.get(`/api/jobpostulations?idWorker=${id}`)
         setMyPostulations(data);
     }
-
     const putReviewsEmployer = async (data) =>{
         await axios.put("/api/jobs/reviewJob");
         setWorkerReviews(data);
+    }
+
+    const getJobIDWorker = async (idRequest, idPostulation) => {
+        const {data} = await axios.get(`/api/jobs/getJobId?idRequest=${idRequest}&idPostulation=${idPostulation}`);
+        setSavedID(data);
     }
     
   return <WorkersContext.Provider 
     value={{putReviewsEmployer, employerReviews, setEmployerReviews, employersData, getAllEmployers, JobReqs, getJobReqs, workDetail , setWorkDetail,
         filterData, infoFilters, jobFilters, delFilter,
-        types, getTypes, saveData, setSaveData, myPostulations, getMyPostulations, addressJobReqs}}>
+        types, getTypes, saveData, setSaveData, myPostulations, getMyPostulations, addressJobReqs,
+        postDetails, setPostDetails, saveIds, setSaveIds, savedID, getJobIDWorker}}>
         {children}
     </WorkersContext.Provider>;
 };

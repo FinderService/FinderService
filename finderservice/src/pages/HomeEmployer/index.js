@@ -113,7 +113,7 @@ export default function Search({ handleAction }) {
                         <div className="w-4/6 py-3 px-3 bg-slate-300/60 rounded-md flex flex-row gap-2 backdrop-blur-sm ">
                             <input onKeyDown={searchWorker} type="text" placeholder="Enter para buscar por nombre" className="bg-white/0 placeholder-gray-700 w-full text-xl border-none border-transparent outline-none "/>
                         </div>
-                        <button onClick={resetWorkersData} className="w-1/6 ml-3 text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold rounded">Todos los Trabajadores</button>
+                        <button onClick={resetWorkersData} className="w-1/6 ml-3 text-sm bg-blue-300 hover:bg-blue-500 hover:text-white font-bold rounded">Todos los Trabajadores</button>
                     </div>
                     <ShowFilters filterData={sortedWorkers} infoFilters={filtersInfo} deleteFilter={delFilterWorkers}/>
                     <div className="mt-5 flex flex-col flex-wrap">
@@ -131,13 +131,11 @@ export default function Search({ handleAction }) {
                                                 <p className="text-xl font-bold">{info.name}</p>
                                                 <p>Rol: {info.profile}</p>
                                                 <p>Profesión: {info.type.map((info) => info.name).toString()}</p>       
-                                                <p>Edad: {info.age}</p>                                        
+                                                                                     
                                             </div>
                                             <div className="flex flex-col justify-around items-end pr-5">
-                                                <div className="flex">
-                                                    <p className="pr-2 text-black font-bold">{info.rating}</p>
-                                                    <GoStar className="text-3xl text-blue-500 mx-auto text-center"/>                                 
-                                                </div>
+                                                <p className="pr-2 text-black ">Rating: {info.rating} ⭐️</p>
+                                                <p>Edad: {info.age}</p>                                   
                                             </div>
                                         </div>
                                     </div>
