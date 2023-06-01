@@ -17,11 +17,17 @@ export default async function handler(req, res) {
           })
             .populate({
               path: "jobrequest",
-              select: "title employer type",
-              populate: {
-                path: "type",
-                select: "name",
-              },
+              select: "title employer type description",
+              populate: [
+                {
+                  path: "type",
+                  select: "name",
+                },
+                {
+                  path: "employer",
+                  select: "name",
+                },
+              ],
             })
             .populate({
               path: "worker",
@@ -35,11 +41,17 @@ export default async function handler(req, res) {
           response = await JobPostulation.find({})
             .populate({
               path: "jobrequest",
-              select: "title employer type",
-              populate: {
-                path: "type",
-                select: "name",
-              },
+              select: "title employer type description",
+              populate: [
+                {
+                  path: "type",
+                  select: "name",
+                },
+                {
+                  path: "employer",
+                  select: "name",
+                },
+              ],
             })
             .populate({
               path: "worker",
