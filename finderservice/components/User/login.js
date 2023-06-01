@@ -87,7 +87,7 @@ export default function Login() {
                   <li className="navDropLink">
                     <span className="text-red-800 text-xl">
                       <IoIosLogOut />
-                    </span>{" "}
+                    </span>
                     Salir
                   </li>
                 </Link>
