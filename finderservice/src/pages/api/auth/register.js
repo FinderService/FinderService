@@ -28,6 +28,7 @@ export default async function registerHandler(req, res) {
 
     let email = username;
     var birthdateRaw = new Date(birth);
+    const defaultProfilepic = 'https://res.cloudinary.com/dacl2du1v/image/upload/v1684330929/userAvt_tkcm8u.png';
 
     var currentDate = new Date();
     var age = currentDate.getFullYear() - birthdateRaw.getFullYear();
@@ -102,7 +103,7 @@ export default async function registerHandler(req, res) {
         salt: newSalt,
         validator: validator,
         type: typesId,
-        profilepic: profilepic ? profilepic : "",
+        profilepic: defaultProfilepic,
       });
       console.log(address);
 
@@ -147,7 +148,7 @@ export default async function registerHandler(req, res) {
         rating: 0,
         salt: newSalt,
         validator: validator,
-        profilepic: profilepic ? profilepic : "",
+        profilepic: defaultProfilepic,
       });
       let newAddress = new Address({
         id_usuario: newUser._id,
