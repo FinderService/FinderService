@@ -21,9 +21,11 @@ export const HomeEmployerProvider = ({ children }) => {
     const [myJobById, setMyJobById] = useState({})
     const [dataPostulation, setDataPostulation]= useState({})
     const [ infoReq ,setInfoReq ] = useState([]);
-
     const [getWorker, setWorkerData ] = useState([]);
+    const [jobsReviews, setJobsReviews] = useState([]);
+    const [workerReviews, setWorkerReviews] = useState({})
 
+    setJobsReviews
     const getAllWorkers = async () => {
         let res = await axios.get('/api/workers')
         setWorkersData([...res.data])
@@ -113,7 +115,17 @@ export const HomeEmployerProvider = ({ children }) => {
         setWorkerData(data);
         
     }
+    
+    const getJobsReviews = async (idWorker) =>{
+        const {data} = await axios.get(`/api/jobs/getJob?idWorker=${idWorker}`);
+        setJobsReviews(data);
+    }
 
-    return <HomeEmployerContext.Provider value={{ dataWorker, getWorker, workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation, getWorkerByName, dataPostulation ,setDataPostulation, addressWorkers}}>{children}</HomeEmployerContext.Provider>;
+    const postReviewsWorker = async (data) =>{
+        await axios.put("/api/jobs/reviewJob");
+        setWorkerReviews(data);
+    }
+   
+    return <HomeEmployerContext.Provider value={{ postReviewsWorker, workerReviews, setWorkerReviews, getJobsReviews, jobsReviews, setJobsReviews, dataWorker, getWorker, workersData, getAllWorkers, sortedWorkers, sortWorkers, filtersInfo , addFilters, delFilterWorkers, myJobs, getMyJobs, myJobById, getMyJobByID, infoReq, getMyJobPostulations, postInfoToPostulation, getWorkerByName, dataPostulation ,setDataPostulation }}>{children}</HomeEmployerContext.Provider>;
 }
 
