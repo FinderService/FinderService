@@ -14,8 +14,7 @@ export default async function reviewJob(req, res) {
       ratingEmployer,
     } = req.body;
 
-
-    const statejob = 'Done';
+    const statejob = "Done";
 
     let jobDb = await Job.findById(jobId);
     //console.log('job: ', jobDb.worker);
@@ -47,8 +46,8 @@ export default async function reviewJob(req, res) {
         // sacamos las calificaciones de los jobs
         let rating = 0;
         let totalJobs = 0;
-        jobs.map( j => {
-          rating += isNaN(j.ratingEmployer) ? 0 : Number(j.ratingEmployer) ;
+        jobs.map((j) => {
+          rating += isNaN(j.ratingEmployer) ? 0 : Number(j.ratingEmployer);
           totalJobs++;
         });
 
@@ -61,12 +60,17 @@ export default async function reviewJob(req, res) {
           }
         );
 
-        if(updateJob && updateWorker){
-          return res.status(200).json({ success: true, msg: 'Se guardo la reseña satisfactoriamente'});
+        if (updateJob && updateWorker) {
+          return res
+            .status(200)
+            .json({
+              success: true,
+              msg: "Se guardo la reseña satisfactoriamente",
+            });
         }
 
-        throw new Error('Algo sali mal, inténtalo más tarde');
-        
+        throw new Error("Algo sali mal, inténtalo más tarde");
+
         //let updateWorkerReview = await Worker.updateOne({});
       }
 
@@ -74,7 +78,7 @@ export default async function reviewJob(req, res) {
         let updateJob = await Job.updateOne(
           { _id: jobId },
           {
-            $set: { reviewEmployer , ratingEmployer, statejob },
+            $set: { reviewEmployer, ratingEmployer, statejob },
           }
         );
 
@@ -88,8 +92,8 @@ export default async function reviewJob(req, res) {
         // sacamos las calificaciones de los jobs
         let rating = 0;
         let totalJobs = 0;
-        jobs.map( j => {
-          rating += isNaN(j.ratingEmployer) ? 0 : Number(j.ratingEmployer) ;
+        jobs.map((j) => {
+          rating += isNaN(j.ratingEmployer) ? 0 : Number(j.ratingEmployer);
           totalJobs++;
         });
 
@@ -102,11 +106,16 @@ export default async function reviewJob(req, res) {
           }
         );
 
-        if(updateJob && updateEmployer){
-          return res.status(200).json({ success: true, msg: 'Se guardo la reseña satisfactoriamente'});
+        if (updateJob && updateEmployer) {
+          return res
+            .status(200)
+            .json({
+              success: true,
+              msg: "Se guardo la reseña satisfactoriamente",
+            });
         }
 
-        throw new Error('Algo sali mal, inténtalo más tarde');
+        throw new Error("Algo sali mal, inténtalo más tarde");
         //let updateEmployerReview = await Worker.updateOne({});
       }
     }

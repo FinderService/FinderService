@@ -17,7 +17,7 @@ export default async function handler(req, res) {
           })
             .populate({
               path: "jobrequest",
-              select: "title employer type description",
+              select: "title employer type description date address",
               populate: [
                 {
                   path: "type",
@@ -25,8 +25,12 @@ export default async function handler(req, res) {
                 },
                 {
                   path: "employer",
-                  select: "name",
+                  select: "name profilepic",
                 },
+                {
+                  path: "address",
+                  select: "country state city street zipCode"
+                }
               ],
             })
             .populate({
@@ -36,31 +40,37 @@ export default async function handler(req, res) {
                 path: "type",
                 select: "name",
               },
-            });
+            })
+           
         } else {
           response = await JobPostulation.find({})
-            .populate({
-              path: "jobrequest",
-              select: "title employer type description",
-              populate: [
-                {
-                  path: "type",
-                  select: "name",
-                },
-                {
-                  path: "employer",
-                  select: "name",
-                },
-              ],
-            })
-            .populate({
-              path: "worker",
-              select: "_id name email type",
-              populate: {
+          .populate({
+            path: "jobrequest",
+            select: "title employer type description date address",
+            populate: [
+              {
                 path: "type",
                 select: "name",
               },
-            });
+              {
+                path: "employer",
+                select: "name profilepic",
+              },
+              {
+                path: "address",
+                select: "country state city street zipCode"
+              }
+            ],
+          })
+          .populate({
+            path: "worker",
+            select: "_id name email type",
+            populate: {
+              path: "type",
+              select: "name",
+            },
+          })
+            
         }
 
         if (response) {
