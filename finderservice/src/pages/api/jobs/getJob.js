@@ -4,8 +4,10 @@ import Job from "@/models/Job";
 export default async function getJob(req, res) {
   await dbConnect();
   try {
-    const { idWorker } = req.body;
+    const { idWorker } = req.query;
     let response = [];
+
+    console.log(idWorker)
     if (idWorker) {
       response = await Job.find({
         worker: idWorker,
@@ -14,19 +16,20 @@ export default async function getJob(req, res) {
         .populate("employer", "name email")
         .populate("jobrequest", "title")
         .populate("jobpostulation", "title");
-    } else {
+    } else if(!idWorker) {
       response = await Job.find({})
         .populate("worker", "name email")
         .populate("employer", "name email")
         .populate("jobrequest", "title")
         .populate("jobpostulation", "title");
     }
+    
 
     if (!response) {
       await dbDisconnect();
       res
         .status(404)
-        .json({ success: false, error: "No se encontró trabajos activos" });
+        .json({ success: false, msg: "No se encontró trabajos activos" });
     }
     await dbDisconnect();
     res.status(200).json(response);
