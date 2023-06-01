@@ -5,11 +5,19 @@ import { IoIosStarOutline } from "react-icons/io";
 import Layout from "@components/Layout";
 import Footer from "@components/Footer";
 import { useWorkers } from "@context/WorkersContext";
+import { useWorker } from "@context/HomeEmployerContext";
 
 function ReviewsWorker() {
   const { setEmployerReviews, } = useWorkers();
   const [rating, setRating] = useState(0);
   const [reviews, setReviews] = useState();
+  const {savedID} = useWorker();
+
+  const [formData, setFormData] = useState({
+    jobId: savedID,
+    reviewEmployer: "",
+    ratingEmployer: ""
+  })
 
   const fillStars = (count) => {
     const stars = [];
@@ -21,22 +29,23 @@ function ReviewsWorker() {
 
   const handleStarClick = (index) => {
     setRating(index);
-    console.log(rating)
+    setFormData({ ...formData, ratingEmployer: index });
   };
 
   const handleReviewSubmit = (event) => {
     event.preventDefault();
-    var formData = new FormData();
-    formData.append('reviewEmployer', reviews); 
-    formData.append('ratingEmployer', rating);
-    /* formData.append('jobId', ); */
-    setEmployerReviews({ ...formData });
+    //setEmployerReviews({ ...formData });
     console.log(formData);
+    console.log(savedID)
   };
 
   const handleOnChange = (e) => {
-    setReviews({ ...reviews, [e.target.name]: e.target.value });
-    console.log(reviews)
+    setFormData({...formData, jobId: savedID});
+    if(e.target.name === 'reviews'){
+      setFormData({ ...formData, reviewEmployer: e.target.value });
+
+    }
+    //console.log(reviews)
   };
 
   return (

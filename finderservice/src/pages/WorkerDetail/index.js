@@ -7,11 +7,12 @@ import { useWorker } from "@context/HomeEmployerContext";
 import { loader } from "@public/assets";
 import { useEffect } from "react";
 import { useUser } from "@context/UserContext";
-
+import { GoStar } from "react-icons/go";
 import { IoIosStarOutline, IoIosStar } from "react-icons/io";
 
 export default function WorkerDetail() {
-  const { getWorker, getJobsReviews, jobsReviews, setJobsReviews } = useWorker();
+  const { getWorker, getJobsReviews, jobsReviews, setJobsReviews } =
+    useWorker();
   const { userData } = useUser();
   console.log("getworker de workerdetail", getWorker);
 
@@ -25,45 +26,8 @@ export default function WorkerDetail() {
     return setJobsReviews([])
     //eslint-disable-next-line
   }, []);
-  //   const handlePayClick = async () => {
-  //     try {
 
-  //       const response = await axios.post("/api/payment", {
-  //         items: [
-  //           {
-  //             title: 'Worker',
-  //             quantity:1,
-  //             currency_id:'ARS',
-  //             unit_price:1000
-  //           }
-  //         ],
-  //         back_urls:{
-  //           success:'http://localhost:3000',
-  //           failure:'http://localhost:3000',
-  //           pending:'http://localhost:3000',
-  //         },
-  //         auto_return:'approved',
-  //         binary_mode:false,
-  //       });
-  //       const { init_point } = response.data;
-  //       // Redirige al usuario a la URL de pago proporcionada por `init_point`
-  //       window.location.href = init_point;
-  //     } catch (error) {
-  //       console.error("Error al crear la preferencia de pago:", error);
-  //     }
-  //   };
-
-  // //   useEffect(() => {
-  // //     const fetchData = async () => {
-  // //         if (dataWorker.length === 0) {
-  // //             await getWorker();
-
-  // //         }
-  // //     };
-  // //     fetchData();
-  // //     //eslint-disable-next-line
-  // // },[])
-
+  
   return (
     <Layout>
       {!getWorker._id ? (
@@ -109,15 +73,13 @@ export default function WorkerDetail() {
                     </p>
                     {/* <br></br>                                        */}
                     <div class="flex  items-center space-x-8 mt-5 flex-row">
-                      {/* <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-                                    onClick={handlePayClick}>CONTRATAR</button>
-                                 */}
-
                       <Link href="/MyOffers">
                         <button class="bg-blue-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
                           Ver Servicios
                         </button>
                       </Link>
+
+    
                     </div>
                   </div>
                 </div>
