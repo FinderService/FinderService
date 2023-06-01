@@ -118,6 +118,7 @@ export const HomeEmployerProvider = ({ children }) => {
     const getJobIDEmployer = async (idRequest, idPostulation) => {
         const {data} = await axios.get(`/api/jobs/getJobId?idRequest=${idRequest}&idPostulation=${idPostulation}`);
         setSavedID(data);
+        return data;
     }
 
     const getJobsReviews = async (idWorker) =>{

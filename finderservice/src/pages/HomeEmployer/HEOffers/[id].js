@@ -45,7 +45,6 @@ const Offer = () =>{
                     <p className="font-bold">🏠 <Link href="/HomeEmployer">Home</Link></p>
                     <p className="font-bold">💼 <Link href="/HomeEmployer/HEOffers">Mis ofertas de Empleo</Link></p>
                     <p className="font-bold">📢 <Link href="/jobrequests">Crear oferta de Empleo</Link> </p>
-                    <p className="font-bold">⭐ <Link href="/MyReviewsEmployer">Mis Reviews</Link></p>
                 </div>
                 <div className="w-1/2 mt-10 mb-10">
                     <h1 onClick={()=> console.log(infoReq)} className="text-4xl font-bold mb-5">{`🛠️ ${myJobById.title}`}</h1>

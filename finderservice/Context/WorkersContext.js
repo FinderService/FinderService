@@ -111,7 +111,7 @@ export const WorkersProvider = ({ children }) => {
     value={{putReviewsEmployer, employerReviews, setEmployerReviews, employersData, getAllEmployers, JobReqs, getJobReqs, workDetail , setWorkDetail,
         filterData, infoFilters, jobFilters, delFilter,
         types, getTypes, saveData, setSaveData, myPostulations, getMyPostulations, addressJobReqs,
-        postDetails, setPostDetails, saveIds, setSaveIds, savedID, getJobIDWorker}}>
+        postDetails, setPostDetails, saveIds, setSaveIds, savedID,setSavedID , getJobIDWorker}}>
         {children}
     </WorkersContext.Provider>;
 };

@@ -52,7 +52,6 @@ export default function HomeWorkers() {
                         <div className="shadow-2xl shadow-zinc-400 flex flex-col">
                             <Link href="/HomeWorker"><p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200">🏠 Home</p></Link>
                             <Link href="/HomeWorker/Postulations"><p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200">📩 Mis Postulaciones</p></Link>
-                            <p className="flex items-center pl-5 h-10 bg-slate-400 font-bold hover:bg-blue-500 hover:text-slate-200"><Link href="/MyReviewsWorker">⭐ Mis Reviews</Link></p>
                         </div>
                     </div>
                 </div>
