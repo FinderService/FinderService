@@ -14,9 +14,9 @@ export default async function handler(req, res) {
         const preference = {
             items: items,
             back_urls:{
-                success:'http://localhost:3000',
-                failure:'http://localhost:3000',
-                pending:'http://localhost:3000',
+                success:'http://localhost:3000/ReviewsEmployer',
+                failure:'http://localhost:3000/ReviewsEmployer',
+                pending:'http://localhost:3000/ReviewsEmployer',
             },
             auto_return:'approved'
         };
